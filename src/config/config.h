@@ -1,9 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-extern const char* WIFI_SSID;
-extern const char* WIFI_PASSWORD;
-
 #define LED_PIN 2
+
+#define DEVICE_NAME "ESP32-Panel"
+
+#define AP_NAME "ESP32-Setup"
 
 #endif

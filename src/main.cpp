@@ -1,5 +1,7 @@
 #include <Arduino.h>
-#include "core/wifi_manager.h"
+#include <WiFi.h>
+#include <WiFiManager.h>
+
 #include "server/server.h"
 #include "controllers/led_controller.h"
 #include "display/oled_display.h"
@@ -7,10 +9,25 @@
 void setup() {
   Serial.begin(115200);
 
-  initOLED();   
+  WiFiManager wm;
+
+  // wm.resetSettings(); // pakai kalau mau reset WiFi
+
+  bool res = wm.autoConnect("ESP32-Setup");
+
+  if (!res) {
+    Serial.println("Gagal connect WiFi");
+  } else {
+    Serial.println("WiFi Connected!");
+    Serial.println(WiFi.localIP());
+  }
+
+  initOLED();
   initLED();
-  connectWiFi();
   initServer();
+
+  // tampil ke OLED
+  showSimpleInfo();
 }
 
 void loop() {

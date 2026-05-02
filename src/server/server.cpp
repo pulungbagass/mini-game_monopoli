@@ -68,7 +68,29 @@ void initServer() {
     Serial.println("SPIFFS Error");
   }
 
-  setupRoutes();
+  server.on("/", []() {
+    handleFile("/index.html", "text/html");
+  });
+
+  server.on("/style.css", []() {
+    handleFile("/style.css", "text/css");
+  });
+
+  server.on("/script.js", []() {
+    handleFile("/script.js", "application/javascript");
+  });
+
+  // optional: favicon biar gak spam
+  server.on("/favicon.ico", []() {
+    server.send(204);
+  });
+
+
+
+
+  setupRoutes();   
+
+
   server.begin();
 }
 

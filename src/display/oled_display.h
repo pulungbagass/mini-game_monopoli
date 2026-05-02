@@ -4,7 +4,12 @@
 #include <Arduino.h>
 
 void initOLED();
+void showSimpleInfo();
 void showIP(String ip);
-void showQR(String url);
+
+
+        #if USE_QR
+        void showQR(String url);
+        #endif
 
 #endif
