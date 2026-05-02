@@ -1,0 +1,18 @@
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #121212;
+  color: white;
+}
+
+button {
+  padding: 15px 30px;
+  margin: 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.on { background: #00c853; }
+.off { background: #d50000; }
