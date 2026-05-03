@@ -2,7 +2,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <WiFi.h>
-#include <qrcode.h>
+// #include <qrcode.h>
 
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -12,6 +12,9 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 void initOLED() {
+
+  Wire.begin(21, 22);
+
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
     Serial.println("OLED gagal");
     return;
@@ -35,34 +38,65 @@ void showIP(String ip) {
   display.display();
 }
 
-// ================= DISPLAY OLET SECUEL ===================
+// ================= DISPLAY OLET SECUEL =================== 
 
 void showSimpleInfo() {
   display.clearDisplay();
+  display.fillScreen(BLACK);
 
-  if (WiFi.status() == WL_CONNECTED) {
+  display.setTextColor(WHITE);
+
+  if (WiFi.status() != WL_CONNECTED) {
+
+    // ===== HEADER =====
+    display.setTextSize(1);
+    display.setCursor(20, 0);
+    display.print("SETUP MODE");
+
+    // garis pembatas
+    display.drawLine(0, 10, 128, 10, WHITE);
+
+    // ===== CONTENT =====
+    display.setCursor(0, 20);
+    display.print("WiFi  :");
+
+    display.setCursor(50, 20);
+    display.print("ESP32-Setup");
+
+    display.setCursor(0, 35);
+    display.print("IP    :");
+
+    display.setCursor(50, 35);
+    display.print("192.168.4.1");
+
+    // ===== FOOTER =====
+    display.setCursor(10, 54);
+    display.print("Open in browser");
+
+  } else {
+
     String ip = WiFi.localIP().toString();
 
-    display.setCursor(0, 0);
-    display.println("Connected!");
+    // ===== HEADER =====
+    display.setTextSize(1);
+    display.setCursor(25, 0);
+    display.print("CONNECTED");
 
-    display.setCursor(0, 15);
-    display.println("Buka di:");
+    display.drawLine(0, 10, 128, 10, WHITE);
 
-    display.setCursor(0, 30);
-    display.println(ip);
-  } else {
-    display.setCursor(0, 0);
-    display.println("Mode Setup");
+    // ===== CONTENT =====
+    display.setCursor(0, 20);
+    display.print("Device Online");
 
-    display.setCursor(0, 15);
-    display.println("Connect WiFi:");
+    display.setCursor(0, 35);
+    display.print("IP :");
 
-    display.setCursor(0, 30);
-    display.println("ESP32-Setup");
+    display.setCursor(30, 35);
+    display.print(ip);
 
-    display.setCursor(0, 45);
-    display.println("192.168.4.1");
+    // ===== FOOTER =====
+    display.setCursor(5, 54);
+    display.print("Access via browser");
   }
 
   display.display();
@@ -101,3 +135,4 @@ void showQR(String url) {
   display.display();
 }
 #endif
+
