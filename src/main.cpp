@@ -6,40 +6,40 @@
 #include "controllers/led_controller.h"
 #include "display/oled_display.h"
 
+WiFiManager wm;
 
-static unsigned long lastUpdate = 0;
-
+unsigned long lastUpdate = 0;
 
 void setup() {
   Serial.begin(115200);
-  
+
+  Serial.println("SETUP JALAN SEKALI");
   initOLED();
   showIP("Connecting...");
-  
-  WiFiManager wm;
 
-  wm.setAPCallback([](WiFiManager *wm) {
-    Serial.println("AP Mode aktif");
+  wm.setConfigPortalBlocking(false);
 
-    showSimpleInfo(); // tampil "Mode Setup"
-  });
+  // wm.setConfigPortalTimeout(180);
 
-  bool res = wm.autoConnect("ESP32-Setup");
+  wm.setDebugOutput(false);
+  wm.autoConnect("ESP32-Setup");
 
   initLED();
   initServer();
-  showSimpleInfo();
-
-  
 }
 
 void loop() {
+  wm.process();
+
   handleClient();
 
+  // update OLED tiap 2 detik
   if (millis() - lastUpdate > 2000) {
     showSimpleInfo();
+
     Serial.print("WiFi status: ");
     Serial.println(WiFi.status());
+
     lastUpdate = millis();
   }
 }

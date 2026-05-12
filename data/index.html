@@ -1,23 +1,154 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>ESP32 Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
 
-  <h1>ESP32 Control Panel</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <button class="on" onclick="controlLED('on')">LED ON</button>
-  <button class="off" onclick="controlLED('off')">LED OFF</button>
+    <title>Monopoly Control</title>
 
-  <h2 id="status">Status: -</h2>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-  <button onclick="window.location.href='http://192.168.4.1'">
-  ⚙️ Settings
-  </button>
+  <body>
+    <div class="container">
+      <!-- =========================
+         TOPBAR
+    ========================== -->
 
-  <script src="script.js"></script>
-</body>
+      <header class="topbar">
+        <h1>MONOPOLY CONTROL</h1>
+
+        <p>ESP32 LOCAL CONTROL PANEL</p>
+      </header>
+
+      <!-- =========================
+         PAGE : HOME
+    ========================== -->
+
+      <main class="page active" id="homePage">
+        <!-- BANK -->
+
+        <section class="bank-card" id="bankButton">
+          <div class="bank-left">
+            <div class="bank-icon">🏦</div>
+
+            <div class="bank-info">
+              <h2>BANK</h2>
+
+              <p>Total Money : $999999</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PLAYER -->
+
+        <section class="section-title">
+          <h3>PLAYER</h3>
+        </section>
+
+        <section class="player-list" id="playerList"></section>
+
+        <!-- SYSTEM -->
+
+        <section class="section-title">
+          <h3>SYSTEM</h3>
+        </section>
+
+        <section class="system-grid">
+          <div class="system-card" data-page="atmPage">
+            💳
+            <span>ATM</span>
+          </div>
+
+          <div class="system-card" data-page="auctionPage">
+            🔨
+            <span>AUCTION</span>
+          </div>
+
+          <div class="system-card" data-page="logsPage">
+            📜
+            <span>LOGS</span>
+          </div>
+
+          <div class="system-card" data-page="settingsPage">
+            ⚙️
+            <span>SETTINGS</span>
+          </div>
+        </section>
+      </main>
+
+      <!-- =========================
+         PAGE : ATM
+    ========================== -->
+
+      <main class="page" id="atmPage">
+        <button class="back-button">← BACK</button>
+
+        <div class="page-card">
+          <h2>ATM TERMINAL</h2>
+
+          <p>Future PN532 transaction system.</p>
+        </div>
+      </main>
+
+      <!-- =========================
+         PAGE : AUCTION
+    ========================== -->
+
+      <main class="page" id="auctionPage">
+        <button class="back-button">← BACK</button>
+
+        <div class="page-card">
+          <h2>AUCTION</h2>
+
+          <p>Property bidding system.</p>
+        </div>
+      </main>
+
+      <!-- =========================
+         PAGE : LOGS
+    ========================== -->
+
+      <main class="page" id="logsPage">
+        <button class="back-button">← BACK</button>
+
+        <div class="page-card">
+          <h2>TRANSACTION LOGS</h2>
+
+          <p>Transaction history will appear here.</p>
+        </div>
+      </main>
+
+      <!-- =========================
+         PAGE : SETTINGS
+    ========================== -->
+
+      <main class="page" id="settingsPage">
+        <button class="back-button">← BACK</button>
+
+        <div class="page-card">
+          <h2>SETTINGS</h2>
+
+          <p>System configuration panel.</p>
+        </div>
+      </main>
+    </div>
+
+    <!-- DATA -->
+    <script src="js/data/players.js"></script>
+
+    <!-- COMPONENT -->
+    <script src="js/components/playerCard.js"></script>
+
+    <!-- PAGE -->
+    <script src="js/pages/homePage.js"></script>
+
+    <!-- ROUTER -->
+    <script src="js/router.js"></script>
+
+    <!-- JS -->
+    <script src="js/script.js"></script>
+  </body>
 </html>

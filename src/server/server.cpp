@@ -67,7 +67,6 @@ void initServer() {
   if (!SPIFFS.begin(true)) {
     Serial.println("SPIFFS Error");
   }
-
   
   // optional: favicon biar gak spam
   server.on("/favicon.ico", []() {
