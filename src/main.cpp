@@ -2,13 +2,12 @@
 #include <WiFi.h>
 #include <WiFiManager.h>
 
-#include "server/server.h"
-#include "controllers/led_controller.h"
+#include "web/web_server.h"
 #include "display/oled_display.h"
 
 WiFiManager wm;
 
-unsigned long lastUpdate = 0;
+unsigned long lastOLEDUpdate = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -24,22 +23,19 @@ void setup() {
   wm.setDebugOutput(false);
   wm.autoConnect("ESP32-Setup");
 
-  initLED();
-  initServer();
+  initWebServer();
 }
 
 void loop() {
   wm.process();
 
-  handleClient();
+  if (
+    millis() - lastOLEDUpdate > 2000
+  ) {
 
-  // update OLED tiap 2 detik
-  if (millis() - lastUpdate > 2000) {
     showSimpleInfo();
 
-    Serial.print("WiFi status: ");
-    Serial.println(WiFi.status());
+    lastOLEDUpdate = millis();
 
-    lastUpdate = millis();
   }
 }

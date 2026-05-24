@@ -1,7 +1,3 @@
-/* =========================
-   CREATE PLAYER CARD
-========================= */
-
 function createPlayerCard(player, index) {
   const card = document.createElement("div");
 
