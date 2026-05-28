@@ -43,9 +43,7 @@ void showIP(String ip) {
 void showSimpleInfo() {
   display.clearDisplay();
   display.fillScreen(BLACK);
-
   display.setTextColor(WHITE);
-
   if (WiFi.status() != WL_CONNECTED) {
 
     // ===== HEADER =====

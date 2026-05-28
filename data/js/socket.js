@@ -62,17 +62,11 @@ socket.onopen = () => {
     ========================= */
 
     socket.send(
-
         JSON.stringify({
-
             type: "register",
-
             deviceId: deviceId
-
         })
-
     );
-
 };
 
 
@@ -81,7 +75,6 @@ socket.onopen = () => {
 ========================= */
 
 socket.onmessage = (event) => {
-
     console.log(
         "MESSAGE : ",
         event.data
@@ -95,9 +88,23 @@ socket.onmessage = (event) => {
 ========================= */
 
 socket.onclose = () => {
-
     console.log(
         "WEBSOCKET CLOSED"
     );
 
 };
+
+
+/* =========================
+   TEST CLAIM
+========================= */
+
+function testClaim(role) {
+    socket.send(
+        JSON.stringify({
+            type: "claim_role",
+            role: role,
+            deviceId: deviceId
+        })
+    );
+}

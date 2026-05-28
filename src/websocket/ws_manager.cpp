@@ -2,6 +2,7 @@
 
 #include "../web/web_server.h"
 #include "../data/session_data.h"
+#include "../data/ownership_data.h"
 
 #include <ESPAsyncWebServer.h>
 #include <ArduinoJson.h>
@@ -33,28 +34,19 @@ void onWebSocketEvent(
     switch (type) {
 
         case WS_EVT_CONNECT:
-
             Serial.println("CLIENT CONNECTED");
-
             Serial.print("CLIENT ID : ");
-
             Serial.println(client->id());
-
             client->text(
                 "CONNECTED TO ESP32"
             );
-
             break;
 
 
         case WS_EVT_DISCONNECT:
-
             Serial.println("CLIENT DISCONNECTED");
-
             Serial.print("CLIENT ID : ");
-
             Serial.println(client->id());
-
             break;
 
 
@@ -75,14 +67,14 @@ void onWebSocketEvent(
                 message
             );
 
-            String type =
+            String msgType =
                 doc["type"];
 
             /* =========================
             REGISTER DEVICE
             ========================= */
 
-            if (type == "register") {
+            if (msgType == "register") {
                 String deviceId =
                     doc["deviceId"];
                 bool found = false;
@@ -150,6 +142,41 @@ void onWebSocketEvent(
                         Serial.println();
                     }
                 }
+            }
+            /* =========================
+            CLAIM ROLE
+            ========================= */
+
+            if (msgType == "claim_role") {
+
+                String role =
+                    doc["role"];
+                String deviceId =
+                    doc["deviceId"];
+
+                pendingRole =
+                    role;
+                pendingDeviceId =
+                    deviceId;
+
+                waitingForCard = true;
+
+
+                Serial.println(
+                    "===== CLAIM REQUEST ====="
+                );
+                Serial.print(
+                    "ROLE : "
+                );
+                Serial.println(role);
+                Serial.print(
+                    "DEVICE : "
+                );
+
+                Serial.println(deviceId);
+                Serial.println(
+                    "WAITING NFC TAP..."
+                );
             }
             break;
         }
