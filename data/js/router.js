@@ -1,78 +1,49 @@
 /* =========================
-   ELEMENT
+   ROUTER
 ========================= */
 
-const pages =
-  document.querySelectorAll(".page");
-
-const systemCards =
-  document.querySelectorAll(".system-card");
-
-const backButtons =
-  document.querySelectorAll(".back-button");
-
-const bankButton =
-  document.getElementById("bankButton");
-
-
-/* =========================
-   PAGE NAVIGATION
-========================= */
+const pages = document.querySelectorAll(".page");
 
 function showPage(pageId) {
-
   pages.forEach((page) => {
-
     page.classList.remove("active");
-
   });
 
-  document
-    .getElementById(pageId)
-    .classList.add("active");
-
+  document.getElementById(pageId).classList.add("active");
 }
 
-
 /* =========================
-   SYSTEM NAVIGATION
+   SYSTEM CARD
 ========================= */
 
-systemCards.forEach((card) => {
+document
+  .querySelectorAll(".system-card")
 
-  card.addEventListener("click", () => {
+  .forEach((card) => {
+    card.addEventListener(
+      "click",
 
-    const pageId =
-      card.dataset.page;
+      () => {
+        const pageId = card.dataset.page;
 
-    showPage(pageId);
-
+        showPage(pageId);
+      },
+    );
   });
-
-});
-
 
 /* =========================
    BACK BUTTON
 ========================= */
 
-backButtons.forEach((button) => {
+document
+  .querySelectorAll(".back-button")
 
-  button.addEventListener("click", () => {
+  .forEach((button) => {
+    button.addEventListener(
+      "click",
 
-    showPage("homePage");
-
+      () => {
+        showPage("homePage");
+      },
+    );
   });
-
-});
-
-
-/* =========================
-   BANK BUTTON
-========================= */
-
-bankButton.addEventListener("click", () => {
-
-  alert("OPEN BANK PAGE");
-
-});

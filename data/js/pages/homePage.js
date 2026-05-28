@@ -14,6 +14,24 @@ function renderPlayers(players) {
   players.forEach((player, index) => {
     const card = createPlayerCard(player, index);
 
+    /* =========================
+       ROLE MAPPING
+    ========================= */
+
+    const role = "PLAYER" + (index + 1);
+
+    /* =========================
+       CLICK ACCESS
+    ========================= */
+
+    card.addEventListener(
+      "click",
+
+      () => {
+        requestAccess(role);
+      },
+    );
+
     playerList.appendChild(card);
   });
 }

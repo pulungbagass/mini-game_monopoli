@@ -1,5 +1,6 @@
 #include "nfc_reader.h"
 #include "../data/nfc_roles.h"
+#include "../data/ownership_data.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -67,6 +68,115 @@ void updateNFC() {
         uidString.toUpperCase();
         String role =
             getCardRole(uidString);
+
+        /* =========================
+            CLAIM VALIDATION
+            ========================= */
+
+            if (waitingForCard) {
+
+                Serial.println(
+                    "VALIDATING CLAIM..."
+                );
+
+
+                if (role == pendingRole) {
+                    bool alreadyOwned = false;
+                    for (int i = 0; i < 7; i++) {
+                        if (
+                            ownerships[i].role ==
+                            role
+                        ) {
+                            alreadyOwned = true;
+                            Serial.println(
+                                "ROLE ALREADY OWNED"
+                            );
+                            break;
+                        }
+                    }
+
+
+                    if (!alreadyOwned) {
+                        for (int i = 0; i < 7; i++) {
+                            if (
+                                ownerships[i].role == ""
+                            ) {
+                                ownerships[i].role =
+                                    role;
+                                ownerships[i].deviceId =
+                                    pendingDeviceId;
+                                break;
+                            }
+                        }
+
+
+                        Serial.println(
+                            "CLAIM SUCCESS"
+                        );
+
+                        Serial.print(
+                            "ROLE : "
+                        );
+
+                        Serial.println(role);
+
+                        Serial.print(
+                            "OWNER : "
+                        );
+
+                        Serial.println(
+                            pendingDeviceId
+                        );
+                    }
+
+                } else {
+
+                    Serial.println(
+                        "CLAIM FAILED"
+                    );
+                    Serial.println(
+                        "WRONG CARD"
+                    );
+                }
+
+
+                waitingForCard = false;
+                pendingRole = "";
+                pendingDeviceId = "";
+
+
+                /* =========================
+                DEBUG OWNERSHIP
+                ========================= */
+
+                Serial.println(
+                    "===== OWNERSHIP LIST ====="
+                );
+                for (int i = 0; i < 7; i++) {
+                    if (
+                        ownerships[i].role != ""
+                    ) {
+
+                        Serial.print(
+                            "ROLE : "
+                        );
+
+                        Serial.println(
+                            ownerships[i].role
+                        );
+
+                        Serial.print(
+                            "OWNER : "
+                        );
+
+                        Serial.println(
+                            ownerships[i].deviceId
+                        );
+
+                        Serial.println();
+                    }
+                }
+            }
         Serial.println(
             "===== NFC DETECTED ====="
         );
