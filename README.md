@@ -489,7 +489,7 @@ Instant updates for all connected devices.
 
 **Pulung Bagas Setiawan**
 
-Universitas Terbuka
+Universitas Sains dan Teknologi Komputer
 
 ---
 
