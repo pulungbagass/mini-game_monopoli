@@ -11,45 +11,33 @@ function handleSocketMessage(event) {
 
   const data = JSON.parse(event.data);
 
-  /* =========================
-     GAME STATE
-  ========================= */
+  /* GAME STATE */
 
   if (data.type === "game_state") {
     handleGameState(data);
   }
 
-  /* =========================
-     ACCESS GRANTED
-  ========================= */
+  /* ACCESS GRANTED */
 
   if (data.type === "access_granted") {
-    console.log("ACCESS GRANTED:", data.role);
+    console.log("ACCESS GRANTED");
 
-    activeRole = data.role;
+    window.appState.activeRole = data.role;
 
     openPrivatePage();
   }
 
-  /* =========================
-     ACCESS DENIED
-  ========================= */
+  /* ACCESS DENIED */
 
   if (data.type === "access_denied") {
-    console.log("ACCESS DENIED:", data.role);
-
     alert("ACCESS DENIED");
   }
 
-  /* =========================
-     NEED CLAIM
-  ========================= */
+  /* NEED CLAIM */
 
   if (data.type === "need_claim") {
-    console.log("PLEASE TAP NFC:", data.role);
-
     alert("PLEASE TAP NFC CARD");
 
-    testClaim(data.role);
+    claimRole(data.role);
   }
 }

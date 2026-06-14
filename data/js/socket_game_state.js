@@ -3,11 +3,9 @@
 ========================= */
 
 function handleGameState(data) {
-  console.log("GAME STATE:");
+  console.log("GAME STATE");
 
-  console.log(data.players);
-
-  gameState = data.players;
+  window.appState.gameState = data.players;
 }
 
 /* =========================
@@ -15,7 +13,7 @@ function handleGameState(data) {
 ========================= */
 
 function getPlayerMoney(role) {
-  const player = gameState.find((p) => p.role === role);
+  const player = window.appState.gameState.find((p) => p.role === role);
 
   if (!player) {
     return 0;

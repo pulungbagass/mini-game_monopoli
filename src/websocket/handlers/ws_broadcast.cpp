@@ -1,13 +1,20 @@
 #include "ws_broadcast.h"
 
 #include "../../data/game_state.h"
+#include "../../data/session_data.h"
+
 #include "../ws_manager.h"
 
 #include <ArduinoJson.h>
+#include <ESPAsyncWebServer.h>
 
 
 extern AsyncWebSocket ws;
 
+
+/* =========================
+   GAME STATE
+========================= */
 
 void broadcastGameState() {
 
@@ -49,8 +56,54 @@ void broadcastGameState() {
     ws.textAll(
         response
     );
+}
 
-    Serial.println(
-        "GAME STATE BROADCASTED"
+
+/* =========================
+   ACCESS GRANTED
+========================= */
+
+void sendAccessGranted(
+    String role,
+    String deviceId
+) {
+
+    JsonDocument doc;
+
+    doc["type"] =
+        "access_granted";
+
+    doc["role"] =
+        role;
+
+    String response;
+
+    serializeJson(
+        doc,
+        response
     );
+
+    for (
+        int i = 0;
+        i < MAX_CLIENTS;
+        i++
+    ) {
+
+        if (
+            clients[i].deviceId ==
+            deviceId
+        ) {
+
+            ws.text(
+                clients[i].clientId,
+                response
+            );
+
+            Serial.println(
+                "ACCESS RESPONSE SENT"
+            );
+
+            break;
+        }
+    }
 }

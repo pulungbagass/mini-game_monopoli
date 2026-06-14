@@ -2,37 +2,37 @@
    DEVICE ID
 ========================= */
 
-let deviceId = localStorage.getItem("deviceId");
+let savedId = localStorage.getItem("deviceId");
 
 /* =========================
    GENERATE DEVICE ID
 ========================= */
 
-if (!deviceId) {
-  deviceId = "DEV-" + Math.random().toString(36).substring(2, 10);
+if (!savedId) {
+  savedId = "DEV-" + Math.random().toString(36).substring(2, 10);
 
-  localStorage.setItem("deviceId", deviceId);
+  localStorage.setItem("deviceId", savedId);
 }
 
 /* =========================
-   GLOBAL STATE
+   SAVE TO STATE
 ========================= */
 
-let activeRole = null;
+window.appState.deviceId = savedId;
 
-let gameState = [];
-
-/* =========================
-   DEBUG
-========================= */
-
-console.log("DEVICE ID : ", deviceId);
+console.log("DEVICE ID:", savedId);
 
 /* =========================
-   WEBSOCKET
+   CREATE SOCKET
 ========================= */
 
 const socket = new WebSocket(`ws://${window.location.host}/ws`);
+
+/* =========================
+   SAVE SOCKET
+========================= */
+
+window.appState.socket = socket;
 
 /* =========================
    CONNECT
@@ -44,7 +44,7 @@ socket.onopen = () => {
   socket.send(
     JSON.stringify({
       type: "register",
-      deviceId: deviceId,
+      deviceId: window.appState.deviceId,
     }),
   );
 };
@@ -53,7 +53,9 @@ socket.onopen = () => {
    MESSAGE
 ========================= */
 
-socket.onmessage = handleSocketMessage;
+socket.onmessage = (event) => {
+  handleSocketMessage(event);
+};
 
 /* =========================
    CLOSE

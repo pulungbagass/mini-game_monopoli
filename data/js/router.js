@@ -16,34 +16,32 @@ function showPage(pageId) {
    SYSTEM CARD
 ========================= */
 
-document
-  .querySelectorAll(".system-card")
+document.addEventListener(
+  "click",
 
-  .forEach((card) => {
-    card.addEventListener(
-      "click",
+  (e) => {
+    const card = e.target.closest(".system-card");
 
-      () => {
-        const pageId = card.dataset.page;
+    if (!card) return;
 
-        showPage(pageId);
-      },
-    );
-  });
+    const pageId = card.dataset.page;
+
+    if (!pageId) return;
+
+    showPage(pageId);
+  },
+);
 
 /* =========================
    BACK BUTTON
 ========================= */
 
-document
-  .querySelectorAll(".back-button")
+const backButtons = document.querySelectorAll(".back-button");
 
-  .forEach((button) => {
-    button.addEventListener(
-      "click",
-
-      () => {
-        showPage("homePage");
-      },
-    );
+backButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    showPage("homePage");
   });
+});
+
+window.showPage = showPage;

@@ -2,26 +2,30 @@
    CLAIM ROLE
 ========================= */
 
-function testClaim(role) {
-  socket.send(
+function claimRole(role) {
+  window.appState.socket.send(
     JSON.stringify({
       type: "claim_role",
+
       role: role,
-      deviceId: deviceId,
+
+      deviceId: window.appState.deviceId,
     }),
   );
 }
 
 /* =========================
-   ACCESS REQUEST
+   REQUEST ACCESS
 ========================= */
 
 function requestAccess(role) {
-  socket.send(
+  window.appState.socket.send(
     JSON.stringify({
       type: "request_access",
+
       role: role,
-      deviceId: deviceId,
+
+      deviceId: window.appState.deviceId,
     }),
   );
 }

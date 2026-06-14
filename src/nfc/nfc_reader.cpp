@@ -1,6 +1,7 @@
 #include "nfc_reader.h"
 #include "../data/nfc_roles.h"
 #include "../data/ownership_data.h"
+#include "../websocket/handlers/ws_broadcast.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -109,9 +110,14 @@ void updateNFC() {
                             }
                         }
 
-
                         Serial.println(
                             "CLAIM SUCCESS"
+                            
+                        );
+
+                        sendAccessGranted(
+                            role,
+                            pendingDeviceId
                         );
 
                         Serial.print(

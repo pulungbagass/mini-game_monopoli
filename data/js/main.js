@@ -3,34 +3,19 @@
 ========================= */
 
 async function fetchPlayers() {
-
   alert("FETCH START");
 
   try {
+    const response = await fetch("/api/players");
 
-    const response =
-      await fetch("/api/players");
-
-    const players =
-      await response.json();
+    const players = await response.json();
 
     console.log(players);
-    alert(players.length);  
+    alert(players.length);
     renderPlayers(players);
-
+  } catch (error) {
+    console.error("FAILED FETCH PLAYERS", error);
   }
-
-  catch (error) {
-    console.log(players);
-
-    alert(error);
-    console.error(
-      "FAILED FETCH PLAYERS",
-      error
-    );
-
-  }
-
 }
 
 fetchPlayers();
