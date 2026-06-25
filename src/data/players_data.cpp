@@ -5,7 +5,7 @@ Player players[] = {
 
   {
     "PLR-001",
-    "Bagas",
+    "Player 1",
     1500,
     3,
     1
@@ -13,7 +13,7 @@ Player players[] = {
 
   {
     "PLR-002",
-    "Tegar",
+    "Player 2",
     1250,
     1,
     0
@@ -21,7 +21,7 @@ Player players[] = {
 
   {
     "PLR-003",
-    "Topik",
+    "Player 3",
     980,
     5,
     2
@@ -29,15 +29,15 @@ Player players[] = {
 
   {
     "PLR-004",
-    "Ilham",
+    "Player 4",
     980,
-    5,
+    6,
     2
   },
 
   {
     "PLR-005",
-    "Raul",
+    "Player 5",
     980,
     1,
     2
@@ -45,7 +45,7 @@ Player players[] = {
 
   {
     "PLR-006",
-    "Rusdi",
+    "Player 6",
     980,
     3,
     0
