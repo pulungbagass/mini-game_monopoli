@@ -2,6 +2,7 @@
 #include "../data/nfc_roles.h"
 #include "../data/ownership_data.h"
 #include "../websocket/handlers/ws_broadcast.h"
+#include "../notification/notification.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -49,6 +50,7 @@ void updateNFC() {
     uint8_t uidLength;
 
     success = nfc.readPassiveTargetID(
+
         PN532_MIFARE_ISO14443A,
         uid,
         &uidLength,
@@ -70,6 +72,8 @@ void updateNFC() {
         String role =
             getCardRole(uidString);
 
+        notifyCardScan();
+
         /* =========================
             CLAIM VALIDATION
             ========================= */
@@ -83,11 +87,9 @@ void updateNFC() {
 
                 if (role == pendingRole) {
                     bool alreadyOwned = false;
+
                     for (int i = 0; i < 7; i++) {
-                        if (
-                            ownerships[i].role ==
-                            role
-                        ) {
+                        if (ownerships[i].role == role) {
                             alreadyOwned = true;
                             Serial.println(
                                 "ROLE ALREADY OWNED"
@@ -95,24 +97,19 @@ void updateNFC() {
                             break;
                         }
                     }
-
-
-                    if (!alreadyOwned) {
+                    if (alreadyOwned) {
+                        notifyClaimFailed();
+                    } else {
                         for (int i = 0; i < 7; i++) {
-                            if (
-                                ownerships[i].role == ""
-                            ) {
-                                ownerships[i].role =
-                                    role;
-                                ownerships[i].deviceId =
-                                    pendingDeviceId;
+                            if (ownerships[i].role == "") {
+                                ownerships[i].role = role;
+                                ownerships[i].deviceId = pendingDeviceId;
                                 break;
                             }
                         }
 
                         Serial.println(
                             "CLAIM SUCCESS"
-                            
                         );
 
                         sendAccessGranted(
@@ -120,29 +117,24 @@ void updateNFC() {
                             pendingDeviceId
                         );
 
-                        Serial.print(
-                            "ROLE : "
-                        );
+                        notifyClaimSuccess();
 
+                        Serial.print("ROLE : ");
                         Serial.println(role);
 
-                        Serial.print(
-                            "OWNER : "
-                        );
-
-                        Serial.println(
-                            pendingDeviceId
-                        );
+                        Serial.print("OWNER : ");
+                        Serial.println(pendingDeviceId);
                     }
 
-                } else {
-
+                }
+                else {
                     Serial.println(
                         "CLAIM FAILED"
                     );
                     Serial.println(
                         "WRONG CARD"
                     );
+                    notifyClaimFailed();
                 }
 
 

@@ -5,6 +5,7 @@
 #include "nfc/nfc_reader.h"
 #include "web/web_server.h"
 #include "display/oled_display.h"
+#include "notification/notification.h"
 
 #include "websocket/handlers/ws_broadcast.h"
 
@@ -21,6 +22,7 @@ void setup() {
   );
 
   initOLED();
+  notificationBegin();
   showIP("Connecting...");
   wm.setConfigPortalBlocking(false);
   // wm.setConfigPortalTimeout(180);
