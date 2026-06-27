@@ -27,3 +27,15 @@ void notifyClaimSuccess();
 
 // Claim Role gagal
 void notifyClaimFailed();
+
+// ======================================================
+// Transaction
+// ======================================================
+
+void notifyTransactionSuccess();
+
+void notifyTransactionFailed();
+
+void notifyMoneyReceived();
+
+void notifyMoneyPaid();
