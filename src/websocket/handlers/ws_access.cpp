@@ -1,120 +1,70 @@
 #include "ws_access.h"
 
-#include "../../data/ownership_data.h"
-#include "../ws_manager.h"
+#include "../../services/ownership_service.h"
 
+#include "../ws_manager.h"
 
 extern AsyncWebSocket ws;
 
+/* ======================================================
+   Handle Access Request
+====================================================== */
 
 void handleAccess(
     AsyncWebSocketClient *client,
     JsonDocument &doc
-) {
+)
+{
+    String role = doc["role"];
+    String deviceId = doc["deviceId"];
 
-    String role =
-        doc["role"];
+    bool roleOwned = isRoleOwned(role);
 
-    String deviceId =
-        doc["deviceId"];
+    bool sameOwner = isRoleOwner(
+        role,
+        deviceId
+    );
 
-    bool roleOwned =
-        false;
-
-    bool sameOwner =
-        false;
-
-    bool deviceHasRole =
-        false;
-
-    for (
-        int i = 0;
-        i < 7;
-        i++
-    ) {
-
-        if (
-            ownerships[i].role ==
-            role
-        ) {
-
-            roleOwned = true;
-
-            if (
-                ownerships[i].deviceId ==
-                deviceId
-            ) {
-
-                sameOwner = true;
-            }
-        }
-
-        if (
-            ownerships[i].deviceId ==
-            deviceId
-        ) {
-
-            deviceHasRole = true;
-        }
-    }
+    bool deviceHasRole = isDeviceRegistered(
+        deviceId
+    );
 
     JsonDocument response;
 
-    /* =========================
+    /* ======================================================
        ACCESS GRANTED
-    ========================= */
+    ====================================================== */
 
-    if (
-        roleOwned &&
-        sameOwner
-    ) {
+    if (roleOwned && sameOwner)
+    {
+        response["type"] = "access_granted";
+        response["role"] = role;
 
-        response["type"] =
-            "access_granted";
-
-        response["role"] =
-            role;
-
-        Serial.println(
-            "ACCESS GRANTED"
-        );
+        Serial.println("ACCESS GRANTED");
     }
 
-    /* =========================
+    /* ======================================================
        NEED CLAIM
-    ========================= */
+    ====================================================== */
 
-    else if (
-        !roleOwned &&
-        !deviceHasRole
-    ) {
+    else if (!roleOwned && !deviceHasRole)
+    {
+        response["type"] = "need_claim";
+        response["role"] = role;
 
-        response["type"] =
-            "need_claim";
-
-        response["role"] =
-            role;
-
-        Serial.println(
-            "NEED NFC CLAIM"
-        );
+        Serial.println("NEED NFC CLAIM");
     }
 
-    /* =========================
-       DENIED
-    ========================= */
+    /* ======================================================
+       ACCESS DENIED
+    ====================================================== */
 
-    else {
+    else
+    {
+        response["type"] = "access_denied";
+        response["role"] = role;
 
-        response["type"] =
-            "access_denied";
-
-        response["role"] =
-            role;
-
-        Serial.println(
-            "ACCESS DENIED"
-        );
+        Serial.println("ACCESS DENIED");
     }
 
     String jsonResponse;

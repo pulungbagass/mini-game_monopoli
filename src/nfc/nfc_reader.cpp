@@ -1,10 +1,12 @@
 #include "nfc_reader.h"
 
 #include "../data/nfc_roles.h"
-#include "../data/ownership_data.h"
+
+#include "../services/ownership_service.h"
 
 #include "../notification/notification.h"
 #include "../websocket/handlers/ws_broadcast.h"
+#include "../websocket/handlers/ws_claim.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -92,37 +94,18 @@ void updateNFC()
 
         if (role == pendingRole)
         {
-            bool alreadyOwned = false;
-
-            for (int i = 0; i < 7; i++)
+            if (isRoleOwned(role))
             {
-                if (ownerships[i].role == role)
-                {
-                    alreadyOwned = true;
+                Serial.println("ROLE ALREADY OWNED");
 
-                    Serial.println(
-                        "ROLE ALREADY OWNED"
-                    );
-
-                    break;
-                }
-            }
-
-            if (alreadyOwned)
-            {
                 notifyClaimFailed();
             }
             else
             {
-                for (int i = 0; i < 7; i++)
-                {
-                    if (ownerships[i].role == "")
-                    {
-                        ownerships[i].role = role;
-                        ownerships[i].deviceId = pendingDeviceId;
-                        break;
-                    }
-                }
+                claimRole(
+                    role,
+                    pendingDeviceId
+                );
 
                 Serial.println("CLAIM SUCCESS");
 
@@ -156,23 +139,7 @@ void updateNFC()
            Debug Ownership
         ====================================================== */
 
-        Serial.println(
-            "===== OWNERSHIP LIST ====="
-        );
-
-        for (int i = 0; i < 7; i++)
-        {
-            if (ownerships[i].role == "")
-                continue;
-
-            Serial.print("ROLE  : ");
-            Serial.println(ownerships[i].role);
-
-            Serial.print("OWNER : ");
-            Serial.println(ownerships[i].deviceId);
-
-            Serial.println();
-        }
+        printOwnership();
     }
 
     /* ======================================================

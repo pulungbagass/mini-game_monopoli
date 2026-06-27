@@ -1,45 +1,41 @@
 #include "ws_claim.h"
 
-#include "../../data/ownership_data.h"
+/* ======================================================
+   Claim Session
+====================================================== */
 
+bool waitingForCard = false;
+
+String pendingRole = "";
+
+String pendingDeviceId = "";
+
+/* ======================================================
+   Handle Claim Request
+====================================================== */
 
 void handleClaim(
     AsyncWebSocketClient *client,
     JsonDocument &doc
-) {
+)
+{
+    (void)client;
 
-    String role =
-        doc["role"];
+    pendingRole = doc["role"].as<String>();
 
-    String deviceId =
-        doc["deviceId"];
+    pendingDeviceId = doc["deviceId"].as<String>();
 
-    pendingRole =
-        role;
+    waitingForCard = true;
 
-    pendingDeviceId =
-        deviceId;
+    Serial.println();
+    Serial.println("===== CLAIM REQUEST =====");
 
-    waitingForCard =
-        true;
+    Serial.print("ROLE   : ");
+    Serial.println(pendingRole);
 
-    Serial.println(
-        "===== CLAIM REQUEST ====="
-    );
+    Serial.print("DEVICE : ");
+    Serial.println(pendingDeviceId);
 
-    Serial.print(
-        "ROLE : "
-    );
-
-    Serial.println(role);
-
-    Serial.print(
-        "DEVICE : "
-    );
-
-    Serial.println(deviceId);
-
-    Serial.println(
-        "WAITING NFC TAP..."
-    );
+    Serial.println("STATUS : WAITING NFC TAP");
+    Serial.println();
 }

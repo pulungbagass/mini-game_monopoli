@@ -1,12 +1,12 @@
-#pragma once
+#ifndef TRANSACTION_SERVICE_H
+#define TRANSACTION_SERVICE_H
 
 #include <Arduino.h>
 
-bool transferMoney(
-    const String& fromRole,
-    const String& toRole,
-    int amount
-);
+
+/* ======================================================
+   Money Service
+====================================================== */
 
 bool addMoney(
     const String& role,
@@ -17,3 +17,11 @@ bool deductMoney(
     const String& role,
     int amount
 );
+
+bool transferMoney(
+    const String& fromRole,
+    const String& toRole,
+    int amount
+);
+
+#endif
