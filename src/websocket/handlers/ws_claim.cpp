@@ -1,14 +1,9 @@
 #include "ws_claim.h"
+#include "../../data/claim_session.h"
 
 /* ======================================================
    Claim Session
 ====================================================== */
-
-bool waitingForCard = false;
-
-String pendingRole = "";
-
-String pendingDeviceId = "";
 
 /* ======================================================
    Handle Claim Request
@@ -21,20 +16,20 @@ void handleClaim(
 {
     (void)client;
 
-    pendingRole = doc["role"].as<String>();
+    claimSession.role = doc["role"].as<String>();
 
-    pendingDeviceId = doc["deviceId"].as<String>();
+    claimSession.deviceId = doc["deviceId"].as<String>();
 
-    waitingForCard = true;
+    claimSession.waiting = true;
 
     Serial.println();
     Serial.println("===== CLAIM REQUEST =====");
 
     Serial.print("ROLE   : ");
-    Serial.println(pendingRole);
+    Serial.println(claimSession.role);
 
     Serial.print("DEVICE : ");
-    Serial.println(pendingDeviceId);
+    Serial.println(claimSession.deviceId);
 
     Serial.println("STATUS : WAITING NFC TAP");
     Serial.println();

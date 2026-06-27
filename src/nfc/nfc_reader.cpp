@@ -7,6 +7,7 @@
 #include "../notification/notification.h"
 #include "../websocket/handlers/ws_broadcast.h"
 #include "../websocket/handlers/ws_claim.h"
+#include "../data/claim_session.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -88,11 +89,11 @@ void updateNFC()
        Claim Validation
     ====================================================== */
 
-    if (waitingForCard)
+    if (claimSession.waiting)
     {
         Serial.println("VALIDATING CLAIM...");
 
-        if (role == pendingRole)
+        if (role == claimSession.role)
         {
             if (isRoleOwned(role))
             {
@@ -104,14 +105,14 @@ void updateNFC()
             {
                 claimRole(
                     role,
-                    pendingDeviceId
+                    claimSession.deviceId
                 );
 
                 Serial.println("CLAIM SUCCESS");
 
                 sendAccessGranted(
                     role,
-                    pendingDeviceId
+                    claimSession.deviceId
                 );
 
                 notifyClaimSuccess();
@@ -120,7 +121,7 @@ void updateNFC()
                 Serial.println(role);
 
                 Serial.print("OWNER : ");
-                Serial.println(pendingDeviceId);
+                Serial.println(claimSession.deviceId);
             }
         }
         else
@@ -131,9 +132,9 @@ void updateNFC()
             notifyClaimFailed();
         }
 
-        waitingForCard = false;
-        pendingRole = "";
-        pendingDeviceId = "";
+        claimSession.waiting = false;
+        claimSession.role = "";
+        claimSession.deviceId = "";
 
         /* ======================================================
            Debug Ownership

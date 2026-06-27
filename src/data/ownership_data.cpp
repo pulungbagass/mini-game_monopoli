@@ -2,7 +2,3 @@
 
 
 Ownership ownerships[7];
-
-String pendingRole = "";
-String pendingDeviceId = "";
-bool waitingForCard = false;

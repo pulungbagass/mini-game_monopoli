@@ -4,6 +4,25 @@
 #include <Arduino.h>
 
 /* ======================================================
+   Transaction State
+====================================================== */
+
+enum TransactionState
+{
+    TRANSACTION_IDLE,
+
+    TRANSACTION_WAIT_SENDER,
+
+    TRANSACTION_WAIT_RECEIVER,
+
+    TRANSACTION_PROCESSING,
+
+    TRANSACTION_SUCCESS,
+
+    TRANSACTION_FAILED
+};
+
+/* ======================================================
    Transaction Session
 ====================================================== */
 
@@ -24,26 +43,6 @@ struct TransactionSession
     bool senderVerified;
     bool receiverVerified;
 };
-
-/* ======================================================
-   Transaction State
-====================================================== */
-
-enum TransactionState
-{
-    TRANSACTION_IDLE,
-
-    TRANSACTION_WAIT_SENDER,
-
-    TRANSACTION_WAIT_RECEIVER,
-
-    TRANSACTION_PROCESSING,
-
-    TRANSACTION_SUCCESS,
-
-    TRANSACTION_FAILED
-};
-
 
 extern TransactionSession transactionSession;
 
