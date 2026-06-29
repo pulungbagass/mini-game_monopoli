@@ -14,7 +14,11 @@ void clearTransactionSession()
 {
     transactionSession.active = false;
 
+    transactionSession.type = TRANSACTION_NONE;
+
     transactionSession.state = TRANSACTION_IDLE;
+
+    transactionSession.startTime = 0;
 
     transactionSession.fromRole = "";
     transactionSession.toRole = "";
