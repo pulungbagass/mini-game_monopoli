@@ -3,17 +3,11 @@
 
 #include <Arduino.h>
 
-struct PlayerState {
-
-    String role;
+struct BankState
+{
     int money;
-    int property;
-
 };
 
-
-extern PlayerState
-playerStates[7];
-
+extern BankState bankState;
 
 #endif

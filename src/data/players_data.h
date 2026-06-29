@@ -2,19 +2,20 @@
 
 #include <Arduino.h>
 
-struct Player {
+constexpr int TOTAL_PLAYERS = 6;
 
-  String uid;
-  String name;
+struct Player
+{
+    String role;
+    String uid;
+    String name;
 
-  int money;
+    int money;
 
-  int house;
-  int hotel;
+    int property;
 
+    int house;
+    int hotel;
 };
 
-
 extern Player players[];
-
-extern const int TOTAL_PLAYERS;

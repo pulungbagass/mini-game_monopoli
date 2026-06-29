@@ -11,7 +11,7 @@ bool claimRole(const String& role, const String& deviceId)
     if (isRoleOwned(role))
         return false;
 
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].role == "")
         {
@@ -30,7 +30,7 @@ bool claimRole(const String& role, const String& deviceId)
 
 bool releaseRole(const String& role)
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].role == role)
         {
@@ -49,7 +49,7 @@ bool releaseRole(const String& role)
 
 void clearOwnership()
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         ownerships[i].role = "";
         ownerships[i].deviceId = "";
@@ -62,7 +62,7 @@ void clearOwnership()
 
 bool isRoleOwned(const String& role)
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].role == role)
             return true;
@@ -73,7 +73,7 @@ bool isRoleOwned(const String& role)
 
 bool isRoleOwner(const String& role, const String& deviceId)
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].role == role &&
             ownerships[i].deviceId == deviceId)
@@ -87,7 +87,7 @@ bool isRoleOwner(const String& role, const String& deviceId)
 
 bool isDeviceRegistered(const String& deviceId)
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].deviceId == deviceId)
             return true;
@@ -102,7 +102,7 @@ bool isDeviceRegistered(const String& deviceId)
 
 String getOwner(const String& role)
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].role == role)
             return ownerships[i].deviceId;
@@ -113,7 +113,7 @@ String getOwner(const String& role)
 
 String getRoleByDevice(const String& deviceId)
 {
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].deviceId == deviceId)
             return ownerships[i].role;
@@ -131,7 +131,7 @@ void printOwnership()
     Serial.println();
     Serial.println("========== OWNERSHIP ==========");
 
-    for (int i = 0; i < 7; i++)
+    for(int i=0;i<TOTAL_ROLES;i++)
     {
         if (ownerships[i].role == "")
             continue;

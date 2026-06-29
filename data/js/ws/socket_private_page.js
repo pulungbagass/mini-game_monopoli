@@ -69,7 +69,7 @@ function openPrivatePage() {
             <h2>${player.name}</h2>
             <p>$ ${player.money}</p>
             <div class="player-uid">
-              ${player.id}
+              ${player.uid}
             </div>
           </div>
         </div>
@@ -85,6 +85,10 @@ function openPrivatePage() {
         <div class="system-card">
           🏘️
           <span>${player.house} HOUSE</span>
+        </div>
+        <div class="system-card">
+          🏨
+          <span>${player.hotel} HOTEL</span>
         </div>
       </div>
       <div class="section-title">

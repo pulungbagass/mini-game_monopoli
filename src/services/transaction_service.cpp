@@ -1,24 +1,20 @@
 #include "transaction_service.h"
-
-#include "../data/game_state.h"
+#include "../data/players_data.h"
 
 /* ======================================================
    Add Money
 ====================================================== */
 
-bool addMoney(
-    const String& role,
-    int amount
-)
+bool addMoney(const String& role, int amount)
 {
     if (amount <= 0)
         return false;
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < TOTAL_PLAYERS; i++)
     {
-        if (playerStates[i].role == role)
+        if (players[i].role == role)
         {
-            playerStates[i].money += amount;
+            players[i].money += amount;
             return true;
         }
     }
@@ -30,22 +26,19 @@ bool addMoney(
    Deduct Money
 ====================================================== */
 
-bool deductMoney(
-    const String& role,
-    int amount
-)
+bool deductMoney(const String& role, int amount)
 {
     if (amount <= 0)
         return false;
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < TOTAL_PLAYERS; i++)
     {
-        if (playerStates[i].role == role)
+        if (players[i].role == role)
         {
-            if (playerStates[i].money < amount)
+            if (players[i].money < amount)
                 return false;
 
-            playerStates[i].money -= amount;
+            players[i].money -= amount;
             return true;
         }
     }

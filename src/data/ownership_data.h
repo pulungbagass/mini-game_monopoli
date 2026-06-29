@@ -1,27 +1,30 @@
-#ifndef OWNERSHIP_DATA_H
-#define OWNERSHIP_DATA_H
+#pragma once
 
 #include <Arduino.h>
+#include "players_data.h"
 
+/* ======================================================
+   TOTAL ROLE
+====================================================== */
 
-struct Ownership {
+constexpr int TOTAL_ROLES = TOTAL_PLAYERS + 1;
+
+/* ======================================================
+   OWNERSHIP
+====================================================== */
+
+struct Ownership
+{
     String role;
     String deviceId;
 };
 
+extern Ownership ownerships[TOTAL_ROLES];
 
-/* =========================
-   ROLE OWNER
-========================= */
-
-extern Ownership ownerships[7];
-
-
-/* =========================
-   PENDING CLAIM
-========================= */
+/* ======================================================
+   CLAIM SESSION
+====================================================== */
 
 extern String pendingRole;
 extern String pendingDeviceId;
 extern bool waitingForCard;
-#endif

@@ -2,6 +2,7 @@
 
 #include "../../data/game_state.h"
 #include "../../data/session_data.h"
+#include "../../data/players_data.h"
 
 #include "../ws_manager.h"
 
@@ -23,28 +24,59 @@ void broadcastGameState() {
     doc["type"] =
         "game_state";
 
-    JsonArray players =
-        doc["players"]
-        .to<JsonArray>();
+    JsonArray jsonPlayers =
+    doc["players"].to<JsonArray>();
 
-    for (
-        int i = 0;
-        i < 7;
-        i++
-    ) {
+    /* =========================
+   BANK
+========================= */
 
-        JsonObject player =
-            players.add<JsonObject>();
+{
+    JsonObject bank = jsonPlayers.add<JsonObject>();
 
-        player["role"] =
-            playerStates[i].role;
+    bank["role"] = "BANK";
+    bank["name"] = "BANK";
+    bank["uid"] = "BANK";
 
-        player["money"] =
-            playerStates[i].money;
+    bank["money"] =
+    bankState.money;
 
-        player["property"] =
-            playerStates[i].property;
-    }
+    bank["house"] = 0;
+    bank["hotel"] = 0;
+    bank["property"] = 0;
+}
+
+/* =========================
+   PLAYERS
+========================= */
+
+for (int i = 0; i < TOTAL_PLAYERS; i++)
+{
+    JsonObject player =
+        jsonPlayers.add<JsonObject>();
+
+    player["role"] =
+        players[i].role;
+
+    player["uid"] =
+        players[i].uid;
+
+    player["name"] =
+        players[i].name;
+
+    player["money"] =
+        players[i].money;
+
+    player["house"] =
+        players[i].house;
+
+    player["hotel"] =
+        players[i].hotel;
+
+    player["property"] =
+        players[i].house +
+        players[i].hotel;
+}
 
     String response;
 

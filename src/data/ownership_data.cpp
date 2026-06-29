@@ -1,4 +1,7 @@
 #include "ownership_data.h"
 
+Ownership ownerships[TOTAL_ROLES];
 
-Ownership ownerships[7];
+String pendingRole = "";
+String pendingDeviceId = "";
+bool waitingForCard = false;

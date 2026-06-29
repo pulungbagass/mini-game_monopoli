@@ -3,9 +3,17 @@
 ========================= */
 
 function handleGameState(data) {
-  console.log("GAME STATE");
+  console.log(data.players);
 
   window.appState.gameState = data.players;
+}
+
+/* =========================
+   GET PLAYER
+========================= */
+
+function getPlayer(role) {
+  return window.appState.gameState.find((p) => p.role === role);
 }
 
 /* =========================
