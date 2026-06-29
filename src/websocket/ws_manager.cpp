@@ -7,6 +7,7 @@
 #include "handlers/ws_register.h"
 #include "handlers/ws_claim.h"
 #include "handlers/ws_access.h"
+#include "ws_transaction.h"
 
 #include "../web/web_server.h"
 
@@ -129,6 +130,20 @@ void onWebSocketEvent(
             String msgType =
                 doc["type"];
 
+            /* =========================
+            TRANSACTION
+            ========================= */
+
+            if (
+                msgType ==
+                "request_transfer"
+            )
+            {
+                handleTransaction(
+                    client,
+                    doc
+                );
+            }
 
             /* =========================
                REGISTER
