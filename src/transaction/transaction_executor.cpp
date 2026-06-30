@@ -4,6 +4,7 @@
 #include "../services/transaction_service.h"
 #include "../services/transaction_session_service.h"
 #include "../websocket/handlers/ws_broadcast.h"
+#include "../websocket/handlers/ws_transaction.h"
 
 /* ======================================================
    Execute Transaction
@@ -26,17 +27,24 @@ bool executeTransaction()
         transactionSession.amount
     );
 
-    if (!success)
+    if(success)
     {
-        transactionSession.state = TRANSACTION_FAILED;
-        return false;
+        Serial.println();
+        Serial.println("TRANSACTION SUCCESS");
+
+        sendTransactionSuccess();
+
+        broadcastGameState();
+    }
+    else
+    {
+        Serial.println();
+        Serial.println("TRANSACTION FAILED");
+
+        sendTransactionFailed();
     }
 
-    transactionSession.state = TRANSACTION_SUCCESS;
-
-    broadcastGameState();
-
-    finishTransaction();
+    clearTransactionSession();
 
     return true;
 }

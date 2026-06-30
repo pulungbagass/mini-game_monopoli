@@ -1,6 +1,7 @@
 #include "ws_transaction.h"
 
 #include "../../services/transaction_session_service.h"
+#include "../../data/transaction_session.h"
 
 #include <ArduinoJson.h>
 
@@ -48,7 +49,17 @@ void sendTransactionSuccess()
 
     doc["type"] = "transaction_success";
 
+    doc["fromRole"] =
+        transactionSession.sourceRole;
+
+    doc["toRole"] =
+        transactionSession.targetRole;
+
+    doc["amount"] =
+        transactionSession.amount;
+
     String json;
+
     serializeJson(doc, json);
 
     ws.textAll(json);
@@ -64,7 +75,17 @@ void sendTransactionFailed()
 
     doc["type"] = "transaction_failed";
 
+    doc["fromRole"] =
+        transactionSession.sourceRole;
+
+    doc["toRole"] =
+        transactionSession.targetRole;
+
+    doc["amount"] =
+        transactionSession.amount;
+
     String json;
+
     serializeJson(doc, json);
 
     ws.textAll(json);
