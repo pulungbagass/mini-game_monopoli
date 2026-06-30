@@ -7,7 +7,8 @@
 #include "handlers/ws_register.h"
 #include "handlers/ws_claim.h"
 #include "handlers/ws_access.h"
-#include "ws_transaction.h"
+#include "handlers/ws_transaction_start.h"
+#include "handlers/ws_transaction.h"
 
 #include "../web/web_server.h"
 
@@ -129,6 +130,21 @@ void onWebSocketEvent(
 
             String msgType =
                 doc["type"];
+
+            /* =========================
+            START TRANSACTION
+            ========================= */
+
+            if (
+                msgType ==
+                "start_transaction"
+            )
+            {
+                handleTransactionStart(
+                    client,
+                    doc
+                );
+            }
 
             /* =========================
             TRANSACTION
