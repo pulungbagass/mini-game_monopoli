@@ -18,16 +18,16 @@ void clearTransactionSession()
 
     transactionSession.state = TRANSACTION_IDLE;
 
-    transactionSession.startTime = 0;
+    transactionSession.sourceRole = "";
+    transactionSession.targetRole = "";
 
-    transactionSession.fromRole = "";
-    transactionSession.toRole = "";
-
-    transactionSession.fromDevice = "";
-    transactionSession.toDevice = "";
+    transactionSession.sourceDevice = "";
+    transactionSession.targetDevice = "";
 
     transactionSession.amount = 0;
 
-    transactionSession.senderVerified = false;
-    transactionSession.receiverVerified = false;
+    transactionSession.startTime = 0;
+
+    transactionSession.sourceVerified = false;
+    transactionSession.targetVerified = false;
 }

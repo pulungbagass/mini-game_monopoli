@@ -1,5 +1,4 @@
 #include "transaction_session_service.h"
-
 #include "../data/transaction_session.h"
 
 /* ======================================================
@@ -7,39 +6,29 @@
 ====================================================== */
 
 bool startTransaction(
-    const String& fromRole,
-    const String& toRole,
+    const String& sourceRole,
+    const String& targetRole,
     int amount
 )
 {
     if (transactionSession.active)
         return false;
 
-    transactionSession.active = true;
+    clearTransactionSession();
 
-    transactionSession.type =
-        TRANSACTION_TRANSFER;
+    transactionSession.active = true;
 
     transactionSession.state =
         TRANSACTION_WAIT_SENDER;
 
-    transactionSession.startTime =
-        millis();
+    transactionSession.sourceRole =
+        sourceRole;
 
-    transactionSession.fromRole =
-        fromRole;
-
-    transactionSession.toRole =
-        toRole;
+    transactionSession.targetRole =
+        targetRole;
 
     transactionSession.amount =
         amount;
-
-    transactionSession.senderVerified =
-        false;
-
-    transactionSession.receiverVerified =
-        false;
 
     return true;
 }

@@ -3,11 +3,12 @@
 #include "../data/nfc_roles.h"
 
 #include "../services/ownership_service.h"
-
 #include "../notification/notification.h"
 #include "../websocket/handlers/ws_broadcast.h"
 #include "../websocket/handlers/ws_claim.h"
 #include "../data/claim_session.h"
+#include "../data/transaction_session.h"
+#include "../transaction/transaction_handler.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -85,6 +86,9 @@ void updateNFC()
 
     notifyCardScan();
 
+
+    
+
     /* ======================================================
        Claim Validation
     ====================================================== */
@@ -143,6 +147,17 @@ void updateNFC()
         printOwnership();
     }
 
+    /* ======================================================
+    TRANSACTION
+    ====================================================== */
+
+    if (transactionSession.active)
+    {
+        handleTransactionNFC(
+            role,
+            uidString
+        );
+    }
     /* ======================================================
        Debug NFC
     ====================================================== */

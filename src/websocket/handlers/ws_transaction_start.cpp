@@ -1,5 +1,6 @@
 #include "ws_transaction_start.h"
 
+#include "../../services/transaction_session_service.h"
 #include "../../data/transaction_session.h"
 
 /* ======================================================
@@ -18,7 +19,6 @@ void handleTransactionStart(
         res["type"] = "transaction_busy";
 
         String json;
-
         serializeJson(res, json);
 
         client->text(json);
@@ -28,30 +28,35 @@ void handleTransactionStart(
 
     transactionSession.active = true;
 
+    transactionSession.type =
+        TRANSACTION_TRANSFER;
+
     transactionSession.state =
         TRANSACTION_WAIT_SENDER;
 
-    transactionSession.fromRole =
+    transactionSession.sourceRole =
         doc["fromRole"].as<String>();
 
-    transactionSession.toRole =
+    transactionSession.targetRole =
         doc["toRole"].as<String>();
 
     transactionSession.amount =
         doc["amount"];
 
-    transactionSession.senderVerified = false;
-    transactionSession.receiverVerified = false;
+    transactionSession.startTime =
+        millis();
 
-    transactionSession.fromDevice = "";
-    transactionSession.toDevice = "";
+    transactionSession.sourceVerified = false;
+    transactionSession.targetVerified = false;
+
+    transactionSession.sourceDevice = "";
+    transactionSession.targetDevice = "";
 
     JsonDocument res;
 
     res["type"] = "transaction_wait_sender";
 
     String json;
-
     serializeJson(res, json);
 
     client->text(json);
@@ -59,13 +64,13 @@ void handleTransactionStart(
     Serial.println();
     Serial.println("========== TRANSACTION ==========");
 
-    Serial.print("FROM : ");
-    Serial.println(transactionSession.fromRole);
+    Serial.print("SOURCE : ");
+    Serial.println(transactionSession.sourceRole);
 
-    Serial.print("TO   : ");
-    Serial.println(transactionSession.toRole);
+    Serial.print("TARGET : ");
+    Serial.println(transactionSession.targetRole);
 
-    Serial.print("AMT  : ");
+    Serial.print("AMOUNT : ");
     Serial.println(transactionSession.amount);
 
     Serial.println("WAITING SENDER NFC");
