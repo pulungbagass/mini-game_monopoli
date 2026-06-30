@@ -27,8 +27,8 @@ void broadcastGameState() {
     JsonArray jsonPlayers =
     doc["players"].to<JsonArray>();
 
-    /* =========================
-   BANK
+/* =========================
+BANK
 ========================= */
 
 {
@@ -47,7 +47,7 @@ void broadcastGameState() {
 }
 
 /* =========================
-   PLAYERS
+PLAYERS
 ========================= */
 
 for (int i = 0; i < TOTAL_PLAYERS; i++)

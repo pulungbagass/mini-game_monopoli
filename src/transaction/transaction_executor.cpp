@@ -3,6 +3,7 @@
 #include "../data/transaction_session.h"
 #include "../services/transaction_service.h"
 #include "../services/transaction_session_service.h"
+#include "../websocket/handlers/ws_broadcast.h"
 
 /* ======================================================
    Execute Transaction
@@ -32,6 +33,8 @@ bool executeTransaction()
     }
 
     transactionSession.state = TRANSACTION_SUCCESS;
+
+    broadcastGameState();
 
     finishTransaction();
 

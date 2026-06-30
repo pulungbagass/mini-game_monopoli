@@ -1,6 +1,7 @@
 #include "transaction_handler.h"
 
 #include "../data/transaction_session.h"
+#include "transaction_executor.h"
 
 /* ======================================================
    HANDLE NFC TRANSACTION
@@ -63,6 +64,17 @@ void handleTransactionNFC(
             Serial.println();
             Serial.println("RECEIVER VERIFIED");
             Serial.println("PROCESSING TRANSACTION");
+
+            executeTransaction();
+
+            if (executeTransaction())
+            {
+                Serial.println("TRANSACTION SUCCESS");
+            }
+            else
+            {
+                Serial.println("TRANSACTION FAILED");
+            }
 
             break;
         }
