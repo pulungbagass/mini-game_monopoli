@@ -2,6 +2,7 @@
 
 #include "../../services/transaction_session_service.h"
 #include "../../data/transaction_session.h"
+#include "ws_transaction.h"
 
 /* ======================================================
    START TRANSACTION
@@ -22,6 +23,8 @@ void handleTransactionStart(
         serializeJson(res, json);
 
         client->text(json);
+
+        sendTransactionWaitSource();
 
         return;
     }

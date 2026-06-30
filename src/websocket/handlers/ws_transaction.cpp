@@ -7,6 +7,71 @@
 extern AsyncWebSocket ws;
 
 /* ======================================================
+   WAIT SOURCE
+====================================================== */
+
+void sendTransactionWaitSource()
+{
+    JsonDocument doc;
+
+    doc["type"] = "transaction_wait_source";
+
+    String json;
+    serializeJson(doc, json);
+
+    ws.textAll(json);
+}
+
+/* ======================================================
+   WAIT TARGET
+====================================================== */
+
+void sendTransactionWaitTarget()
+{
+    JsonDocument doc;
+
+    doc["type"] = "transaction_wait_target";
+
+    String json;
+    serializeJson(doc, json);
+
+    ws.textAll(json);
+}
+
+/* ======================================================
+   SUCCESS
+====================================================== */
+
+void sendTransactionSuccess()
+{
+    JsonDocument doc;
+
+    doc["type"] = "transaction_success";
+
+    String json;
+    serializeJson(doc, json);
+
+    ws.textAll(json);
+}
+
+/* ======================================================
+   FAILED
+====================================================== */
+
+void sendTransactionFailed()
+{
+    JsonDocument doc;
+
+    doc["type"] = "transaction_failed";
+
+    String json;
+    serializeJson(doc, json);
+
+    ws.textAll(json);
+}
+
+
+/* ======================================================
    HANDLE TRANSACTION
 ====================================================== */
 

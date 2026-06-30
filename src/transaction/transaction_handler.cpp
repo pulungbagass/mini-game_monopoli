@@ -2,6 +2,7 @@
 
 #include "../data/transaction_session.h"
 #include "transaction_executor.h"
+#include "../websocket/handlers/ws_transaction.h"
 
 /* ======================================================
    HANDLE NFC TRANSACTION
@@ -35,6 +36,7 @@ void handleTransactionNFC(
             transactionSession.state =
                 TRANSACTION_WAIT_RECEIVER;
 
+            sendTransactionWaitTarget();
             Serial.println();
             Serial.println("SENDER VERIFIED");
             Serial.println("WAIT RECEIVER");
@@ -70,10 +72,12 @@ void handleTransactionNFC(
             if (executeTransaction())
             {
                 Serial.println("TRANSACTION SUCCESS");
+                sendTransactionSuccess();
             }
             else
             {
                 Serial.println("TRANSACTION FAILED");
+                sendTransactionFailed();
             }
 
             break;
