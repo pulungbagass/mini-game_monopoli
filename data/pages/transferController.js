@@ -12,31 +12,43 @@ function initTransferPage() {
 ========================= */
 
 function loadTransferPlayers() {
-  const from = document.getElementById("transferFrom");
+  const fromCard = document.getElementById("transferFromCard");
 
   const to = document.getElementById("transferTo");
 
-  if (!from || !to) return;
+  const amount = document.getElementById("transferAmount");
 
-  from.innerHTML = "";
+  if (!fromCard || !to || !amount) return;
+
+  const myRole = window.appState.activeRole;
+
+  const me = getPlayer(myRole);
+
+  if (!me) return;
+
+  fromCard.innerHTML = `
+        <strong>${me.name}</strong>
+        <br>
+        Balance : $${me.money}
+    `;
+
+  amount.placeholder = `Maximum : $${me.money}`;
+  amount.max = me.money;
+  amount.min = 1;
+
   to.innerHTML = "";
 
   window.appState.gameState.forEach((player) => {
     if (player.role === "BANK") return;
 
-    const optionFrom = document.createElement("option");
+    if (player.role === myRole) return;
 
-    optionFrom.value = player.role;
-    optionFrom.textContent = player.name;
+    const option = document.createElement("option");
 
-    from.appendChild(optionFrom);
+    option.value = player.role;
+    option.textContent = player.name;
 
-    const optionTo = document.createElement("option");
-
-    optionTo.value = player.role;
-    optionTo.textContent = player.name;
-
-    to.appendChild(optionTo);
+    to.appendChild(option);
   });
 }
 
@@ -61,41 +73,49 @@ function bindTransferButton() {
 ========================= */
 
 function startTransfer() {
-  const from = document.getElementById("transferFrom").value;
+  const me = getPlayer(window.appState.activeRole);
+
+  if (!me) {
+    alert("Player not found.");
+    return;
+  }
 
   const to = document.getElementById("transferTo").value;
 
   const amount = Number(document.getElementById("transferAmount").value);
 
   /* =========================
-        VALIDATION
+       VALIDATION
     ========================= */
 
-  if (from === to) {
-    alert("Sender dan Receiver tidak boleh sama.");
-
+  if (!to) {
+    alert("Please select receiver.");
     return;
   }
 
   if (amount <= 0) {
-    alert("Jumlah transfer tidak valid.");
+    alert("Invalid amount.");
+    return;
+  }
 
+  if (amount > me.money) {
+    alert("Insufficient balance.");
     return;
   }
 
   /* =========================
-            SEND TO ESP32
-        ========================= */
+       SEND
+    ========================= */
 
   window.appState.socket.send(
     JSON.stringify({
       type: "start_transaction",
-      fromRole: from,
       toRole: to,
       amount: amount,
     }),
   );
-  renderTransactionStatus("WAITING", "Please tap sender NFC card.");
+
+  renderTransactionStatus("WAITING SENDER", "Tap sender NFC card.");
 }
 
 /* =========================
@@ -113,3 +133,15 @@ function renderTransactionStatus(title, message) {
         </div>
     `;
 }
+
+amount.addEventListener("input", () => {
+  let value = Number(amount.value);
+
+  if (value > me.money) {
+    amount.value = me.money;
+  }
+
+  if (value < 1) {
+    amount.value = "";
+  }
+});

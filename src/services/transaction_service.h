@@ -24,4 +24,8 @@ bool transferMoney(
     int amount
 );
 
+int getPlayerMoney(const String& role);
+
+bool playerExists(const String& role);
+
 #endif

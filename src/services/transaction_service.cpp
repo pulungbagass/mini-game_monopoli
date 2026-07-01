@@ -67,3 +67,29 @@ bool transferMoney(
 
     return true;
 }
+
+/* ======================================================
+   Get Player Money
+====================================================== */
+
+int getPlayerMoney(const String& role)
+{
+    for(int i = 0; i < TOTAL_PLAYERS; i++)
+    {
+        if(players[i].role == role)
+        {
+            return players[i].money;
+        }
+    }
+
+    return -1;
+}
+
+/* ======================================================
+   Player Exists
+====================================================== */
+
+bool playerExists(const String& role)
+{
+    return getPlayerMoney(role) >= 0;
+}

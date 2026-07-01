@@ -24,4 +24,10 @@ struct ClientSession {
 
 extern ClientSession clients[MAX_CLIENTS];
 
+/* =========================
+   HELPER
+========================= */
+
+String getDeviceIdByClientId(uint32_t clientId);
+
 #endif

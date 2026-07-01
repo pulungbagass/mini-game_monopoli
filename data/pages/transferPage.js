@@ -17,16 +17,21 @@ function renderTransferPage() {
     </div>
     <div class="page-card">
         <p>From</p>
-        <select id="transferFrom"></select>
+        <div
+            id="transferFromCard"
+            class="player-dashboard-card"
+        >
+            Loading...
+        </div>
         <br><br>
         <p>To</p>
         <select id="transferTo"></select>
         <br><br>
         <p>Amount</p>
         <input
-        id="transferAmount"
-        type="number"
-        placeholder="1000"
+            id="transferAmount"
+            type="number"
+            placeholder=""
         >
         <br><br>
         <button
