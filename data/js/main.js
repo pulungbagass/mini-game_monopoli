@@ -1,21 +1,16 @@
 /* =========================
    INIT
 ========================= */
+window.addEventListener(
+  "DOMContentLoaded",
 
-async function fetchPlayers() {
-  alert("FETCH START");
+  () => {
+    showPage("home");
+  },
+);
 
-  try {
-    const response = await fetch("/api/players");
+// Menonaktifkan klik kanan pada seluruh halaman
+document.addEventListener("contextmenu", function (e) {
+  e.preventDefault();
+});
 
-    const players = await response.json();
-
-    console.log(players);
-    alert(players.length);
-    renderPlayers(players);
-  } catch (error) {
-    console.error("FAILED FETCH PLAYERS", error);
-  }
-}
-
-fetchPlayers();

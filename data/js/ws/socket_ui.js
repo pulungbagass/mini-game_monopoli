@@ -10,6 +10,49 @@ function handleSocketMessage(event) {
   }
 
   const data = JSON.parse(event.data);
+  /* =========================
+    TRANSACTION
+  ========================= */
+
+  if (data.type === "transaction_busy") {
+    alert("Transaction is already running.");
+  }
+
+  if (data.type === "transaction_wait_sender") {
+    renderTransactionStatus(
+      "STEP 1 / 2",
+
+      "Tap Sender NFC Card",
+    );
+  }
+  if (data.type === "transaction_wait_receiver") {
+    renderTransactionStatus(
+      "STEP 2 / 2",
+
+      "Tap Receiver NFC Card",
+    );
+  }
+  if (data.type === "transaction_processing") {
+    renderTransactionStatus(
+      "PROCESSING",
+
+      "Processing transaction...",
+    );
+  }
+  if (data.type === "transaction_success") {
+    renderTransactionStatus(
+      "SUCCESS",
+
+      "Money transferred successfully.",
+    );
+  }
+  if (data.type === "transaction_failed") {
+    renderTransactionStatus(
+      "FAILED",
+
+      "Transaction failed.",
+    );
+  }
 
   /* GAME STATE */
 

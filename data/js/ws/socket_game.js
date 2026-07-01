@@ -3,9 +3,12 @@
 ========================= */
 
 function handleGameState(data) {
-  console.log(data.players);
 
-  window.appState.gameState = data.players;
+  window.appState.gameState =
+    data.players;
+
+  renderPlayerList();
+
 }
 
 /* =========================
@@ -13,7 +16,11 @@ function handleGameState(data) {
 ========================= */
 
 function getPlayer(role) {
-  return window.appState.gameState.find((p) => p.role === role);
+
+  return window.appState.gameState.find(
+    p => p.role === role
+  );
+
 }
 
 /* =========================
@@ -21,11 +28,10 @@ function getPlayer(role) {
 ========================= */
 
 function getPlayerMoney(role) {
-  const player = window.appState.gameState.find((p) => p.role === role);
 
-  if (!player) {
-    return 0;
-  }
+  const player =
+    getPlayer(role);
 
-  return player.money;
+  return player ? player.money : 0;
+
 }

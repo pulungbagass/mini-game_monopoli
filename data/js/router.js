@@ -1,47 +1,99 @@
 /* =========================
-   ROUTER
+   PAGE REGISTRY
 ========================= */
 
-const pages = document.querySelectorAll(".page");
+window.pageRegistry = {};
 
-function showPage(pageId) {
-  pages.forEach((page) => {
-    page.classList.remove("active");
-  });
+/* =========================
+   REGISTER PAGE
+========================= */
 
-  document.getElementById(pageId).classList.add("active");
+function registerPage(id, render) {
+  window.pageRegistry[id] = render;
 }
 
 /* =========================
-   SYSTEM CARD
+   SHOW PAGE
 ========================= */
 
-document.addEventListener(
-  "click",
+function showPage(id, saveHistory = true) {
+  const page = document.getElementById("pageContainer");
 
-  (e) => {
-    const card = e.target.closest(".system-card");
+  if (!page) return;
 
-    if (!card) return;
+  const current = page.dataset.currentPage;
 
-    const pageId = card.dataset.page;
+  /* =========================
+     SAVE HISTORY
+  ========================= */
 
-    if (!pageId) return;
+  if (saveHistory && current && current !== id) {
+    window.appState.pageHistory.push(current);
+  }
 
-    showPage(pageId);
-  },
-);
+  page.dataset.currentPage = id;
+  const renderer = window.pageRegistry[id];
+
+  if (!renderer) {
+    page.innerHTML = `
+      <button class="back-button">
+        ← BACK
+      </button>
+
+      <div class="page-card">
+        <h2>404</h2>
+        <p>Page "${id}" not found.</p>
+      </div>
+    `;
+    return;
+  }
+  clearPage();
+  page.innerHTML = renderer();
+  document.dispatchEvent(new Event("pageLoaded"));
+}
 
 /* =========================
-   BACK BUTTON
+   BACK PAGE
 ========================= */
 
-const backButtons = document.querySelectorAll(".back-button");
+function backPage() {
+  const history = window.appState.pageHistory;
 
-backButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    showPage("homePage");
-  });
-});
+  if (history.length === 0) {
+    showPage("home", false);
+    return;
+  }
+  const previous = history.pop();
+  showPage(previous, false);
+}
 
 window.showPage = showPage;
+window.backPage = backPage;
+window.registerPage = registerPage;
+
+/* =========================
+   GLOBAL CLICK
+========================= */
+
+document.addEventListener("click", (e) => {
+  /* =========================
+     BACK BUTTON
+  ========================= */
+
+  const backButton = e.target.closest(".back-button");
+  if (backButton) {
+    e.preventDefault();
+    e.stopPropagation();
+    backPage();
+    return;
+  }
+
+  /* =========================
+     PAGE NAVIGATION
+  ========================= */
+
+  const card = e.target.closest("[data-page]");
+  if (!card) return;
+  e.preventDefault();
+  showPage(card.dataset.page);
+});

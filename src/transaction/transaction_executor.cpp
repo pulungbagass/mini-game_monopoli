@@ -5,6 +5,7 @@
 #include "../services/transaction_session_service.h"
 #include "../websocket/handlers/ws_broadcast.h"
 #include "../websocket/handlers/ws_transaction.h"
+#include "../websocket/handlers/ws_transaction_broadcast.h"
 
 /* ======================================================
    Execute Transaction
@@ -31,6 +32,9 @@ bool executeTransaction()
     {
         Serial.println();
         Serial.println("TRANSACTION SUCCESS");
+        sendTransactionState(
+            "transaction_success"
+        );
 
         sendTransactionSuccess();
 
@@ -40,7 +44,9 @@ bool executeTransaction()
     {
         Serial.println();
         Serial.println("TRANSACTION FAILED");
-
+        sendTransactionState(
+            "transaction_failed"
+        );
         sendTransactionFailed();
     }
 

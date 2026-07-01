@@ -15,162 +15,74 @@
     <div class="container">
       <!-- =========================
          TOPBAR
-    ========================== -->
-
+      ========================== -->
       <header class="topbar">
         <h1>MONOPOLY CONTROL</h1>
-
         <p>ESP32 LOCAL CONTROL PANEL</p>
       </header>
 
       <!-- =========================
-         PAGE : HOME
-    ========================== -->
+        PAGE : HOME
+      ========================== -->
 
-      <main class="page active" id="homePage">
-        <!-- BANK -->
-
-        <section class="bank-card" id="bankButton">
-          <div class="bank-left">
-            <div class="bank-icon">🏦</div>
-
-            <div class="bank-info">
-              <h2>BANK</h2>
-
-              <p>Total Money : $999999</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- PLAYER -->
-
-        <section class="section-title">
-          <h3>PLAYER</h3>
-        </section>
-
-        <section class="player-list" id="playerList"></section>
-
-        <!-- SYSTEM -->
-
-        <section class="section-title">
-          <h3>SYSTEM</h3>
-        </section>
-
-        <section class="system-grid">
-          <div class="system-card" data-page="atmPage">
-            💳
-            <span>ATM</span>
-          </div>
-
-          <div class="system-card" data-page="auctionPage">
-            🔨
-            <span>AUCTION</span>
-          </div>
-
-          <div class="system-card" data-page="logsPage">
-            📜
-            <span>LOGS</span>
-          </div>
-
-          <div class="system-card" data-page="settingsPage">
-            ⚙️
-            <span>SETTINGS</span>
-          </div>
-        </section>
-      </main>
-
-      <!-- =========================
-         PAGE : ATM
-    ========================== -->
-
-      <main class="page" id="atmPage">
-        <button class="back-button">← BACK</button>
-
-        <div class="page-card">
-          <h2>ATM TERMINAL</h2>
-
-          <p>Future PN532 transaction system.</p>
-        </div>
-      </main>
-
-      <!-- =========================
-         PAGE : AUCTION
-    ========================== -->
-
-      <main class="page" id="auctionPage">
-        <button class="back-button">← BACK</button>
-
-        <div class="page-card">
-          <h2>AUCTION</h2>
-
-          <p>Property bidding system.</p>
-        </div>
-      </main>
-
-      <!-- =========================
-         PAGE : LOGS
-    ========================== -->
-
-      <main class="page" id="logsPage">
-        <button class="back-button">← BACK</button>
-
-        <div class="page-card">
-          <h2>TRANSACTION LOGS</h2>
-
-          <p>Transaction history will appear here.</p>
-        </div>
-      </main>
-
-      <!-- =========================
-         PAGE : SETTINGS
-    ========================== -->
-
-      <main class="page" id="settingsPage">
-        <button class="back-button">← BACK</button>
-
-        <div class="page-card">
-          <h2>SETTINGS</h2>
-
-          <p>System configuration panel.</p>
-        </div>
-      </main>
-
-      <!-- =========================
-     PAGE : PRIVATE
-      ========================= -->
-
-      <main class="page" id="privatePage">
-        <button class="back-button">← BACK</button>
-
-        <div class="page-card">
-          <h2 id="privateRoleTitle">ROLE</h2>
-
-          <p id="privateRoleInfo">PRIVATE PAGE</p>
-
-          <!-- =========================
-         PRIVATE CONTENT
-          ========================= -->
-
-          <div id="privateContent" style="margin-top: 20px"></div>
-        </div>
-      </main>
+      <main id="pageContainer"></main>
     </div>
 
+    <!-- =======================================================
+        GLOBAL STATE
+    ======================================================= -->
+
     <script src="/js/state.js"></script>
+
+    <!-- =======================================================
+        PAGE ENGINE
+    ======================================================= -->
+
+    <script src="/js/pageManager.js"></script>
+    <script src="/js/router.js"></script>
+    <script src="/js/router/privateRouter.js"></script>
+
+    <!-- =======================================================
+        COMPONENTS
+    ======================================================= -->
+
+    <script src="/js/components/playerCard.js"></script>
+
+    <!-- =======================================================
+        PUBLIC PAGES
+    ======================================================= -->
+
+    <script src="/pages/homePage.js"></script>
+    <script src="/pages/logsPage.js"></script>
+    <script src="/pages/settingsPage.js"></script>
+
+    <!-- =======================================================
+        PRIVATE PAGES
+    ======================================================= -->
+
+    <script src="/pages/playerDashboard.js"></script>
+    <script src="/pages/bankDashboard.js"></script>
+    <script src="/pages/transferPage.js"></script>
+    <script src="/pages/transferController.js"></script>
+
+    <!-- =======================================================
+        PRIVATE CONTROLLER
+    ======================================================= -->
+
+    <script src="/js/sc/privateSocket.js"></script>
+
+    <!-- =======================================================
+        WEBSOCKET
+    ======================================================= -->
 
     <script src="/js/ws/socket.js"></script>
     <script src="/js/ws/socket_access.js"></script>
     <script src="/js/ws/socket_game.js"></script>
-    <script src="/js/ws/socket_private_page.js"></script>
     <script src="/js/ws/socket_ui.js"></script>
 
-    <script src="/js/router.js"></script>
-
-    <script src="/js/components/playerCard.js"></script>
-
-    <script src="/js/pages/bankPage.js"></script>
-
-    <script src="/js/pages/homePage.js"></script>
+    <!-- =======================================================
+        APPLICATION
+    ======================================================= -->
 
     <script src="/js/main.js"></script>
   </body>
