@@ -185,18 +185,6 @@ body {
 }
 
 /* =========================
-   PLAYER LIST
-========================= */
-
-.player-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 18px;
-}
-
-/* =========================
    PLAYER CARD
 ========================= */
 
@@ -208,6 +196,8 @@ body {
   box-shadow: var(--shadow-playful);
 
   padding: 16px;
+
+  margin-bottom: 10px;
 
   display: flex;
 
@@ -230,7 +220,103 @@ body {
   box-shadow: var(--shadow-active);
 }
 
-/* PLAYER LEFT */
+/* =========================
+   PLAYER DASHBOARD CARD
+========================= */
+
+.player-dashboard-card {
+  background: white;
+
+  border: var(--border-thick);
+
+  box-shadow: var(--shadow-playful);
+
+  padding: 16px;
+}
+
+/* =========================
+   PLAYER DASHBOARD HEADER
+========================= */
+
+.player-dashboard-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+/* =========================
+   PLAYER DASHBOARD STATS
+========================= */
+
+.player-dashboard-stats {
+  margin-top: 18px;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+/* =========================
+   PLAYER DASHBOARD STAT
+========================= */
+
+.player-dashboard-stat {
+  background: #f3f3f3;
+
+  border: var(--border-thin);
+
+  padding: 12px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 6px;
+
+  font-weight: bold;
+
+  text-align: center;
+}
+
+.player-dashboard-stat strong {
+  font-size: 22px;
+}
+
+.player-dashboard-stat small {
+  font-size: 11px;
+
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   DASHBOARD COLORS
+========================= */
+
+.player-dashboard-stat.house {
+  background: white;
+}
+
+.player-dashboard-stat.hotel {
+  background: var(--primary-red);
+
+  color: white;
+}
+
+.player-dashboard-stat.property {
+  background: var(--primary-yellow);
+}
+
+/* =========================
+   PLAYER LEFT
+========================= */
 
 .player-left {
   display: flex;
@@ -240,7 +326,9 @@ body {
   gap: 14px;
 }
 
-/* AVATAR */
+/* =========================
+   PLAYER AVATAR
+========================= */
 
 .player-avatar {
   width: 60px;
@@ -253,6 +341,7 @@ body {
   display: flex;
 
   justify-content: center;
+
   align-items: center;
 
   font-family: var(--font-main);
@@ -262,7 +351,9 @@ body {
   color: white;
 }
 
-/* INFO */
+/* =========================
+   PLAYER INFO
+========================= */
 
 .player-info h2 {
   font-size: 20px;
@@ -274,7 +365,9 @@ body {
   font-weight: bold;
 }
 
-/* UID */
+/* =========================
+   PLAYER UID
+========================= */
 
 .player-uid {
   display: inline-block;
@@ -292,7 +385,9 @@ body {
   font-weight: bold;
 }
 
-/* PLAYER RIGHT */
+/* =========================
+   PLAYER RIGHT
+========================= */
 
 .player-right {
   display: flex;
@@ -302,7 +397,9 @@ body {
   gap: 10px;
 }
 
-/* PROPERTY */
+/* =========================
+   PROPERTY COUNT
+========================= */
 
 .property-count {
   border: var(--border-thin);

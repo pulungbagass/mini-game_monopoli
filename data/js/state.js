@@ -31,5 +31,17 @@ window.appState = {
        PAGE HISTORY  
    ========================= */
 
-  pageHistory: []
+  pageHistory: [],
+
+   /* =========================
+         TRANSACTION
+   ========================= */
+
+   sender: "",
+
+   receiver: "",
+
+   amount: 0,
+
+   state: "idle"
 };

@@ -32,6 +32,8 @@ function showPage(id, saveHistory = true) {
   }
 
   page.dataset.currentPage = id;
+  console.log("SHOW PAGE :", id);
+  console.log(window.pageRegistry);
   const renderer = window.pageRegistry[id];
 
   if (!renderer) {

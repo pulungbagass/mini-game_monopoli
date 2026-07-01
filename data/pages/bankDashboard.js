@@ -35,7 +35,7 @@ function renderBankDashboard() {
             <div class="system-grid">
                 <div
                     class="system-card"
-                    data-page="transfer">
+                    data-page="transferPage">
                     💸
                     <span>
                         TRANSFER
