@@ -1,45 +1,52 @@
 # 🎲 Hybrid Smart Monopoly Board Game using ESP32
 
-## Overview
+> A Cyber-Physical Monopoly Board Game powered by ESP32, NFC, WebSocket, and a real-time browser interface.
 
-Hybrid Smart Monopoly Board Game is a cyber-physical board game system based on ESP32 that combines a physical Monopoly board with a web-based control interface. The system utilizes NFC cards, WebSocket communication, and a browser dashboard to provide real-time multiplayer interaction while maintaining the traditional board game experience.
+---
 
-This project is intended for:
+# Overview
 
-- Final Year Project / Skripsi
-- Journal Publication
-- Cyber-Physical System Research
-- Embedded System Learning
-- IoT and Real-Time Web Application Development
+Hybrid Smart Monopoly Board Game is a Cyber-Physical System (CPS) that combines a traditional physical Monopoly board with a real-time web application powered by an ESP32.
 
-The architecture is designed so that the ESP32 acts as the main authority (server), while smartphones or laptops function as clients through a browser.
+Unlike fully digital board games, the physical gameplay remains intact while every game transaction, ownership, authentication, and synchronization is managed digitally.
+
+ESP32 acts as the **single source of truth**, while every browser functions only as a client interface.
+
+This project is designed for:
+
+- 🎓 Final Year Project (Skripsi)
+- 📄 Scientific Journal Publication
+- 🤖 Cyber-Physical System Research
+- 🌐 Internet of Things (IoT)
+- ⚙ Embedded System Learning
+- 💻 Real-Time Web Application Development
 
 ---
 
 # Main Objectives
 
-- Create a digital Monopoly control system without eliminating the physical board.
-- Integrate embedded systems and web technologies.
-- Build a real-time multiplayer game using ESP32.
+- Build a hybrid Monopoly game that preserves physical interaction.
+- Integrate Embedded Systems with modern Web Technology.
 - Demonstrate Cyber-Physical System implementation.
+- Build a modular and scalable embedded software architecture.
+- Create a real-time multiplayer board game using ESP32.
 
 ---
 
 # Technology Stack
 
-## Embedded Side
+## Embedded
 
 - ESP32 DevKit V1
 - C++
 - Arduino Framework
 - PlatformIO
 
-## Frontend Side
+## Frontend
 
-- HTML
-- CSS
-- JavaScript
-- WebSocket API
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
 ## Communication
 
@@ -54,164 +61,186 @@ The architecture is designed so that the ESP32 acts as the main authority (serve
 
 ## IDE
 
-### Visual Studio Code
+Visual Studio Code
 
-Extensions:
+Extensions
 
 - PlatformIO IDE
-- ESP32 Arduino Framework
+- C/C++
+- Arduino Framework for ESP32
 
 ---
 
 # Hardware Components
 
-| Component            | Function                          |
-| -------------------- | --------------------------------- |
-| ESP32 DevKit V1      | Main Controller                   |
-| PN532 NFC Module     | Authentication & Ownership System |
-| SSD1306 OLED Display | System Information                |
-| Passive Buzzer       | Sound Indicator                   |
-| 5mm LED              | Status Indicator                  |
-| Resistor 220Ω        | LED Protection                    |
-| Smartphone / Browser | User Interface                    |
-| WiFi Network         | Communication Medium              |
+| Component | Function |
+|------------|----------|
+| ESP32 DevKit V1 | Main Controller |
+| PN532 NFC Module | Authentication & Ownership |
+| SSD1306 OLED | Information Display |
+| Passive Buzzer | Sound Notification |
+| 5mm LED | Status Indicator |
+| 220Ω Resistor | LED Protection |
+| Smartphone / Laptop | Browser Dashboard |
+| WiFi Router | Communication Medium |
 
 ---
 
-# Pin Mapping
+# Hardware Pin Mapping
 
-## PN532 NFC (SPI)
+## PN532 (SPI)
 
-| PN532  | ESP32   |
-| ------ | ------- |
-| VCC    | 3.3V    |
-| GND    | GND     |
-| SCK    | GPIO 18 |
-| MOSI   | GPIO 23 |
-| MISO   | GPIO 19 |
-| SS/SDA | GPIO 14 |
+| PN532 | ESP32 |
+|--------|--------|
+| VCC | 3.3V |
+| GND | GND |
+| SCK | GPIO18 |
+| MOSI | GPIO23 |
+| MISO | GPIO19 |
+| SS/SDA | GPIO14 |
 
 ---
 
 ## OLED SSD1306 (I2C)
 
-| OLED | ESP32   |
-| ---- | ------- |
-| VCC  | 3.3V    |
-| GND  | GND     |
-| SDA  | GPIO 21 |
-| SCL  | GPIO 22 |
+| OLED | ESP32 |
+|------|--------|
+| VCC | 3.3V |
+| GND | GND |
+| SDA | GPIO21 |
+| SCL | GPIO22 |
 
 ---
 
 ## Passive Buzzer
 
-| Buzzer | ESP32   |
-| ------ | ------- |
-| +      | GPIO 26 |
-| -      | GND     |
+| Buzzer | ESP32 |
+|----------|--------|
+| + | GPIO26 |
+| - | GND |
 
 ---
 
 ## LED Indicator
 
-| LED         | ESP32                       |
-| ----------- | --------------------------- |
-| Anode (+)   | GPIO 25                     |
-| Cathode (-) | GND (through 220Ω resistor) |
+| LED | ESP32 |
+|------|--------|
+| Anode | GPIO25 |
+| Cathode | GND via 220Ω |
 
 ---
 
 # System Architecture
 
-```
-          Smartphone
-               │
-               │
-        Browser Dashboard
-               │
-         WebSocket / REST
-               │
-         ┌─────────────┐
-         │    ESP32    │
-         │ Main Server │
-         └─────────────┘
-          │     │     │
-          │     │     │
-        PN532 OLED Buzzer
-          │
-      NFC Cards
+```text
+                  Smartphone / Laptop
+                          │
+                          │
+                   Browser Dashboard
+                          │
+                  REST API / WebSocket
+                          │
+                  ┌─────────────────┐
+                  │      ESP32      │
+                  │  Main Authority │
+                  └─────────────────┘
+                     │      │      │
+                     │      │      │
+                  PN532   OLED   Buzzer
+                     │
+                 NFC Player Cards
 ```
 
 ---
 
-# Project Structure
+# Software Architecture
 
 ```
-src
+ESP32
 │
-├── controllers/
-├── data/
-├── display/
-├── nfc/
-├── web/
-├── websocket/
-│     ├── handlers/
-│     ├── ws_manager.cpp
-│     └── ws_manager.h
-│
+├── Controllers
+├── Services
+├── Data
+├── NFC
+├── WebSocket
+├── Web
+├── Display
 └── main.cpp
 
-
-data
+Frontend
 │
-├── players.json
-├── ownership_data
-├── session_data
-├── game_state
-└── nfc_roles
-
-
-data/
-│
-├── html
-├── css
-└── js
-      ├── components
-      ├── pages
-      ├── websocket
-      └── state.js
+├── components/
+├── pages/
+├── ws/
+├── state.js
+├── router.js
+└── app.js
 ```
+
+The project follows a layered architecture:
+
+```
+UI
+ ↓
+Controller
+ ↓
+Service
+ ↓
+Session
+ ↓
+Game Data
+```
+
+Business logic is separated from runtime state.
 
 ---
 
-# Current Features (Checkpoint 1)
+# Current Development Status
+
+## ✅ Phase 1 — Backend Foundation (Completed)
+
+---
 
 ## WiFi Manager
 
-- Auto configuration portal
-- Dynamic WiFi setup
+- Auto WiFi Configuration Portal
+- Dynamic WiFi Setup
+- Automatic Reconnection
 
 ---
 
 ## Web Server
 
-- SPIFFS based file system
-- HTML/CSS/JavaScript serving
+- SPIFFS File System
+- HTML Serving
+- CSS Serving
+- JavaScript Serving
+- Static Assets
 
 ---
 
-## WebSocket Communication
+## REST API
 
-- Real-time communication
-- Multi-client support
-- Device registration
+- Player Data
+- Game State
+- Ownership API
 
 ---
 
-## Session Management
+## WebSocket System
 
-Each browser receives a unique:
+- Real-time Communication
+- Multi-client Support
+- Automatic Broadcasting
+- Event-driven Architecture
+
+---
+
+## Device Session System
+
+Every browser receives a permanent Device ID.
+
+Example
 
 ```
 DEV-xxxxxxxx
@@ -219,13 +248,15 @@ DEV-xxxxxxxx
 
 Stored using LocalStorage.
 
+The same browser keeps its identity after reconnecting.
+
 ---
 
 ## Ownership System
 
-Role ownership is stored inside ESP32 memory.
+Implemented ownership management inside ESP32 RAM.
 
-Supported roles:
+Supported Roles
 
 - BANK
 - PLAYER1
@@ -235,253 +266,548 @@ Supported roles:
 - PLAYER5
 - PLAYER6
 
-One device can own only one role.
+Rules
+
+- One browser owns one role
+- One role belongs to one browser
+- Ownership stored entirely inside ESP32
 
 ---
 
 ## NFC Authentication
 
-Role claiming process:
+Implemented NFC ownership claiming.
+
+Workflow
 
 ```
-Select Role
-     ↓
+Choose Role
+
+↓
+
 Request Access
-     ↓
+
+↓
+
 Need Claim
-     ↓
+
+↓
+
 Tap NFC Card
-     ↓
-Validate Card
-     ↓
-Claim Success
-     ↓
+
+↓
+
+Validate UID
+
+↓
+
 Ownership Stored
+
+↓
+
+Access Granted
 ```
 
 ---
 
 ## Access Control
 
-Supported states:
+Implemented
 
-### access_granted
-
-Owner is valid.
-
-### access_denied
-
-Role belongs to another device.
-
-### need_claim
-
-Role has not been claimed yet.
+- access_granted
+- access_denied
+- need_claim
 
 ---
 
 ## Game State Broadcast
 
-ESP32 periodically broadcasts:
+Real-time broadcasting
 
-- Player money
-- Property count
-- Role information
+Current broadcasted data
 
-Using WebSocket.
-
----
-
-## Dynamic Routing System
-
-Pages:
-
-- Home Page
-- ATM Page
-- Auction Page
-- Logs Page
-- Settings Page
-- Private Role Page
+- Money
+- Houses
+- Hotels
+- Properties
+- Player Role
 
 ---
 
-## Dynamic Private Page
+## Dynamic Router
 
-Special UI based on role.
+Implemented SPA Router
 
-### BANK
+Pages
 
-Administrative panel.
-
-### PLAYER
-
-Player dashboard.
-
----
-
-# Features In Development
-
-## Transfer System
-
-Money transfer between players.
+- Home
+- Player Dashboard
+- Bank Dashboard
+- Transfer
+- ATM
+- Auction
+- Logs
+- Settings
 
 ---
 
-## Property Ownership System
+## Dynamic Dashboard
 
-List of owned properties.
+Automatic dashboard switching
+
+Player
+
+↓
+
+Player Dashboard
+
+Bank
+
+↓
+
+Bank Dashboard
 
 ---
 
-## Auction System
-
-Property bidding mechanism.
+# ✅ Phase 2 — Gameplay Foundation (Current Checkpoint)
 
 ---
 
-## Transaction Logs
+## Transaction Session Engine
 
-History of game activities.
+Completely redesigned.
+
+Old
+
+```
+senderVerified
+receiverVerified
+```
+
+New
+
+```
+sourceRole
+targetRole
+
+sourceVerified
+targetVerified
+
+sourceDevice
+targetDevice
+
+startTime
+
+state
+
+active
+```
+
+Transaction now behaves like a reusable transaction engine instead of a transfer-only implementation.
 
 ---
 
-## Event Cards
+## Transaction State Machine
 
-- Chance
+Implemented
+
+```
+IDLE
+
+↓
+
+WAIT_SENDER
+
+↓
+
+WAIT_RECEIVER
+
+↓
+
+PROCESSING
+
+↓
+
+SUCCESS / FAILED / TIMEOUT
+
+↓
+
+IDLE
+```
+
+---
+
+## Generic Money Service
+
+Implemented
+
+```
+addMoney()
+
+deductMoney()
+
+transferMoney()
+
+playerExists()
+
+getPlayerMoney()
+```
+
+Supports future gameplay modules.
+
+---
+
+## Money Transfer System
+
+Fully implemented.
+
+Supported
+
+- ✅ Player → Player
+- ✅ Player → Bank
+- ✅ Bank → Player
+
+Automatic rollback if transaction fails.
+
+---
+
+## NFC Transaction Verification
+
+Implemented
+
+```
+Tap Sender
+
+↓
+
+Verify Sender
+
+↓
+
+Tap Receiver
+
+↓
+
+Verify Receiver
+
+↓
+
+Execute Transaction
+
+↓
+
+Broadcast Result
+```
+
+BANK automatically skips NFC verification because it has no NFC card.
+
+---
+
+## Transaction Timeout
+
+Implemented
+
+Automatic timeout after
+
+```
+30 seconds
+```
+
+Session automatically clears.
+
+---
+
+## Transaction Cancel
+
+Implemented
+
+Browser
+
+↓
+
+Cancel Button
+
+↓
+
+ESP32
+
+↓
+
+Cancel Session
+
+↓
+
+Broadcast Cancellation
+
+---
+
+## Transaction Broadcast Events
+
+Implemented
+
+```
+transaction_wait_sender
+
+transaction_wait_receiver
+
+transaction_processing
+
+transaction_success
+
+transaction_failed
+
+transaction_timeout
+
+transaction_cancelled
+
+transaction_busy
+```
+
+---
+
+## Transfer UI
+
+Implemented
+
+- Dynamic Sender
+- Dynamic Receiver
+- Amount Validation
+- Balance Validation
+- Auto Reset
+- Status Card
+- Cancel Button
+- Browser Debug Logging
+
+---
+
+## Browser Debugging
+
+Detailed logs
+
+```
+Current Role
+
+Game State
+
+Active Player
+
+Receiver List
+
+Transaction Request
+
+WebSocket Messages
+
+Transfer Reset
+```
+
+---
+
+# Architecture Improvements
+
+During development several architectural improvements were introduced.
+
+## Transaction Engine
+
+Business logic completely separated from runtime session.
+
+```
+TransactionService
+
+↓
+
+TransactionSession
+
+↓
+
+TransactionExecutor
+```
+
+---
+
+## Runtime Session
+
+Temporary runtime information stored only inside Session.
+
+Examples
+
+- Current transaction
+- Current sender
+- Current receiver
+- Timeout timer
+- Verification status
+
+---
+
+## Business Logic
+
+All permanent logic moved into Services.
+
+Examples
+
+```
+Money
+
+Ownership
+
+Transactions
+
+Players
+```
+
+---
+
+## Modular WebSocket
+
+Separated into
+
+```
+ws_access
+
+ws_game_state
+
+ws_transaction
+
+ws_transaction_start
+
+ws_transaction_cancel
+
+ws_transaction_broadcast
+
+socket_ui.js
+
+socket_game_state.js
+
+socket_access.js
+```
+
+---
+
+# Features Currently Under Development
+
+- Property Ownership
+- Property Purchase
+- Property Selling
+- Rent System
+- Tax System
+- Auction System
+- Jail System
+- Chance Card
 - Community Chest
+- Transaction Log
+- Turn Management
 
 ---
 
-## Turn Management
+# Future Roadmap
 
-Current player tracking.
+## Gameplay
 
----
-
-## Jail System
-
-Special state handling.
-
----
-
-## Dice Integration
-
-Physical or digital dice synchronization.
+- Property Engine
+- Rent Engine
+- Mortgage
+- Trading
+- Bankruptcy
+- Jail
+- Auction
+- Turn Manager
 
 ---
 
-## Sound Effects
+## Embedded
 
-Using passive buzzer.
-
----
-
-## LED Indicators
-
-Visual status notifications.
+- OLED Dashboard
+- Sound Effects
+- LED Notification
+- Physical Dice Integration
 
 ---
 
-## OLED Information Screen
+## Smart Board
 
-Display:
-
-- IP Address
-- Connected Clients
-- Current Turn
-- Game Status
-
----
-
-## Session Recovery
-
-Reconnect browser without losing ownership.
-
----
-
-## Save and Load Game
-
-Persistent storage.
-
----
-
-## Admin Mode
-
-BANK privileges.
-
----
-
-## Real-Time Synchronization
-
-Instant updates for all connected devices.
-
----
-
-# Planned Features (Future)
-
-- TFT Display Integration
-- Touch Interface
+- TFT Display
+- Touchscreen
 - LVGL GUI
-- Web App PWA
-- QR Code Pairing
-- ESP-NOW Support
-- AI Banker Assistant
+- PWA
+- ESP-NOW
+- QR Pairing
+
+---
+
+## Cloud
+
+- Database
+- Save Game
+- Load Game
 - Online Multiplayer
-- Database Integration
 - Cloud Synchronization
 
 ---
 
-# Current Development Status
+# Current Progress
 
-## Phase 1
-
-### Backend Foundation
+## Backend Foundation
 
 - [x] WiFi Manager
 - [x] Web Server
 - [x] SPIFFS
+- [x] REST API
 - [x] WebSocket
-- [x] Session System
+- [x] Device Session
 - [x] Ownership System
 - [x] NFC Authentication
-- [x] Routing System
-- [x] Dynamic Page
+- [x] Access Control
+- [x] Game State Broadcast
+- [x] Dynamic Router
+- [x] Dynamic Dashboard
 
 ---
 
-## Phase 2
+## Gameplay Foundation
 
-### Gameplay Layer
+- [x] Transaction Session
+- [x] Money Service
+- [x] Money Transfer
+- [x] Player → Player
+- [x] Player → Bank
+- [x] Bank → Player
+- [x] Transaction Timeout
+- [x] Transaction Cancel
+- [x] Transaction Broadcast
+- [x] Runtime Session
+- [x] Generic Transaction Engine
 
-- [ ] Transfer System
+---
+
+## Gameplay Systems
+
 - [ ] Property System
-- [ ] Auction System
-- [ ] Transaction Logs
-- [ ] Turn System
+- [ ] Rent System
+- [ ] Tax System
+- [ ] Auction
+- [ ] Chance Card
+- [ ] Community Chest
+- [ ] Jail
+- [ ] Turn Manager
+- [ ] Transaction Log
 
 ---
 
-## Phase 3
+## Smart Board
 
-### Advanced Features
+- [ ] OLED UI
+- [ ] Buzzer Feedback
+- [ ] LED Feedback
+- [ ] Dice Synchronization
 
-- [ ] OLED Enhancement
-- [ ] Sound System
-- [ ] Save Game
-- [ ] Admin System
+---
+
+## Advanced
+
+- [ ] Save / Load Game
 - [ ] Session Recovery
-
----
-
-## Phase 4
-
-### Smart Board
-
-- [ ] TFT Display
-- [ ] Touchscreen
-- [ ] LVGL Interface
-- [ ] PWA Support
-- [ ] Cloud Integration
+- [ ] Admin Mode
+- [ ] Cloud Sync
+- [ ] Online Multiplayer
 
 ---
 
@@ -489,30 +815,27 @@ Instant updates for all connected devices.
 
 **Pulung Bagas Setiawan**
 
-Universitas Sains dan Teknologi Komputer
+Universitas Sains dan Teknologi Komputer (USTK)
 
 ---
 
-# Notes For Future Development
+# Design Principles
 
-ESP32 acts as the single source of truth.
+- ESP32 is the Single Source of Truth.
+- Browser never owns game data.
+- Browser only sends requests and renders UI.
+- Business logic stays inside ESP32.
+- Runtime state is stored inside Session.
+- Frontend remains modular and scalable.
 
-Browser clients only display information and send requests.
+---
 
-Player data, ownership, and authority remain inside ESP32 RAM.
+# Repository Status
 
-Frontend should remain modular:
+**Current Checkpoint**
 
-```
-state.js
-socket.js
-socket_access.js
-socket_game_state.js
-socket_ui.js
-router.js
+✅ Backend Foundation Complete
 
-components/
-pages/
-```
+✅ Transaction Engine Complete
 
-Avoid monolithic files and maintain a modular architecture for easier scaling and maintenance.
+🚧 Ready to start Property Engine, Rent System, Tax System, Auction, and other Monopoly gameplay mechanics.

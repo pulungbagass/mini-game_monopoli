@@ -77,12 +77,12 @@ function loadTransferPlayers() {
   toSelect.innerHTML = "";
 
   window.appState.gameState.forEach((player) => {
-    if (player.role === "BANK") return;
     if (player.role === myRole) return;
 
     const option = document.createElement("option");
 
     option.value = player.role;
+
     option.textContent = player.name;
 
     toSelect.appendChild(option);
@@ -162,6 +162,20 @@ function startTransfer() {
       amount: amount,
     }),
   );
+
+  if (toRole === "BANK") {
+    renderTransactionStatus(
+      "WAITING SENDER",
+
+      "Tap your NFC card to transfer money to BANK.",
+    );
+  } else {
+    renderTransactionStatus(
+      "WAITING SENDER",
+
+      "Please tap sender NFC card.",
+    );
+  }
 
   const cancelButton = document.getElementById("cancelTransferButton");
 

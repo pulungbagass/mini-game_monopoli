@@ -1,6 +1,6 @@
 #include "ws_transaction_broadcast.h"
-
 #include "../ws_manager.h"
+#include "../../data/transaction_session.h"
 
 #include <ArduinoJson.h>
 
@@ -16,7 +16,17 @@ void sendTransactionState(
 {
     JsonDocument doc;
 
-    doc["type"] = type;
+    doc["type"] =
+        type;
+
+    doc["fromRole"] =
+        transactionSession.sourceRole;
+
+    doc["toRole"] =
+        transactionSession.targetRole;
+
+    doc["amount"] =
+        transactionSession.amount;
 
     String json;
 

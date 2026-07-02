@@ -1,11 +1,11 @@
 #include "ws_transaction_start.h"
 
-#include "../../data/transaction_session.h"
 #include "../../data/session_data.h"
+#include "../../data/transaction_session.h"
+
 #include "../../services/ownership_service.h"
 #include "../../services/transaction_service.h"
 #include "../../services/transaction_session_service.h"
-#include "../../websocket/handlers/ws_transaction.h"
 
 /* ======================================================
    START TRANSACTION
@@ -33,20 +33,47 @@ void handleTransactionStart(
     }
 
     /* =========================================
-       REQUEST DATA
+       REQUEST
     ========================================= */
 
     String targetRole =
         doc["toRole"].as<String>();
 
     int amount =
-        doc["amount"];
+        doc["amount"].as<int>();
+
+    /* =========================================
+       GET OWNER
+    ========================================= */
+
+    String deviceId =
+        getDeviceIdByClientId(client->id());
+
+    String sourceRole;
+
+    if (deviceId != "")
+    {
+        sourceRole =
+            getRoleByDevice(deviceId);
+    }
+
+    /* =========================================
+       BANK HAS NO DEVICE
+    ========================================= */
+
+    if (sourceRole == "")
+    {
+        sourceRole = "BANK";
+    }
 
     /* =========================================
        VALIDATE TARGET
     ========================================= */
 
-    if (!playerExists(targetRole))
+    if (
+        targetRole != "BANK" &&
+        !playerExists(targetRole)
+    )
     {
         JsonDocument res;
 
@@ -61,31 +88,7 @@ void handleTransactionStart(
     }
 
     /* =========================================
-       GET OWNER
-    ========================================= */
-
-    String deviceId =
-        getDeviceIdByClientId(client->id());
-
-    String sourceRole =
-        getRoleByDevice(deviceId);
-
-    if (sourceRole == "")
-    {
-        JsonDocument res;
-
-        res["type"] = "transaction_failed";
-        res["reason"] = "no_owner";
-
-        String json;
-        serializeJson(res, json);
-
-        client->text(json);
-        return;
-    }
-
-    /* =========================================
-       SAME PLAYER
+       SAME ROLE
     ========================================= */
 
     if (sourceRole == targetRole)
@@ -124,16 +127,15 @@ void handleTransactionStart(
        CHECK BALANCE
     ========================================= */
 
-    int money =
-        getPlayerMoney(sourceRole);
-
-    if (money < amount)
+    if (
+        sourceRole != "BANK" &&
+        getPlayerMoney(sourceRole) < amount
+    )
     {
         JsonDocument res;
 
         res["type"] = "transaction_failed";
         res["reason"] = "insufficient_balance";
-        res["balance"] = money;
 
         String json;
         serializeJson(res, json);
@@ -181,13 +183,40 @@ void handleTransactionStart(
         "";
 
     /* =========================================
+       BANK DOESN'T NEED NFC
+    ========================================= */
+
+    if (sourceRole == "BANK")
+    {
+        transactionSession.sourceVerified = true;
+
+        transactionSession.state =
+            TRANSACTION_WAIT_RECEIVER;
+    }
+
+    /* =========================================
        RESPONSE
     ========================================= */
 
     JsonDocument res;
 
-    res["type"] =
-        "transaction_wait_sender";
+    if (sourceRole == "BANK")
+    {
+        res["type"] = "transaction_wait_receiver";
+    }
+    else
+    {
+        res["type"] = "transaction_wait_sender";
+    }
+
+    res["fromRole"] =
+        sourceRole;
+
+    res["toRole"] =
+        targetRole;
+
+    res["amount"] =
+        amount;
 
     String json;
     serializeJson(res, json);
@@ -204,6 +233,16 @@ void handleTransactionStart(
     Serial.println(targetRole);
     Serial.print("AMOUNT : ");
     Serial.println(amount);
-    Serial.println("WAITING SENDER NFC");
+
+    if (sourceRole == "BANK")
+    {
+        Serial.println("BANK AUTO VERIFIED");
+        Serial.println("WAITING RECEIVER NFC");
+    }
+    else
+    {
+        Serial.println("WAITING SENDER NFC");
+    }
+
     Serial.println("=================================");
 }

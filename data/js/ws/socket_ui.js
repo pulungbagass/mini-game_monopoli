@@ -31,8 +31,21 @@ function handleSocketMessage(event) {
   }
 
   if (data.type === "transaction_wait_receiver") {
-    renderTransactionStatus("STEP 2 / 2", "Tap Receiver NFC Card");
-    return;
+    const target = data.toRole;
+
+    if (target === "BANK") {
+      renderTransactionStatus(
+        "PROCESSING",
+
+        "Processing transaction...",
+      );
+    } else {
+      renderTransactionStatus(
+        "STEP 2 / 2",
+
+        "Tap Receiver NFC Card",
+      );
+    }
   }
 
   if (data.type === "transaction_processing") {

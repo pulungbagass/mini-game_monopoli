@@ -6,6 +6,11 @@
 #include "../websocket/handlers/ws_transaction.h"
 #include "../websocket/handlers/ws_transaction_broadcast.h"
 
+static bool isBank(const String& role)
+{
+    return role == "BANK";
+}
+
 /* ======================================================
    HANDLE NFC TRANSACTION
 ====================================================== */
@@ -34,8 +39,30 @@ void handleTransactionNFC(
             transactionSession.sourceVerified = true;
             transactionSession.sourceDevice = deviceId;
 
+            if(isBank(transactionSession.targetRole))
+            {
+                transactionSession.targetVerified = true;
+
+                transactionSession.state =
+                    TRANSACTION_PROCESSING;
+
+                sendTransactionState(
+                    "transaction_processing"
+                );
+
+                executeTransaction();
+
+                return;
+            }
+
             transactionSession.state =
                 TRANSACTION_WAIT_RECEIVER;
+
+            sendTransactionWaitTarget();
+
+            sendTransactionState(
+                "transaction_wait_receiver"
+            );
 
             Serial.println();
             Serial.println("SENDER VERIFIED");

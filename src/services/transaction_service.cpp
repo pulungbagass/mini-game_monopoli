@@ -10,6 +10,17 @@ bool addMoney(const String& role, int amount)
     if (amount <= 0)
         return false;
 
+    /* =========================
+       BANK
+    ========================= */
+
+    if (role == "BANK")
+        return true;
+
+    /* =========================
+       PLAYER
+    ========================= */
+
     for (int i = 0; i < TOTAL_PLAYERS; i++)
     {
         if (players[i].role == role)
@@ -30,6 +41,17 @@ bool deductMoney(const String& role, int amount)
 {
     if (amount <= 0)
         return false;
+
+    /* =========================
+       BANK
+    ========================= */
+
+    if (role == "BANK")
+        return true;
+
+    /* =========================
+       PLAYER
+    ========================= */
 
     for (int i = 0; i < TOTAL_PLAYERS; i++)
     {
@@ -56,6 +78,37 @@ bool transferMoney(
     int amount
 )
 {
+    if (amount <= 0)
+        return false;
+
+    /* =========================
+       PLAYER -> BANK
+    ========================= */
+
+    if (toRole == "BANK")
+    {
+        return deductMoney(
+            fromRole,
+            amount
+        );
+    }
+
+    /* =========================
+       BANK -> PLAYER
+    ========================= */
+
+    if (fromRole == "BANK")
+    {
+        return addMoney(
+            toRole,
+            amount
+        );
+    }
+
+    /* =========================
+       PLAYER -> PLAYER
+    ========================= */
+
     if (!deductMoney(fromRole, amount))
         return false;
 
@@ -74,9 +127,12 @@ bool transferMoney(
 
 int getPlayerMoney(const String& role)
 {
-    for(int i = 0; i < TOTAL_PLAYERS; i++)
+    if (role == "BANK")
+        return 999999;
+
+    for (int i = 0; i < TOTAL_PLAYERS; i++)
     {
-        if(players[i].role == role)
+        if (players[i].role == role)
         {
             return players[i].money;
         }
@@ -91,5 +147,8 @@ int getPlayerMoney(const String& role)
 
 bool playerExists(const String& role)
 {
+    if (role == "BANK")
+        return true;
+
     return getPlayerMoney(role) >= 0;
 }
