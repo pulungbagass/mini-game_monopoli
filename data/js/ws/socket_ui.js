@@ -10,6 +10,7 @@ function handleSocketMessage(event) {
   }
 
   const data = JSON.parse(event.data);
+  handleTransactionMessage(message);
   /* =========================
     TRANSACTION
   ========================= */

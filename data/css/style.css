@@ -522,3 +522,107 @@ body {
 
   box-shadow: var(--shadow-active);
 }
+
+/* =========================
+   TRANSFER FORM
+========================= */
+
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  margin-top: 20px;
+}
+
+/* =========================
+   LABEL
+========================= */
+
+.transfer-form label {
+  font-family: var(--font-main);
+
+  font-size: 14px;
+
+  letter-spacing: 1px;
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.transfer-input {
+  width: 100%;
+
+  padding: 14px;
+
+  background: white;
+
+  border: var(--border-thick);
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  outline: none;
+
+  font-family: var(--font-body);
+}
+
+.transfer-input:focus {
+  background: #fffde8;
+}
+
+/* =========================
+   READ ONLY
+========================= */
+
+.transfer-input[readonly] {
+  background: #e8e8e8;
+
+  color: #555;
+}
+
+/* =========================
+   SELECT
+========================= */
+
+select.transfer-input {
+  cursor: pointer;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.transfer-button {
+  margin-top: 12px;
+
+  background: var(--primary-orange);
+
+  color: white;
+
+  border: var(--border-thick);
+
+  box-shadow: var(--shadow-playful);
+
+  padding: 16px;
+
+  font-family: var(--font-main);
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition: 0.15s;
+}
+
+.transfer-button:hover {
+  transform: translate(-2px, -2px);
+}
+
+.transfer-button:active {
+  transform: translate(4px, 4px);
+
+  box-shadow: var(--shadow-active);
+}

@@ -1,46 +1,82 @@
 /* =========================
-   INIT TRANSFER PAGE
+   INIT
 ========================= */
 
 function initTransferPage() {
+  console.log("========== TRANSFER ==========");
+  console.log("ROLE :", window.appState.activeRole);
+  console.log("GAME STATE :", window.appState.gameState);
+  console.log("==============================");
+
   loadTransferPlayers();
   bindTransferButton();
+  resetTransferForm();
 }
 
 /* =========================
-   LOAD PLAYERS
+   LOAD PLAYER
 ========================= */
 
 function loadTransferPlayers() {
-  const fromCard = document.getElementById("transferFromCard");
+  const fromInput = document.getElementById("transferFrom");
+  const toSelect = document.getElementById("transferTo");
+  const amountInput = document.getElementById("transferAmount");
 
-  const to = document.getElementById("transferTo");
-
-  const amount = document.getElementById("transferAmount");
-
-  if (!fromCard || !to || !amount) return;
+  if (!fromInput || !toSelect || !amountInput) {
+    console.error("Transfer form not found");
+    return;
+  }
 
   const myRole = window.appState.activeRole;
-
   const me = getPlayer(myRole);
 
-  if (!me) return;
+  console.log("ACTIVE PLAYER :", me);
 
-  fromCard.innerHTML = `
-        <strong>${me.name}</strong>
-        <br>
-        Balance : $${me.money}
-    `;
+  if (!me) {
+    console.error("Player not found :", myRole);
+    return;
+  }
 
-  amount.placeholder = `Maximum : $${me.money}`;
-  amount.max = me.money;
-  amount.min = 1;
+  /* =========================
+     FROM
+  ========================= */
 
-  to.innerHTML = "";
+  fromInput.value = me.name;
+
+  /* =========================
+     AMOUNT
+  ========================= */
+
+  amountInput.placeholder = `Your money : $${me.money}`;
+  amountInput.max = me.money;
+  amountInput.min = 1;
+
+  amountInput.onkeydown = (e) => {
+    if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+      e.preventDefault();
+    }
+  };
+
+  amountInput.oninput = () => {
+    let value = Number(amountInput.value);
+
+    if (value > me.money) {
+      amountInput.value = me.money;
+    }
+
+    if (value < 0) {
+      amountInput.value = "";
+    }
+  };
+
+  /* =========================
+     RECEIVER
+  ========================= */
+
+  toSelect.innerHTML = "";
 
   window.appState.gameState.forEach((player) => {
     if (player.role === "BANK") return;
-
     if (player.role === myRole) return;
 
     const option = document.createElement("option");
@@ -48,8 +84,10 @@ function loadTransferPlayers() {
     option.value = player.role;
     option.textContent = player.name;
 
-    to.appendChild(option);
+    toSelect.appendChild(option);
   });
+
+  console.log("Receiver Loaded :", toSelect.options.length);
 }
 
 /* =========================
@@ -65,83 +103,110 @@ function bindTransferButton() {
 }
 
 /* =========================
-   START
-========================= */
-
-/* =========================
    START TRANSFER
 ========================= */
 
 function startTransfer() {
+  console.log("START BUTTON CLICKED");
+
   const me = getPlayer(window.appState.activeRole);
 
   if (!me) {
     alert("Player not found.");
+    resetTransferForm();
     return;
   }
 
-  const to = document.getElementById("transferTo").value;
-
+  const toRole = document.getElementById("transferTo").value;
   const amount = Number(document.getElementById("transferAmount").value);
 
-  /* =========================
-       VALIDATION
-    ========================= */
+  console.log({
+    sender: me.role,
+    receiver: toRole,
+    amount,
+  });
 
-  if (!to) {
+  /* =========================
+     VALIDATION
+  ========================= */
+
+  if (!toRole) {
     alert("Please select receiver.");
+    resetTransferForm();
     return;
   }
 
-  if (amount <= 0) {
+  if (Number.isNaN(amount) || amount <= 0) {
     alert("Invalid amount.");
+    resetTransferForm();
     return;
   }
 
   if (amount > me.money) {
     alert("Insufficient balance.");
+    resetTransferForm();
     return;
   }
 
   /* =========================
-       SEND
-    ========================= */
+     SEND
+  ========================= */
+
+  console.log("SEND START_TRANSACTION");
 
   window.appState.socket.send(
     JSON.stringify({
       type: "start_transaction",
-      toRole: to,
+      toRole: toRole,
       amount: amount,
     }),
   );
 
-  renderTransactionStatus("WAITING SENDER", "Tap sender NFC card.");
+
 }
 
 /* =========================
-   TRANSACTION STATUS
+   STATUS
 ========================= */
 
 function renderTransactionStatus(title, message) {
   const content = document.getElementById("transferContent");
+
   if (!content) return;
+
   content.innerHTML = `
-        <div class="page-card">
-            <h3>${title}</h3>
-            <br>
-            <p>${message}</p>
-        </div>
-    `;
+    <div class="page-card">
+      <h3>${title}</h3>
+      <br>
+      <p>${message}</p>
+    </div>
+  `;
 }
 
-amount.addEventListener("input", () => {
-  let value = Number(amount.value);
+/* =========================
+   RESET TRANSFER FORM
+========================= */
 
-  if (value > me.money) {
-    amount.value = me.money;
+function resetTransferForm() {
+  const myRole = window.appState.activeRole;
+  const me = getPlayer(myRole);
+  const fromInput = document.getElementById("transferFrom");
+  const toSelect = document.getElementById("transferTo");
+  const amountInput = document.getElementById("transferAmount");
+  const content = document.getElementById("transferContent");
+  if (me && fromInput) {
+    fromInput.value = me.name;
+    amountInput.placeholder = `Your money : $${me.money}`;
+    amountInput.max = me.money;
   }
-
-  if (value < 1) {
-    amount.value = "";
+  if (toSelect) {
+    toSelect.selectedIndex = 0;
   }
-});
+  if (amountInput) {
+    amountInput.value = "";
+  }
+  if (content) {
+    content.innerHTML = "";
+  }
+  console.log("TRANSFER FORM RESET");
+}
