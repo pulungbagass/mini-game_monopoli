@@ -136,13 +136,25 @@ void onWebSocketEvent(
             START TRANSACTION
             ========================= */
 
-            if (msgType == "start_transaction")
+            if(
+                msgType ==
+                "start_transaction"
+            )
             {
-                handleTransactionStart(client, doc);
+                handleTransactionStart(
+                    client,
+                    doc
+                );
             }
-            else if (msgType == "cancel_transaction")
+            else if(
+                msgType ==
+                "cancel_transaction"
+            )
             {
-                handleTransactionCancel(client, doc);
+                handleTransactionCancel(
+                    client,
+                    doc
+                );
             }
 
             /* =========================

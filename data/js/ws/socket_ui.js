@@ -97,6 +97,26 @@ function handleSocketMessage(event) {
     return;
   }
 
+  if (data.type === "transaction_cancelled") {
+    renderTransactionStatus(
+      "CANCELLED",
+
+      "Transaction cancelled.",
+    );
+
+    setTimeout(() => {
+      resetTransferForm();
+
+      renderTransactionStatus(
+        "READY",
+
+        "Create a new transaction.",
+      );
+    }, 2000);
+
+    return;
+  }
+
   /* =========================
      GAME STATE
   ========================= */
