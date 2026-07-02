@@ -3,71 +3,42 @@
 ========================= */
 
 function handleTransactionMessage(message) {
-  switch (message.type) {
-    /* =========================
-            WAIT SENDER
-        ========================= */
-
+    switch (message.type) {
     case "transaction_wait_sender":
-      renderTransactionStatus("WAITING SENDER", "Please tap your NFC card.");
-
-      break;
-
-    /* =========================
-            WAIT RECEIVER
-        ========================= */
+        updateTransactionUI("WAIT_SENDER");
+        break;
 
     case "transaction_wait_receiver":
-      renderTransactionStatus(
-        "WAITING RECEIVER",
-        "Please tap receiver NFC card.",
-      );
-
-      break;
-
-    /* =========================
-            PROCESSING
-        ========================= */
+        updateTransactionUI("WAIT_RECEIVER");
+        break;
 
     case "transaction_processing":
-      renderTransactionStatus("PROCESSING", "Processing transaction...");
-
-      break;
-
-    /* =========================
-            SUCCESS
-        ========================= */
+        updateTransactionUI("PROCESSING");
+        break;
 
     case "transaction_success":
-        renderTransactionStatus("SUCCESS", "Money transferred successfully.");
-        setTimeout(() => {
-            resetTransferForm();
-        }, 1200);
-    break;
-
-    /* =========================
-            FAILED
-        ========================= */
-
-    case "transaction_failed":
-      renderTransactionStatus("FAILED", "Transaction failed.");
-
-        setTimeout(() => {
-            resetTransferForm();
-        }, 1200);
-    break;
-
-    /* =========================
-            BUSY
-        ========================= */
+        updateTransactionUI("SUCCESS");
+        break;
 
     case "transaction_busy":
-      renderTransactionStatus("BUSY", "Another transaction is running.");
+        updateTransactionUI("BUSY");
+        break;
 
-      setTimeout(() => {
-            resetTransferForm();
-        }, 1200);
+    case "transaction_failed":
+        updateTransactionUI("FAILED", {
+        message: message.reason,
+        });
 
-      break;
-  }
+        break;
+
+    case "transaction_timeout":
+        updateTransactionUI("TIMEOUT");
+
+        break;
+
+    case "transaction_timeout":
+        updateTransactionUI("TIMEOUT");
+
+        break;
+    }
 }

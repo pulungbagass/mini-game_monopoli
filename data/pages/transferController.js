@@ -10,6 +10,7 @@ function initTransferPage() {
 
   loadTransferPlayers();
   bindTransferButton();
+  bindCancelButton();
   resetTransferForm();
 }
 
@@ -162,7 +163,11 @@ function startTransfer() {
     }),
   );
 
+  const cancelButton = document.getElementById("cancelTransferButton");
 
+  if (cancelButton) {
+    cancelButton.style.display = "block";
+  }
 }
 
 /* =========================
@@ -196,7 +201,11 @@ function resetTransferForm() {
   const content = document.getElementById("transferContent");
   if (me && fromInput) {
     fromInput.value = me.name;
+  }
+
+  if (me && amountInput) {
     amountInput.placeholder = `Your money : $${me.money}`;
+
     amountInput.max = me.money;
   }
   if (toSelect) {
@@ -208,5 +217,32 @@ function resetTransferForm() {
   if (content) {
     content.innerHTML = "";
   }
+  const cancelButton = document.getElementById("cancelTransferButton");
+
+  if (cancelButton) {
+    cancelButton.style.display = "none";
+  }
   console.log("TRANSFER FORM RESET");
+}
+
+function bindCancelButton() {
+  const button = document.getElementById("cancelTransferButton");
+
+  if (!button) return;
+
+  button.onclick = cancelTransfer;
+}
+
+/* =========================
+   CANCEL TRANSFER
+========================= */
+
+function cancelTransfer() {
+  console.log("SEND CANCEL_TRANSACTION");
+
+  window.appState.socket.send(
+    JSON.stringify({
+      type: "cancel_transaction",
+    }),
+  );
 }

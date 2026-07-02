@@ -59,7 +59,6 @@ void sendTransactionSuccess()
         transactionSession.amount;
 
     String json;
-
     serializeJson(doc, json);
 
     ws.textAll(json);
@@ -85,12 +84,35 @@ void sendTransactionFailed()
         transactionSession.amount;
 
     String json;
-
     serializeJson(doc, json);
 
     ws.textAll(json);
 }
 
+/* ======================================================
+   TIMEOUT
+====================================================== */
+
+void sendTransactionTimeout()
+{
+    JsonDocument doc;
+
+    doc["type"] = "transaction_timeout";
+
+    doc["fromRole"] =
+        transactionSession.sourceRole;
+
+    doc["toRole"] =
+        transactionSession.targetRole;
+
+    doc["amount"] =
+        transactionSession.amount;
+
+    String json;
+    serializeJson(doc, json);
+
+    ws.textAll(json);
+}
 
 /* ======================================================
    HANDLE TRANSACTION
@@ -101,10 +123,14 @@ void handleTransaction(
     JsonDocument &doc
 )
 {
-    String fromRole = doc["fromRole"];
-    String toRole   = doc["toRole"];
+    String fromRole =
+        doc["fromRole"];
 
-    int amount = doc["amount"];
+    String toRole =
+        doc["toRole"];
+
+    int amount =
+        doc["amount"];
 
     JsonDocument response;
 
@@ -113,15 +139,16 @@ void handleTransaction(
             toRole,
             amount))
     {
-        response["type"] = "transaction_busy";
+        response["type"] =
+            "transaction_busy";
     }
     else
     {
-        response["type"] = "transfer_wait_sender";
+        response["type"] =
+            "transfer_wait_sender";
     }
 
     String json;
-
     serializeJson(response, json);
 
     ws.text(

@@ -65,6 +65,13 @@ function renderTransferPage() {
         >
           START TRANSFER
         </button>
+        <button
+            id="cancelTransferButton"
+            class="transfer-button transfer-cancel"
+            style="display:none;"
+        >
+            CANCEL
+        </button>
 
       </div>
 

@@ -50,7 +50,7 @@ bool executeTransaction()
         sendTransactionFailed();
     }
 
-    clearTransactionSession();
+    finishTransaction();
 
-    return true;
+    return success;
 }

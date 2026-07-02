@@ -39,8 +39,15 @@ bool startTransaction(
 
 void cancelTransaction()
 {
-    clearTransactionSession();
+    Serial.println();
+    Serial.println("TRANSACTION CANCELLED");
+
+    finishTransaction();
 }
+
+/* ======================================================
+   Finish
+====================================================== */
 
 /* ======================================================
    Finish
@@ -48,7 +55,13 @@ void cancelTransaction()
 
 void finishTransaction()
 {
+    Serial.println();
+    Serial.println("========== TRANSACTION END ==========");
+
     clearTransactionSession();
+
+    Serial.println("SESSION CLEARED");
+    Serial.println("=====================================");
 }
 
 /* ======================================================

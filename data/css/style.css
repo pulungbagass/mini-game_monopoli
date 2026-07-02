@@ -626,3 +626,13 @@ select.transfer-input {
 
   box-shadow: var(--shadow-active);
 }
+
+.transfer-cancel{
+
+    margin-top:12px;
+
+    background:#ff5d5d;
+
+    color:white;
+
+}

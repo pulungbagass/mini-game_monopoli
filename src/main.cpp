@@ -6,6 +6,7 @@
 #include "web/web_server.h"
 #include "display/oled_display.h"
 #include "notification/notification.h"
+#include "controllers/transaction_controller.h"
 
 #include "websocket/handlers/ws_broadcast.h"
 
@@ -47,6 +48,8 @@ void loop() {
       broadcastGameState();
       lastBroadcast = millis();
   }
+
+  updateTransaction();
 
   /* =========================
      OLED UPDATE
