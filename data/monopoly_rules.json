@@ -1,0 +1,919 @@
+{
+  "monopoly_assets": [
+    {
+      "assets_id": "ASSET_01",
+      "asset_name": "Mediterranean Avenue",
+      "type": "Property",
+      "color_group": "brown",
+      "purchase_price": 60,
+      "rent": {
+        "base": 2,
+        "monopoly_set": 4,
+        "house1": 10,
+        "house2": 30,
+        "house3": 90,
+        "house4": 160,
+        "hotel": 250
+      },
+      "development_cost": { "house_cost": 50, "hotel_cost": 50 },
+      "mortgage": { "value": 30, "release_cost": 33 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_02",
+      "asset_name": "Baltic Avenue",
+      "type": "Property",
+      "color_group": "brown",
+      "purchase_price": 60,
+      "rent": {
+        "base": 4,
+        "monopoly_set": 8,
+        "house1": 20,
+        "house2": 60,
+        "house3": 180,
+        "house4": 320,
+        "hotel": 450
+      },
+      "development_cost": { "house_cost": 50, "hotel_cost": 50 },
+      "mortgage": { "value": 30, "release_cost": 33 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_03",
+      "asset_name": "Oriental Avenue",
+      "type": "Property",
+      "color_group": "light blue",
+      "purchase_price": 100,
+      "rent": {
+        "base": 6,
+        "monopoly_set": 12,
+        "house1": 30,
+        "house2": 90,
+        "house3": 270,
+        "house4": 400,
+        "hotel": 550
+      },
+      "development_cost": { "house_cost": 50, "hotel_cost": 50 },
+      "mortgage": { "value": 50, "release_cost": 55 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_04",
+      "asset_name": "Vermont Avenue",
+      "type": "Property",
+      "color_group": "light blue",
+      "purchase_price": 100,
+      "rent": {
+        "base": 6,
+        "monopoly_set": 12,
+        "house1": 30,
+        "house2": 90,
+        "house3": 270,
+        "house4": 400,
+        "hotel": 550
+      },
+      "development_cost": { "house_cost": 50, "hotel_cost": 50 },
+      "mortgage": { "value": 50, "release_cost": 55 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_05",
+      "asset_name": "Connecticut Avenue",
+      "type": "Property",
+      "color_group": "light blue",
+      "purchase_price": 120,
+      "rent": {
+        "base": 8,
+        "monopoly_set": 16,
+        "house1": 40,
+        "house2": 100,
+        "house3": 300,
+        "house4": 450,
+        "hotel": 600
+      },
+      "development_cost": { "house_cost": 50, "hotel_cost": 50 },
+      "mortgage": { "value": 60, "release_cost": 66 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_06",
+      "asset_name": "St. Charles Place",
+      "type": "Property",
+      "color_group": "pink",
+      "purchase_price": 140,
+      "rent": {
+        "base": 10,
+        "monopoly_set": 20,
+        "house1": 50,
+        "house2": 150,
+        "house3": 450,
+        "house4": 625,
+        "hotel": 750
+      },
+      "development_cost": { "house_cost": 100, "hotel_cost": 100 },
+      "mortgage": { "value": 70, "release_cost": 77 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_07",
+      "asset_name": "States Avenue",
+      "type": "Property",
+      "color_group": "pink",
+      "purchase_price": 140,
+      "rent": {
+        "base": 10,
+        "monopoly_set": 20,
+        "house1": 50,
+        "house2": 150,
+        "house3": 450,
+        "house4": 625,
+        "hotel": 750
+      },
+      "development_cost": { "house_cost": 100, "hotel_cost": 100 },
+      "mortgage": { "value": 70, "release_cost": 77 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_08",
+      "asset_name": "Virginia Avenue",
+      "type": "Property",
+      "color_group": "pink",
+      "purchase_price": 160,
+      "rent": {
+        "base": 12,
+        "monopoly_set": 24,
+        "house1": 60,
+        "house2": 180,
+        "house3": 500,
+        "house4": 700,
+        "hotel": 900
+      },
+      "development_cost": { "house_cost": 100, "hotel_cost": 100 },
+      "mortgage": { "value": 80, "release_cost": 88 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_09",
+      "asset_name": "St. James Place",
+      "type": "Property",
+      "color_group": "orange",
+      "purchase_price": 180,
+      "rent": {
+        "base": 14,
+        "monopoly_set": 28,
+        "house1": 70,
+        "house2": 200,
+        "house3": 550,
+        "house4": 750,
+        "hotel": 950
+      },
+      "development_cost": { "house_cost": 100, "hotel_cost": 100 },
+      "mortgage": { "value": 90, "release_cost": 99 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_10",
+      "asset_name": "Tennessee Avenue",
+      "type": "Property",
+      "color_group": "orange",
+      "purchase_price": 180,
+      "rent": {
+        "base": 14,
+        "monopoly_set": 28,
+        "house1": 70,
+        "house2": 200,
+        "house3": 550,
+        "house4": 750,
+        "hotel": 950
+      },
+      "development_cost": { "house_cost": 100, "hotel_cost": 100 },
+      "mortgage": { "value": 90, "release_cost": 99 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_11",
+      "asset_name": "New York Avenue",
+      "type": "Property",
+      "color_group": "orange",
+      "purchase_price": 200,
+      "rent": {
+        "base": 16,
+        "monopoly_set": 32,
+        "house1": 80,
+        "house2": 220,
+        "house3": 600,
+        "house4": 800,
+        "hotel": 1000
+      },
+      "development_cost": { "house_cost": 100, "hotel_cost": 100 },
+      "mortgage": { "value": 100, "release_cost": 110 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_12",
+      "asset_name": "Kentucky Avenue",
+      "type": "Property",
+      "color_group": "red",
+      "purchase_price": 220,
+      "rent": {
+        "base": 18,
+        "monopoly_set": 36,
+        "house1": 90,
+        "house2": 250,
+        "house3": 700,
+        "house4": 875,
+        "hotel": 1050
+      },
+      "development_cost": { "house_cost": 150, "hotel_cost": 150 },
+      "mortgage": { "value": 110, "release_cost": 121 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_13",
+      "asset_name": "Indiana Avenue",
+      "type": "Property",
+      "color_group": "red",
+      "purchase_price": 220,
+      "rent": {
+        "base": 18,
+        "monopoly_set": 36,
+        "house1": 90,
+        "house2": 250,
+        "house3": 700,
+        "house4": 875,
+        "hotel": 1050
+      },
+      "development_cost": { "house_cost": 150, "hotel_cost": 150 },
+      "mortgage": { "value": 110, "release_cost": 121 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_14",
+      "asset_name": "Illinois Avenue",
+      "type": "Property",
+      "color_group": "red",
+      "purchase_price": 240,
+      "rent": {
+        "base": 20,
+        "monopoly_set": 40,
+        "house1": 100,
+        "house2": 300,
+        "house3": 750,
+        "house4": 925,
+        "hotel": 1100
+      },
+      "development_cost": { "house_cost": 150, "hotel_cost": 150 },
+      "mortgage": { "value": 120, "release_cost": 132 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_15",
+      "asset_name": "Atlantic Avenue",
+      "type": "Property",
+      "color_group": "yellow",
+      "purchase_price": 260,
+      "rent": {
+        "base": 22,
+        "monopoly_set": 44,
+        "house1": 110,
+        "house2": 330,
+        "house3": 800,
+        "house4": 975,
+        "hotel": 1150
+      },
+      "development_cost": { "house_cost": 150, "hotel_cost": 150 },
+      "mortgage": { "value": 130, "release_cost": 143 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_16",
+      "asset_name": "Ventnor Avenue",
+      "type": "Property",
+      "color_group": "yellow",
+      "purchase_price": 260,
+      "rent": {
+        "base": 22,
+        "monopoly_set": 44,
+        "house1": 110,
+        "house2": 330,
+        "house3": 800,
+        "house4": 975,
+        "hotel": 1150
+      },
+      "development_cost": { "house_cost": 150, "hotel_cost": 150 },
+      "mortgage": { "value": 130, "release_cost": 143 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_17",
+      "asset_name": "Marvin Gardens",
+      "type": "Property",
+      "color_group": "yellow",
+      "purchase_price": 280,
+      "rent": {
+        "base": 24,
+        "monopoly_set": 48,
+        "house1": 120,
+        "house2": 360,
+        "house3": 850,
+        "house4": 1025,
+        "hotel": 1200
+      },
+      "development_cost": { "house_cost": 150, "hotel_cost": 150 },
+      "mortgage": { "value": 140, "release_cost": 154 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_18",
+      "asset_name": "Pacific Avenue",
+      "type": "Property",
+      "color_group": "green",
+      "purchase_price": 300,
+      "rent": {
+        "base": 26,
+        "monopoly_set": 52,
+        "house1": 130,
+        "house2": 390,
+        "house3": 900,
+        "house4": 1100,
+        "hotel": 1275
+      },
+      "development_cost": { "house_cost": 200, "hotel_cost": 200 },
+      "mortgage": { "value": 150, "release_cost": 165 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_19",
+      "asset_name": "North Carolina Avenue",
+      "type": "Property",
+      "color_group": "green",
+      "purchase_price": 300,
+      "rent": {
+        "base": 26,
+        "monopoly_set": 52,
+        "house1": 130,
+        "house2": 390,
+        "house3": 900,
+        "house4": 1100,
+        "hotel": 1275
+      },
+      "development_cost": { "house_cost": 200, "hotel_cost": 200 },
+      "mortgage": { "value": 150, "release_cost": 165 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_20",
+      "asset_name": "Pennsylvania Avenue",
+      "type": "Property",
+      "color_group": "green",
+      "purchase_price": 320,
+      "rent": {
+        "base": 28,
+        "monopoly_set": 56,
+        "house1": 150,
+        "house2": 450,
+        "house3": 1000,
+        "house4": 1200,
+        "hotel": 1400
+      },
+      "development_cost": { "house_cost": 200, "hotel_cost": 200 },
+      "mortgage": { "value": 160, "release_cost": 176 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_21",
+      "asset_name": "Park Place",
+      "type": "Property",
+      "color_group": "dark blue",
+      "purchase_price": 350,
+      "rent": {
+        "base": 35,
+        "monopoly_set": 70,
+        "house1": 175,
+        "house2": 500,
+        "house3": 1100,
+        "house4": 1300,
+        "hotel": 1500
+      },
+      "development_cost": { "house_cost": 200, "hotel_cost": 200 },
+      "mortgage": { "value": 175, "release_cost": 193 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_22",
+      "asset_name": "Boardwalk",
+      "type": "Property",
+      "color_group": "dark blue",
+      "purchase_price": 400,
+      "rent": {
+        "base": 50,
+        "monopoly_set": 100,
+        "house1": 200,
+        "house2": 600,
+        "house3": 1400,
+        "house4": 1700,
+        "hotel": 2000
+      },
+      "development_cost": { "house_cost": 200, "hotel_cost": 200 },
+      "mortgage": { "value": 200, "release_cost": 220 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_23",
+      "asset_name": "Reading Railroad",
+      "type": "Railroad",
+      "color_group": null,
+      "purchase_price": 200,
+      "rent": { "owned1": 25, "owned2": 50, "owned3": 100, "owned4": 200 },
+      "mortgage": { "value": 100, "release_cost": 110 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_24",
+      "asset_name": "Pennsylvania Railroad",
+      "type": "Railroad",
+      "color_group": null,
+      "purchase_price": 200,
+      "rent": { "owned1": 25, "owned2": 50, "owned3": 100, "owned4": 200 },
+      "mortgage": { "value": 100, "release_cost": 110 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_25",
+      "asset_name": "B. & O. Railroad",
+      "type": "Railroad",
+      "color_group": null,
+      "purchase_price": 200,
+      "rent": { "owned1": 25, "owned2": 50, "owned3": 100, "owned4": 200 },
+      "mortgage": { "value": 100, "release_cost": 110 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_26",
+      "asset_name": "Short Line Railroad",
+      "type": "Railroad",
+      "color_group": null,
+      "purchase_price": 200,
+      "rent": { "owned1": 25, "owned2": 50, "owned3": 100, "owned4": 200 },
+      "mortgage": { "value": 100, "release_cost": 110 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_27",
+      "asset_name": "Electric Company",
+      "type": "Utility",
+      "color_group": null,
+      "purchase_price": 150,
+      "rent_multiplier": {
+        "owned1": "4x dice value",
+        "owned2": "10x dice value"
+      },
+      "mortgage": { "value": 75, "release_cost": 83 },
+      "action": {
+        "buyable": true
+      }
+    },
+    {
+      "assets_id": "ASSET_28",
+      "asset_name": "Water Works",
+      "type": "Utility",
+      "color_group": null,
+      "purchase_price": 150,
+      "rent_multiplier": {
+        "owned1": "4x dice value",
+        "owned2": "10x dice value"
+      },
+      "mortgage": { "value": 75, "release_cost": 83 },
+      "action": {
+        "buyable": true
+      }
+    }
+  ],
+  "monopoly_corners": [
+    {
+      "corner_id": "CRN_01",
+      "corner_name": "GO",
+      "type": "Corner",
+      "action": {
+        "effect": "go",
+        "flow": "income",
+        "amount": 200
+      }
+    },
+    {
+      "corner_id": "CRN_02",
+      "corner_name": "In Jail / Just Visiting",
+      "type": "Corner",
+      "action": {
+        "effect": "jail",
+        "flow": "expense",
+        "amount": 50
+      }
+    },
+    {
+      "corner_id": "CRN_03",
+      "corner_name": "Free Parking",
+      "type": "Corner",
+      "action": {
+        "effect": "free_parking",
+        "flow": "expense",
+        "amount": 250
+      }
+    },
+    {
+      "corner_id": "CRN_04",
+      "corner_name": "Go To Jail",
+      "type": "Corner",
+      "action": {
+        "effect": "go_to_jail",
+        "flow": "none",
+        "amount": 0
+      }
+    }
+  ],
+  "monopoly_taxes": [
+    {
+      "tax_id": "TAX_INC",
+      "tax_name": "Income Tax",
+      "type": "Tax",
+      "description": "Pay $200 to the Bank",
+      "action": {
+        "type": "expense",
+        "target": "BANK",
+        "amount": 200
+      }
+    },
+    {
+      "tax_id": "TAX_LUX",
+      "tax_name": "Luxury Tax",
+      "type": "Tax",
+      "description": "Pay $100 to the Bank",
+      "action": {
+        "type": "expense",
+        "target": "BANK",
+        "amount": 100
+      }
+    }
+  ],
+  "monopoly_community_chest": [
+    {
+      "card_id": "CC01",
+      "card_text": "Advance to GO. (Collect $200)",
+      "action": {
+        "type": "move",
+        "flow": "income",
+        "amount": 200,
+        "target_location": "GO"
+      }
+    },
+    {
+      "card_id": "CC02",
+      "card_text": "Bank error in your favor. Collect $200",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 200
+      }
+    },
+    {
+      "card_id": "CC03",
+      "card_text": "Doctor's fee. Pay $50",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "expense",
+        "amount": 50
+      }
+    },
+    {
+      "card_id": "CC04",
+      "card_text": "From sale of stock you get $50",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 50
+      }
+    },
+    {
+      "card_id": "CC05",
+      "card_text": "Get Out of Jail Free",
+      "action": {
+        "type": "keep_card",
+        "owner": "bank",
+        "flow": "none",
+        "amount": 0
+      }
+    },
+    {
+      "card_id": "CC06",
+      "card_text": "Go to Jail. Go directly to jail, do not pass Go, do not collect $200",
+      "action": {
+        "type": "move_jail",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "In Jail"
+      }
+    },
+    {
+      "card_id": "CC07",
+      "card_text": "Holiday fund matures. Receive $100",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 100
+      }
+    },
+    {
+      "card_id": "CC08",
+      "card_text": "Income tax refund. Collect $20",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 20
+      }
+    },
+    {
+      "card_id": "CC09",
+      "card_text": "It is your birthday. Collect $10 from every player",
+      "action": {
+        "type": "player_transaction",
+        "flow": "income",
+        "amount": 10
+      }
+    },
+    {
+      "card_id": "CC10",
+      "card_text": "Life insurance matures. Collect $100",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 100
+      }
+    },
+    {
+      "card_id": "CC11",
+      "card_text": "Pay hospital fees of $100",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "expense",
+        "amount": 100
+      }
+    },
+    {
+      "card_id": "CC12",
+      "card_text": "Pay school fees of $50",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "expense",
+        "amount": 50
+      }
+    },
+    {
+      "card_id": "CC13",
+      "card_text": "Receive $25 consultancy fee",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 25
+      }
+    },
+    {
+      "card_id": "CC14",
+      "card_text": "You are assessed for street repairs. $40 per house, $115 per hotel",
+      "action": {
+        "type": "asset_tax",
+        "flow": "expense",
+        "amount": {
+          "per_house": 40,
+          "per_hotel": 115
+        }
+      }
+    },
+    {
+      "card_id": "CC15",
+      "card_text": "You have won second prize in a beauty contest. Collect $10",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 10
+      }
+    },
+    {
+      "card_id": "CC16",
+      "card_text": "You inherit $100",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 100
+      }
+    }
+  ],
+  "monopoly_chance": [
+    {
+      "card_id": "CH01",
+      "card_text": "Advance to GO. (Collect $200)",
+      "action": {
+        "type": "move",
+        "flow": "income",
+        "amount": 200,
+        "target_location": "GO"
+      }
+    },
+    {
+      "card_id": "CH02",
+      "card_text": "Advance to Illinois Avenue. If you pass Go, collect $200",
+      "action": {
+        "type": "move",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "Illinois Avenue"
+      }
+    },
+    {
+      "card_id": "CH03",
+      "card_text": "Advance to St. Charles Place. If you pass Go, collect $200",
+      "action": {
+        "type": "move",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "St. Charles Place"
+      }
+    },
+    {
+      "card_id": "CH04",
+      "card_text": "Advance token to nearest Utility. If unowned, you may buy it. If owned, throw dice and pay owner 10x amount thrown.",
+      "action": {
+        "type": "move_utility",
+        "flow": "none",
+        "amount": 0
+      }
+    },
+    {
+      "card_id": "CH05",
+      "card_text": "Advance token to the nearest Railroad. If unowned, you may buy it. If owned, pay owner twice the rental.",
+      "action": {
+        "type": "move_railroad",
+        "flow": "none",
+        "amount": 0
+      }
+    },
+    {
+      "card_id": "CH06",
+      "card_text": "Advance token to the nearest Railroad. If unowned, you may buy it. If owned, pay owner twice the rental.",
+      "action": {
+        "type": "move_railroad",
+        "flow": "none",
+        "amount": 0
+      }
+    },
+    {
+      "card_id": "CH07",
+      "card_text": "Bank pays you dividend of $50",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 50
+      }
+    },
+    {
+      "card_id": "CH08",
+      "card_text": "Get Out of Jail Free",
+      "action": {
+        "type": "keep_card",
+        "owner": "bank",
+        "flow": "none",
+        "amount": 0
+      }
+    },
+    {
+      "card_id": "CH09",
+      "card_text": "Go Back 3 Spaces",
+      "action": {
+        "type": "move_back",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "-3"
+      }
+    },
+    {
+      "card_id": "CH10",
+      "card_text": "Go to Jail. Go directly to Jail, do not pass Go, do not collect $200",
+      "action": {
+        "type": "move_jail",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "In Jail"
+      }
+    },
+    {
+      "card_id": "CH11",
+      "card_text": "Make general repairs on all your property. For each house pay $25, for each hotel pay $100",
+      "action": {
+        "type": "asset_tax",
+        "flow": "expense",
+        "amount": {
+          "per_house": 25,
+          "per_hotel": 100
+        }
+      }
+    },
+    {
+      "card_id": "CH12",
+      "card_text": "Speeding fine $15",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "expense",
+        "amount": 15
+      }
+    },
+    {
+      "card_id": "CH13",
+      "card_text": "Take a trip to Reading Railroad. If you pass Go, collect $200",
+      "action": {
+        "type": "move",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "Reading Railroad"
+      }
+    },
+    {
+      "card_id": "CH14",
+      "card_text": "You have been elected Chairman of the Board. Pay each player $50",
+      "action": {
+        "type": "player_transaction",
+        "flow": "expense",
+        "amount": 50
+      }
+    },
+    {
+      "card_id": "CH15",
+      "card_text": "Your building loan matures. Collect $150",
+      "action": {
+        "type": "direct_transaction",
+        "flow": "income",
+        "amount": 150
+      }
+    },
+    {
+      "card_id": "CH16",
+      "card_text": "Advance to Boardwalk.",
+      "action": {
+        "type": "move",
+        "flow": "none",
+        "amount": 0,
+        "target_location": "Boardwalk"
+      }
+    }
+  ]
+}

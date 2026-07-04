@@ -17,6 +17,7 @@ unsigned long lastOLEDUpdate = 0;
 void setup() {
   Serial.begin(115200);
   initNFC();
+  
 
   Serial.println(
     "SETUP JALAN SEKALI"

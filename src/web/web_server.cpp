@@ -3,6 +3,7 @@
 #include "../data/players_data.h"
 #include "../routes/api_routes.h"
 #include "../websocket/ws_manager.h"
+#include "../repositories/monopoly_repository.h"
 #include <ArduinoJson.h>
 
 #include <WiFi.h>
@@ -19,13 +20,29 @@ AsyncWebServer server(80);
 void initWebServer() {
 
   if (!SPIFFS.begin(true)) {
-
     Serial.println("SPIFFS ERROR");
+    while (true)
+    {
+      delay(100);
+    }
     return;
-
   }
 
   Serial.println("SPIFFS READY");
+
+  // =========================
+  // LOAD MONOPOLY REPOSITORY
+  // =========================
+
+
+  if(!loadMonopolyRepository())
+  {
+      Serial.println("Failed to load monopoly_rules.json");
+  }
+  else
+  {
+      Serial.println("Monopoly Repository Loaded");
+  }
 
 
   /* =========================
@@ -34,6 +51,8 @@ void initWebServer() {
 
   server.serveStatic("/", SPIFFS, "/")
         .setDefaultFile("index.html");
+
+  
 
     
 
