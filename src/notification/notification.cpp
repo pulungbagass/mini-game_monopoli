@@ -11,76 +11,100 @@
 #define BUZZER_CHANNEL 0
 
 // ======================================================
-// Melody Structure
+// Pulse Structure
 // ======================================================
 
-struct Note
+struct Pulse
 {
-    uint16_t frequency;
+    bool on;
     uint16_t duration;
     bool led;
 };
 
-#define NOTE_COUNT(x) (sizeof(x) / sizeof(Note))
+#define PULSE_COUNT(x) (sizeof(x) / sizeof(Pulse))
 
 // ======================================================
-// Notification Melody
+// Notification Pattern
 // ======================================================
 
 // Card Scan
-static const Note CARD_SCAN[] =
+static const Pulse CARD_SCAN[] =
 {
-    {900, 120, true}
+    {true, 150, true},
+    {false,120,false}
 };
 
 // Claim Success
-static const Note CLAIM_SUCCESS[] =
+static const Pulse CLAIM_SUCCESS[] =
 {
-    {700, 80, true},
-    {0,   40, false},
-    {1100,150, true}
+    {true,120,true},
+    {false,120,false},
+    {true,120,true},
+    {false,120,false},
+    {true,500,true}
 };
 
 // Claim Failed
-static const Note CLAIM_FAILED[] =
+static const Pulse CLAIM_FAILED[] =
 {
-    {1100,100,true},
-    {0,   40,false},
-    {500,220,true}
+    {true,600,true},
+    {false,150,false},
+    {true,600,true}
 };
 
-// Transfer Success
-static const Note TRANSACTION_SUCCESS[] =
+// Transaction Success
+static const Pulse TRANSACTION_SUCCESS[] =
 {
-    {800, 80, true},
-    {1000, 80, true},
-    {1300, 150, true}
+    {true,100,true},
+    {false,80,false},
+    {true,100,true},
+    {false,80,false},
+    {true,100,true},
+    {false,80,false},
+    {true,800,true}
 };
 
-// Transfer Failed
-static const Note TRANSACTION_FAILED[] =
+// Transaction Failed
+static const Pulse TRANSACTION_FAILED[] =
 {
-    {1200, 120, true},
-    {600, 250, true}
+    {true,1000,true},
+    {false,250,false},
+    {true,400,true},
+    {false,150,false},
+    {true,1000,true}
 };
 
 // Money Received
-static const Note MONEY_RECEIVED[] =
+static const Pulse MONEY_RECEIVED[] =
 {
-    {1200, 70, true},
-    {1500, 120, true}
+    {true,120,true},
+    {false,80,false},
+    {true,120,true},
+    {false,80,false},
+    {true,120,true}
 };
 
 // Money Paid
-static const Note MONEY_PAID[] =
+static const Pulse MONEY_PAID[] =
 {
-    {900, 70, true},
-    {600, 120, true}
+    {true,500,true},
+    {false,120,false},
+    {true,180,true}
 };
 
 // ======================================================
 // Private Helper
 // ======================================================
+
+static void buzzerOn()
+{
+    ledcWriteTone(BUZZER_CHANNEL, 2000);
+}
+
+static void buzzerOff()
+{
+    ledcWriteTone(BUZZER_CHANNEL, 0);
+}
 
 static void ledOn()
 {
@@ -92,29 +116,32 @@ static void ledOff()
     digitalWrite(LED_PIN, LOW);
 }
 
-static void playNote(const Note& note)
+static void playPulse(const Pulse& pulse)
 {
-    if (note.led)
+    if (pulse.on)
+        buzzerOn();
+    else
+        buzzerOff();
+
+    if (pulse.led)
         ledOn();
     else
         ledOff();
 
-    if (note.frequency > 0)
-        ledcWriteTone(BUZZER_CHANNEL, note.frequency);
-    else
-        ledcWriteTone(BUZZER_CHANNEL, 0);
+    delay(pulse.duration);
 
-    delay(note.duration);
-
-    ledcWriteTone(BUZZER_CHANNEL, 0);
+    buzzerOff();
     ledOff();
 }
 
-static void playMelody(const Note melody[], size_t length)
+static void playPattern(
+    const Pulse pattern[],
+    size_t length
+)
 {
     for (size_t i = 0; i < length; i++)
     {
-        playNote(melody[i]);
+        playPulse(pattern[i]);
     }
 }
 
@@ -137,12 +164,21 @@ static void blink(int times, int duration)
 void notificationBegin()
 {
     pinMode(LED_PIN, OUTPUT);
+
     digitalWrite(LED_PIN, LOW);
 
-    ledcSetup(BUZZER_CHANNEL, 2000, 8);
-    ledcAttachPin(BUZZER_PIN, BUZZER_CHANNEL);
+    ledcSetup(
+        BUZZER_CHANNEL,
+        2000,
+        8
+    );
 
-    ledcWriteTone(BUZZER_CHANNEL, 0);
+    ledcAttachPin(
+        BUZZER_PIN,
+        BUZZER_CHANNEL
+    );
+
+    buzzerOff();
 }
 
 // ======================================================
@@ -151,64 +187,64 @@ void notificationBegin()
 
 void notifyCardScan()
 {
-    playMelody(
+    playPattern(
         CARD_SCAN,
-        NOTE_COUNT(CARD_SCAN)
+        PULSE_COUNT(CARD_SCAN)
     );
 }
 
 void notifyClaimSuccess()
 {
-    playMelody(
+    playPattern(
         CLAIM_SUCCESS,
-        NOTE_COUNT(CLAIM_SUCCESS)
+        PULSE_COUNT(CLAIM_SUCCESS)
     );
 
-    blink(2, 80);
+    blink(2,80);
 }
 
 void notifyClaimFailed()
 {
-    playMelody(
+    playPattern(
         CLAIM_FAILED,
-        NOTE_COUNT(CLAIM_FAILED)
+        PULSE_COUNT(CLAIM_FAILED)
     );
 
-    blink(3, 60);
+    blink(3,70);
 }
 
 void notifyTransactionSuccess()
 {
-    playMelody(
+    playPattern(
         TRANSACTION_SUCCESS,
-        NOTE_COUNT(TRANSACTION_SUCCESS)
+        PULSE_COUNT(TRANSACTION_SUCCESS)
     );
 
-    blink(2, 70);
+    blink(2,100);
 }
 
 void notifyTransactionFailed()
 {
-    playMelody(
+    playPattern(
         TRANSACTION_FAILED,
-        NOTE_COUNT(TRANSACTION_FAILED)
+        PULSE_COUNT(TRANSACTION_FAILED)
     );
 
-    blink(3, 50);
+    blink(3,80);
 }
 
 void notifyMoneyReceived()
 {
-    playMelody(
+    playPattern(
         MONEY_RECEIVED,
-        NOTE_COUNT(MONEY_RECEIVED)
+        PULSE_COUNT(MONEY_RECEIVED)
     );
 }
 
 void notifyMoneyPaid()
 {
-    playMelody(
+    playPattern(
         MONEY_PAID,
-        NOTE_COUNT(MONEY_PAID)
+        PULSE_COUNT(MONEY_PAID)
     );
 }
