@@ -96,6 +96,3 @@ Untuk menjaga skalabilitas proyek, kode dipisahkan ke dalam beberapa *layer*:
 
 **Dikembangkan oleh:** Pulung Bagas Setiawan | Universitas Sains dan Teknologi Komputer (USTK)
 
-```
-
-```
