@@ -1,13 +1,23 @@
 #include "transaction_session_service.h"
 #include "../data/transaction_session.h"
 
+#include "../transaction/transaction_executor.h"
+#include "../transaction/property_transaction_executor.h"
+#include "../transaction/bank_transaction_executor.h"
+#include "../transaction/auction_transaction_executor.h"
+
+#include "../transaction/transaction_handler.h"
+#include "transaction_service.h"
+
 /* ======================================================
    Start Transaction
 ====================================================== */
 
 bool startTransaction(
+    TransactionType type,
     const String& sourceRole,
     const String& targetRole,
+    const String& assetId,
     int amount)
 {
     if (transactionSession.active)
@@ -17,16 +27,22 @@ bool startTransaction(
 
     transactionSession.active = true;
 
+    transactionSession.type = type;
+
     transactionSession.sourceRole = sourceRole;
     transactionSession.targetRole = targetRole;
 
+    transactionSession.assetId = assetId;
+
     transactionSession.amount = amount;
+
     transactionSession.startTime = millis();
 
     resetTransactionVerification();
 
     setTransactionState(
-        TRANSACTION_WAIT_SENDER);
+        TRANSACTION_WAIT_SENDER
+    );
 
     return true;
 }
@@ -126,5 +142,61 @@ bool processTransaction()
     if (!isTransactionProcessing())
         return false;
 
-    return true;
+    bool success = false;
+
+    switch (transactionSession.type)
+    {
+        case TRANSACTION_TRANSFER:
+        {
+            success = transferMoney(
+                transactionSession.sourceRole,
+                transactionSession.targetRole,
+                transactionSession.amount
+            );
+            break;
+        }
+
+        case TRANSACTION_BANK:
+        {
+            success = transferMoney(
+                transactionSession.sourceRole,
+                transactionSession.targetRole,
+                transactionSession.amount
+            );
+            break;
+        }
+
+        case TRANSACTION_PROPERTY:
+        {
+            success = executePropertyTransaction();
+            break;
+        }
+
+        case TRANSACTION_AUCTION:
+        {
+            success = false;
+            break;
+        }
+
+        default:
+        {
+            success = false;
+            break;
+        }
+    }
+
+    if (success)
+    {
+        setTransactionState(
+            TRANSACTION_SUCCESS
+        );
+    }
+    else
+    {
+        setTransactionState(
+            TRANSACTION_FAILED
+        );
+    }
+
+    return success;
 }

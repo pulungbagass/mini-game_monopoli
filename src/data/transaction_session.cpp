@@ -18,6 +18,8 @@ void clearTransactionSession()
 
    transactionSession.state = TRANSACTION_IDLE;
 
+   transactionSession.assetId = "";
+
    transactionSession.sourceRole = "";
    transactionSession.targetRole = "";
 

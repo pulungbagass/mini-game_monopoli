@@ -2,14 +2,17 @@
 #define TRANSACTION_SESSION_SERVICE_H
 
 #include <Arduino.h>
+#include "../data/transaction_session.h"
 
 /* ======================================================
    Session
 ====================================================== */
 
 bool startTransaction(
+    TransactionType type,
     const String& sourceRole,
     const String& targetRole,
+    const String& assetId,
     int amount
 );
 
@@ -36,5 +39,25 @@ bool verifyReceiver(
 ====================================================== */
 
 bool processTransaction();
+
+// ==========================================================
+// Property Transaction
+// ==========================================================
+
+bool startBuyPropertyTransaction(
+    const String& buyerRole,
+    const String& assetId
+);
+
+bool startSellPropertyTransaction(
+    const String& sellerRole,
+    const String& assetId
+);
+
+bool startRentTransaction(
+    const String& payerRole,
+    const String& assetId,
+    int diceValue
+);
 
 #endif

@@ -9,12 +9,12 @@
 
 enum TransactionState
 {
-    TRANSACTION_IDLE,
-    TRANSACTION_WAIT_SENDER,
-    TRANSACTION_WAIT_RECEIVER,
-    TRANSACTION_PROCESSING,
-    TRANSACTION_SUCCESS,
-    TRANSACTION_FAILED
+   TRANSACTION_IDLE,
+   TRANSACTION_WAIT_SENDER,
+   TRANSACTION_WAIT_RECEIVER,
+   TRANSACTION_PROCESSING,
+   TRANSACTION_SUCCESS,
+   TRANSACTION_FAILED
 };
 
 /* ======================================================
@@ -23,11 +23,34 @@ enum TransactionState
 
 enum TransactionType
 {
-    TRANSACTION_NONE,
-    TRANSACTION_TRANSFER,
-    TRANSACTION_BANK,
-    TRANSACTION_AUCTION,
-    TRANSACTION_PROPERTY
+   TRANSACTION_NONE,
+   TRANSACTION_TRANSFER,
+   TRANSACTION_BANK,
+   TRANSACTION_AUCTION,
+   TRANSACTION_PROPERTY
+};
+
+// ====================================================
+// Property Action
+// ====================================================
+
+enum PropertyAction
+{
+    PROPERTY_NONE,
+
+    PROPERTY_BUY,
+    PROPERTY_SELL,
+
+    PROPERTY_PAY_RENT,
+
+    PROPERTY_MORTGAGE,
+    PROPERTY_RELEASE,
+
+    PROPERTY_BUILD_HOUSE,
+    PROPERTY_SELL_HOUSE,
+
+    PROPERTY_BUILD_HOTEL,
+    PROPERTY_SELL_HOTEL
 };
 
 /* ======================================================
@@ -36,31 +59,33 @@ enum TransactionType
 
 struct TransactionSession
 {
-    bool active;
+   bool active;
 
-    TransactionType type;
-    TransactionState state;
+   TransactionType type;
+   TransactionState state;
 
-    /* =========================
-       Transaction Info
-    ========================= */
+   /* =========================
+      Transaction Info
+   ========================= */
 
-    String sourceRole;
-    String targetRole;
+   String assetId;
 
-    String sourceDevice;
-    String targetDevice;
+   String sourceRole;
+   String targetRole;
 
-    int amount;
+   String sourceDevice;
+   String targetDevice;
 
-    unsigned long startTime;
+   int amount;
 
-    /* =========================
-       Verification
-    ========================= */
+   unsigned long startTime;
 
-    bool sourceVerified;
-    bool targetVerified;
+   /* =========================
+      Verification
+   ========================= */
+
+   bool sourceVerified;
+   bool targetVerified;
 };
 
 extern TransactionSession transactionSession;

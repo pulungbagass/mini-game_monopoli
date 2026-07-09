@@ -135,8 +135,10 @@ void handleTransaction(
     JsonDocument response;
 
     if (!startTransaction(
+            TRANSACTION_TRANSFER,
             fromRole,
             toRole,
+            "",
             amount))
     {
         response["type"] =
