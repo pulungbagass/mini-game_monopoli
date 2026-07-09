@@ -15,10 +15,12 @@
 
 bool startTransaction(
     TransactionType type,
+    PropertyAction propertyAction,
     const String& sourceRole,
     const String& targetRole,
     const String& assetId,
-    int amount)
+    int amount
+)
 {
     if (transactionSession.active)
         return false;
@@ -27,16 +29,26 @@ bool startTransaction(
 
     transactionSession.active = true;
 
-    transactionSession.type = type;
+    transactionSession.type =
+        type;
 
-    transactionSession.sourceRole = sourceRole;
-    transactionSession.targetRole = targetRole;
+    transactionSession.propertyAction =
+        propertyAction;
 
-    transactionSession.assetId = assetId;
+    transactionSession.sourceRole =
+        sourceRole;
 
-    transactionSession.amount = amount;
+    transactionSession.targetRole =
+        targetRole;
 
-    transactionSession.startTime = millis();
+    transactionSession.assetId =
+        assetId;
+
+    transactionSession.amount =
+        amount;
+
+    transactionSession.startTime =
+        millis();
 
     resetTransactionVerification();
 

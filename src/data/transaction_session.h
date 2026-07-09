@@ -62,6 +62,7 @@ struct TransactionSession
    bool active;
 
    TransactionType type;
+   PropertyAction propertyAction;
    TransactionState state;
 
    /* =========================

@@ -10,6 +10,7 @@
 
 bool startTransaction(
     TransactionType type,
+    PropertyAction propertyAction,
     const String& sourceRole,
     const String& targetRole,
     const String& assetId,

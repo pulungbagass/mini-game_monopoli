@@ -14,9 +14,14 @@ void clearTransactionSession()
 {
    transactionSession.active = false;
 
-   transactionSession.type = TRANSACTION_NONE;
+   transactionSession.type =
+      TRANSACTION_NONE;
 
-   transactionSession.state = TRANSACTION_IDLE;
+   transactionSession.propertyAction =
+      PROPERTY_NONE;
+
+   transactionSession.state =
+      TRANSACTION_IDLE;
 
    transactionSession.assetId = "";
 
