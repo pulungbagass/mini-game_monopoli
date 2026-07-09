@@ -9,6 +9,7 @@
 #include "../data/claim_session.h"
 #include "../data/transaction_session.h"
 #include "../transaction/transaction_handler.h"
+#include "../websocket/handlers/nfc_transaction_handler.h"
 
 #include <SPI.h>
 #include <Adafruit_PN532.h>
@@ -151,13 +152,8 @@ void updateNFC()
     TRANSACTION
     ====================================================== */
 
-    if (transactionSession.active)
-    {
-        handleTransactionNFC(
-            role,
-            uidString
-        );
-    }
+    handleTransactionCard(role);
+
     /* ======================================================
        Debug NFC
     ====================================================== */

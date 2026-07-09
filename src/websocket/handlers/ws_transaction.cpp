@@ -1,7 +1,7 @@
 #include "ws_transaction.h"
 
-#include "../../services/transaction_session_service.h"
 #include "../../data/transaction_session.h"
+#include "../../services/transaction_session_service.h"
 
 #include <ArduinoJson.h>
 
@@ -115,7 +115,7 @@ void sendTransactionTimeout()
 }
 
 /* ======================================================
-   HANDLE TRANSACTION
+   HANDLE MONEY TRANSFER
 ====================================================== */
 
 void handleTransaction(
@@ -123,10 +123,10 @@ void handleTransaction(
     JsonDocument &doc
 )
 {
-    String fromRole =
+    String sourceRole =
         doc["fromRole"];
 
-    String toRole =
+    String targetRole =
         doc["toRole"];
 
     int amount =
@@ -134,22 +134,20 @@ void handleTransaction(
 
     JsonDocument response;
 
-    if (!startTransaction(
-        TRANSACTION_TRANSFER,
-        PROPERTY_NONE,
-        fromRole,
-        toRole,
-        "",
-        amount))
-    {
-        response["type"] =
-            "transaction_busy";
-    }
-    else
-    {
-        response["type"] =
-            "transfer_wait_sender";
-    }
+    bool success =
+        startTransaction(
+            TRANSACTION_TRANSFER,
+            PROPERTY_NONE,
+            sourceRole,
+            targetRole,
+            "",
+            amount
+        );
+
+    response["type"] =
+        success
+        ? "transfer_wait_sender"
+        : "transaction_busy";
 
     String json;
     serializeJson(response, json);

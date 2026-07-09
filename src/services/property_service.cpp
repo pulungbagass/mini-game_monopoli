@@ -83,3 +83,15 @@ JsonObject getDevelopmentCost(const String& assetId)
 
     return asset["development_cost"];
 }
+
+int getSellValue(
+    const String& assetId)
+{
+    int purchasePrice =
+        getPurchasePrice(assetId);
+
+    if (purchasePrice <= 0)
+        return -1;
+
+    return purchasePrice / 2;
+}

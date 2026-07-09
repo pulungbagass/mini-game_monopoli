@@ -21,3 +21,4 @@ JsonObject getRentData(const String& assetId);
 
 JsonObject getDevelopmentCost(const String& assetId);
 
+int getSellValue(const String& assetId);

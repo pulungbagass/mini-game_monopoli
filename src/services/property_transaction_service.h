@@ -78,3 +78,12 @@ int calculateBuildCost(
     const String& assetId,
     bool hotel = false
 );
+
+/* ==============================================
+    Sell Property
+ =============================================== */
+
+bool sellProperty(
+    const String& assetId,
+    const String& ownerRole
+);

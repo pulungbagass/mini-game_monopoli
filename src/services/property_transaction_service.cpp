@@ -1,6 +1,10 @@
 #include "property_transaction_service.h"
 
 #include "../data/property_ownership_service.h"
+#include "../data/transaction_session.h"
+#include "../services/property_transaction_service.h"
+
+#include "../transaction/property_transaction_executor.h"
 
 #include "property_service.h"
 #include "transaction_service.h"
@@ -720,3 +724,48 @@ bool sellHotel(
    Sell Property
 ====================================================== */
 
+bool sellProperty(
+    const String& assetId,
+    const String& ownerRole)
+{
+    if (!playerExists(ownerRole))
+        return false;
+
+    if (!isOwnedBy(
+            assetId,
+            ownerRole))
+    {
+        return false;
+    }
+
+    PropertyOwnership* ownership =
+        getOwnership(assetId);
+    if (ownership == nullptr)
+        return false;
+    if (ownership->mortgaged)
+        return false;
+    if (ownership->houseCount > 0)
+        return false;
+
+    if (ownership->hotel)
+        return false;
+    int sellValue =
+        getSellValue(assetId);
+
+    if (sellValue <= 0)
+        return false;
+    if (!clearOwner(assetId))
+        return false;
+
+    if (!addMoney(
+            ownerRole,
+            sellValue))
+    {
+        setOwner(
+            assetId,
+            ownerRole);
+        return false;
+    }
+
+    return true;
+}

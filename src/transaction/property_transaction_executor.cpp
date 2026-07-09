@@ -10,21 +10,26 @@ bool executePropertyTransaction()
     switch (transactionSession.propertyAction)
     {
         case PROPERTY_BUY:
+
             success = buyProperty(
                 transactionSession.assetId,
                 transactionSession.sourceRole
             );
+
             break;
 
         case PROPERTY_PAY_RENT:
+
             success = payRent(
                 transactionSession.sourceRole,
                 transactionSession.assetId,
                 transactionSession.amount
             );
+
             break;
 
         case PROPERTY_MORTGAGE:
+
             success = mortgageProperty(
                 transactionSession.assetId
             );
