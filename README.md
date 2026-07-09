@@ -1,4 +1,4 @@
-```markdown
+
 # 🎲 Hybrid Smart Monopoly Board Game
 
 > **Menghubungkan interaksi fisik papan Monopoli tradisional dengan kecanggihan sistem digital real-time.** > ESP32 bertindak sebagai *Single Source of Truth* (Otoritas Utama), sementara browser pada perangkat pemain murni berfungsi sebagai antarmuka klien (*client interface*).
