@@ -7,6 +7,10 @@
 #include "display/oled_display.h"
 #include "notification/notification.h"
 #include "controllers/transaction_controller.h"
+#include "services/property_service.h"
+#include "services/property_transaction_service.h"
+#include "services/ownership_service.h"
+#include "data/property_ownership_service.h"
 
 #include "websocket/handlers/ws_broadcast.h"
 
@@ -14,23 +18,25 @@ WiFiManager wm;
 
 unsigned long lastOLEDUpdate = 0;
 
-void setup() {
-  Serial.begin(115200);
-  initNFC();
-  
+void setup()
+{
+    Serial.begin(115200);
 
-  Serial.println(
-    "SETUP JALAN SEKALI"
-  );
+    initNFC();
 
-  initOLED();
-  notificationBegin();
-  showIP("Connecting...");
-  wm.setConfigPortalBlocking(false);
-  // wm.setConfigPortalTimeout(180);
-  wm.setDebugOutput(false);
-  wm.autoConnect("ESP32-Setup");
-  initWebServer();
+    initOLED();
+    notificationBegin();
+
+    showIP("Connecting...");
+
+    wm.setConfigPortalBlocking(false);
+    wm.setDebugOutput(false);
+    wm.autoConnect("ESP32-Setup");
+
+    initWebServer();
+    
+    initPropertyOwnership();
+    
 }
 
 void loop() {

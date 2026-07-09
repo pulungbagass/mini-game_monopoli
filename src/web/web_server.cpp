@@ -4,6 +4,10 @@
 #include "../routes/api_routes.h"
 #include "../websocket/ws_manager.h"
 #include "../repositories/monopoly_repository.h"
+#include "../data/property_ownership_service.h"
+#include "../services/property_service.h"
+#include "../services/property_transaction_service.h"
+
 #include <ArduinoJson.h>
 
 #include <WiFi.h>
@@ -44,6 +48,8 @@ void initWebServer() {
       Serial.println("Monopoly Repository Loaded");
   }
 
+  
+    
 
   /* =========================
      STATIC FILE

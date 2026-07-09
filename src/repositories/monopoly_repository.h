@@ -6,19 +6,6 @@
 
 bool loadMonopolyRepository();
 
-JsonObject getAssetById(const String& assetId);
-JsonObject getAssetByName(const String& assetName);
-
-JsonObject getCornerByName(const String& cornerName);
-
-JsonObject getTaxByName(const String& taxName);
-
-JsonObject getChanceCard(int index);
-
-JsonObject getCommunityChestCard(int index);
-
-int getAssetCount();
-int getChanceCount();
-int getCommunityChestCount();
+JsonDocument& getMonopolyRepository();
 
 #endif

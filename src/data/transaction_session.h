@@ -71,4 +71,26 @@ extern TransactionSession transactionSession;
 
 void clearTransactionSession();
 
+void setTransactionState(
+    TransactionState state
+);
+
+bool nextTransactionState();
+
+void resetTransactionVerification();
+
+void verifyTransactionSender();
+
+void verifyTransactionReceiver();
+
+bool isWaitingSender();
+
+bool isWaitingReceiver();
+
+bool isTransactionProcessing();
+
+bool isTransactionSuccess();
+
+bool isTransactionFailed();
+
 #endif

@@ -8,8 +8,7 @@
 bool startTransaction(
     const String& sourceRole,
     const String& targetRole,
-    int amount
-)
+    int amount)
 {
     if (transactionSession.active)
         return false;
@@ -18,17 +17,16 @@ bool startTransaction(
 
     transactionSession.active = true;
 
-    transactionSession.state =
-        TRANSACTION_WAIT_SENDER;
+    transactionSession.sourceRole = sourceRole;
+    transactionSession.targetRole = targetRole;
 
-    transactionSession.sourceRole =
-        sourceRole;
+    transactionSession.amount = amount;
+    transactionSession.startTime = millis();
 
-    transactionSession.targetRole =
-        targetRole;
+    resetTransactionVerification();
 
-    transactionSession.amount =
-        amount;
+    setTransactionState(
+        TRANSACTION_WAIT_SENDER);
 
     return true;
 }
@@ -36,32 +34,28 @@ bool startTransaction(
 /* ======================================================
    Cancel
 ====================================================== */
-
 void cancelTransaction()
 {
-    Serial.println();
-    Serial.println("TRANSACTION CANCELLED");
+    if (!transactionSession.active)
+        return;
 
-    finishTransaction();
+    setTransactionState(TRANSACTION_FAILED);
+
+    clearTransactionSession();
 }
-
-/* ======================================================
-   Finish
-====================================================== */
-
 /* ======================================================
    Finish
 ====================================================== */
 
 void finishTransaction()
 {
-    Serial.println();
-    Serial.println("========== TRANSACTION END ==========");
+    if (!transactionSession.active)
+        return;
+
+    setTransactionState(
+        TRANSACTION_SUCCESS);
 
     clearTransactionSession();
-
-    Serial.println("SESSION CLEARED");
-    Serial.println("=====================================");
 }
 
 /* ======================================================
@@ -71,4 +65,66 @@ void finishTransaction()
 bool isTransactionActive()
 {
     return transactionSession.active;
+}
+
+
+/* ======================================================
+   Verify Sender
+====================================================== */
+
+bool verifySender(
+    const String& role)
+{
+    if (!transactionSession.active)
+        return false;
+
+    if (!isWaitingSender())
+        return false;
+
+    if (transactionSession.sourceRole != role)
+        return false;
+
+    verifyTransactionSender();
+
+    nextTransactionState();
+
+    return true;
+}
+
+/* ======================================================
+   Verify Receiver
+====================================================== */
+
+bool verifyReceiver(
+    const String& role)
+{
+    if (!transactionSession.active)
+        return false;
+
+    if (!isWaitingReceiver())
+        return false;
+
+    if (transactionSession.targetRole != role)
+        return false;
+
+    verifyTransactionReceiver();
+
+    nextTransactionState();
+
+    return true;
+}
+
+/* ======================================================
+   Process Transaction
+====================================================== */
+
+bool processTransaction()
+{
+    if (!transactionSession.active)
+        return false;
+
+    if (!isTransactionProcessing())
+        return false;
+
+    return true;
 }
