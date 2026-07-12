@@ -239,6 +239,10 @@ function resetTransferForm() {
   console.log("TRANSFER FORM RESET");
 }
 
+// /* =========================
+//    CANCEL BUTTON
+// ========================= */
+
 function bindCancelButton() {
   const button = document.getElementById("cancelTransferButton");
 

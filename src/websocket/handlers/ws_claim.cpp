@@ -1,6 +1,10 @@
 #include "ws_claim.h"
 #include "../../data/claim_session.h"
 
+#include <ArduinoJson.h>
+
+extern AsyncWebSocket ws;
+
 /* ======================================================
    Claim Session
 ====================================================== */
@@ -22,6 +26,8 @@ void handleClaim(
 
     claimSession.waiting = true;
 
+    claimSession.startTime = millis();
+
     Serial.println();
     Serial.println("===== CLAIM REQUEST =====");
 
@@ -33,4 +39,22 @@ void handleClaim(
 
     Serial.println("STATUS : WAITING NFC TAP");
     Serial.println();
+}
+
+/* ======================================================
+   Claim Timeout
+====================================================== */
+
+void sendClaimTimeout()
+{
+    JsonDocument doc;
+
+    doc["type"] = "claim_timeout";
+
+    doc["role"] = claimSession.role;
+
+    String json;
+    serializeJson(doc, json);
+
+    ws.textAll(json);
 }

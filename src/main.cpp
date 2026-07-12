@@ -7,6 +7,7 @@
 #include "display/oled_display.h"
 #include "notification/notification.h"
 #include "controllers/transaction_controller.h"
+#include "controllers/claim_controller.h"
 #include "services/property_service.h"
 #include "services/property_transaction_service.h"
 #include "services/ownership_service.h"
@@ -57,6 +58,8 @@ void loop() {
   }
 
   updateTransaction();
+
+  updateClaimSession();
 
   /* =========================
      OLED UPDATE

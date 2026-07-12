@@ -67,6 +67,20 @@ bool executePropertyTransaction()
             );
             break;
 
+        case PROPERTY_SELL:
+            success = sellProperty(
+                transactionSession.assetId,
+                transactionSession.sourceRole
+            );
+            break;
+        
+        case PROPERTY_TRANSFER:
+            success = transferProperty(
+                transactionSession.assetId,
+                transactionSession.targetRole
+            );
+            break;
+
         default:
             success = false;
             break;

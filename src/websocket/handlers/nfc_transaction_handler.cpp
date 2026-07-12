@@ -16,6 +16,14 @@ bool handleTransactionCard(
     {
         if (!verifySender(role))
             return false;
+
+        if (transactionSession.targetVerified &&
+            isWaitingReceiver())
+        {
+            nextTransactionState();
+            executeTransaction();
+        }
+
         return true;
     }
 

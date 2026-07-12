@@ -10,4 +10,6 @@ void handleClaim(
     JsonDocument &doc
 );
 
+void sendClaimTimeout();
+
 #endif

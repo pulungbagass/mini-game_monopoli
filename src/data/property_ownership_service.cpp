@@ -2,6 +2,9 @@
 
 #include "../repositories/monopoly_repository.h"
 #include "../services/property_service.h"
+#include "property_ownership_data.h"
+#include "../events/game_event.h"
+
 
 void initPropertyOwnership()
 {
@@ -38,6 +41,7 @@ void resetPropertyOwnership()
         propertyOwnership[i].houseCount = 0;
         propertyOwnership[i].hotel = false;
     }
+    eventPropertyReset("");
 }
 
 PropertyOwnership* getOwnership(
@@ -268,22 +272,16 @@ bool buildHotelState(
 {
     PropertyOwnership* property =
         getOwnership(assetId);
-
-    if (property == nullptr)
+    if(property == nullptr)
         return false;
-
-    if (!property->owned)
+    if(!property->owned)
         return false;
-
-    if (property->mortgaged)
+    if(property->mortgaged)
         return false;
-
-    if (property->hotel)
+    if(property->hotel)
         return false;
-
-    if (property->houseCount != 4)
+    if(property->houseCount != 4)
         return false;
-
     property->houseCount = 0;
     property->hotel = true;
 
@@ -296,10 +294,13 @@ bool sellHotelState(
     PropertyOwnership* property =
         getOwnership(assetId);
 
-    if (property == nullptr)
+    if(property == nullptr)
         return false;
 
-    if (!property->hotel)
+    if(!property->owned)
+        return false;
+
+    if(!property->hotel)
         return false;
 
     property->hotel = false;
@@ -502,4 +503,150 @@ bool canReleaseMortgageState(
         return false;
 
     return property->mortgaged;
+}
+
+
+bool canSellHouseState(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if (property == nullptr)
+        return false;
+
+    if (!property->owned)
+        return false;
+
+    if (property->mortgaged)
+        return false;
+
+    if (property->houseCount <= 0)
+        return false;
+
+    if (property->hotel)
+        return false;
+
+    return true;
+}
+
+bool canSellHotelState(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if (property == nullptr)
+        return false;
+
+    if (!property->owned)
+        return false;
+
+    if (property->mortgaged)
+        return false;
+
+    if (!property->hotel)
+        return false;
+
+    return true;
+}
+
+bool canSellPropertyState(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if (property == nullptr)
+        return false;
+
+    if (!property->owned)
+        return false;
+
+    if (property->mortgaged)
+        return false;
+
+    if (property->houseCount > 0)
+        return false;
+
+    if (property->hotel)
+        return false;
+
+    return true;
+}
+
+
+bool canTransferPropertyState(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if(property == nullptr)
+        return false;
+
+    if(!property->owned)
+        return false;
+
+    if(property->mortgaged)
+        return false;
+
+    if(property->houseCount > 0)
+        return false;
+
+    if(property->hotel)
+        return false;
+
+    return true;
+}
+
+
+bool canPayRentState(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if(property == nullptr)
+        return false;
+
+    if(!property->owned)
+        return false;
+
+    if(property->mortgaged)
+        return false;
+
+    return true;
+}
+
+bool canReceiveRentState(
+    const String& assetId)
+{
+    return canPayRentState(assetId);
+}
+
+bool isDeveloped(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+    if(property == nullptr)
+        return false;
+    return property->houseCount > 0 ||
+        property->hotel;
+}
+
+bool resetDevelopment(
+    const String& assetId)
+{
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if(property == nullptr)
+        return false;
+
+    property->houseCount = 0;
+    property->hotel = false;
+
+    return true;
 }

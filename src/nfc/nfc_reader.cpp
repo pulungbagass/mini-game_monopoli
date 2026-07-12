@@ -105,6 +105,9 @@ void updateNFC()
                 Serial.println("ROLE ALREADY OWNED");
 
                 notifyClaimFailed();
+                claimSession.waiting = false;
+                claimSession.role = "";
+                claimSession.deviceId = "";
             }
             else
             {
@@ -112,34 +115,28 @@ void updateNFC()
                     role,
                     claimSession.deviceId
                 );
-
                 Serial.println("CLAIM SUCCESS");
-
                 sendAccessGranted(
                     role,
                     claimSession.deviceId
                 );
-
                 notifyClaimSuccess();
-
                 Serial.print("ROLE  : ");
                 Serial.println(role);
-
                 Serial.print("OWNER : ");
                 Serial.println(claimSession.deviceId);
+
+                claimSession.waiting = false;
+                claimSession.role = "";
+                claimSession.deviceId = "";
             }
         }
         else
         {
             Serial.println("CLAIM FAILED");
             Serial.println("WRONG CARD");
-
             notifyClaimFailed();
         }
-
-        claimSession.waiting = false;
-        claimSession.role = "";
-        claimSession.deviceId = "";
 
         /* ======================================================
            Debug Ownership
@@ -159,14 +156,10 @@ void updateNFC()
     ====================================================== */
 
     Serial.println("===== NFC DETECTED =====");
-
     Serial.print("ROLE : ");
     Serial.println(role);
-
     Serial.print("UID  : ");
     Serial.println(uidString);
-
     Serial.println();
-
     delay(1000);
 }

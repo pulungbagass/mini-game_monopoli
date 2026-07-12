@@ -183,7 +183,7 @@ void handleTransactionStart(
         "";
 
     /* =========================================
-       BANK DOESN'T NEED NFC
+       BANK DOESN'T NEED NFC (AS SOURCE)
     ========================================= */
 
     if (sourceRole == "BANK")
@@ -192,6 +192,15 @@ void handleTransactionStart(
 
         transactionSession.state =
             TRANSACTION_WAIT_RECEIVER;
+    }
+
+    /* =========================================
+       BANK DOESN'T NEED NFC (AS TARGET)
+    ========================================= */
+
+    if (targetRole == "BANK")
+    {
+        transactionSession.targetVerified = true;
     }
 
     /* =========================================

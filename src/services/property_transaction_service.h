@@ -87,3 +87,53 @@ bool sellProperty(
     const String& assetId,
     const String& ownerRole
 );
+
+bool transferProperty(
+    const String& assetId,
+    const String& newOwner
+);
+
+bool clearPropertyOwnership(
+    const String& assetId
+);
+
+bool destroyDevelopment(
+    const String& assetId
+);
+
+String getPropertyOwner(
+    const String& assetId
+);
+
+bool propertyOwned(
+    const String& assetId
+);
+
+int calculateSellValue(
+    const String& assetId
+);
+
+int calculateReleaseCost(
+    const String& assetId
+);
+
+int calculateSellHouseRefund(
+    const String& assetId
+);
+
+int calculateSellHotelRefund(
+    const String& assetId
+);
+
+bool isPropertyOwned(
+    const String& assetId
+);
+
+struct PropertyState
+{
+    bool owned;
+    bool mortgaged;
+    uint8_t houseCount;
+    bool hotel;
+    String ownerRole;
+};
