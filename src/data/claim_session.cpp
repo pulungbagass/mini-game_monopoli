@@ -13,8 +13,7 @@ ClaimSession claimSession;
 void clearClaimSession()
 {
     claimSession.waiting = false;
-
     claimSession.role = "";
-
     claimSession.deviceId = "";
+    claimSession.startTime = 0;
 }

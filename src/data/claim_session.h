@@ -14,6 +14,8 @@ struct ClaimSession
     String role;
 
     String deviceId;
+
+    unsigned long startTime;
 };
 
 extern ClaimSession claimSession;

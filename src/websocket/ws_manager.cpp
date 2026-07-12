@@ -10,6 +10,8 @@
 #include "handlers/ws_transaction_start.h"
 #include "handlers/ws_transaction.h"
 #include "handlers/ws_transaction_cancel.h"
+#include "handlers/ws_property.h"
+#include "handlers/ws_property_broadcast.h"
 
 #include "../web/web_server.h"
 
@@ -62,6 +64,8 @@ void onWebSocketEvent(
             client->text(
                 "CONNECTED TO ESP32"
             );
+
+            broadcastAllProperties();
 
             break;
 
@@ -212,6 +216,99 @@ void onWebSocketEvent(
             ) {
 
                 handleAccess(
+                    client,
+                    doc
+                );
+            }
+
+
+            /* =========================
+               PROPERTY
+            ========================= */
+
+            if (
+                msgType ==
+                "buy_property"
+            ) {
+
+                handleBuyProperty(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "sell_property"
+            ) {
+
+                handleSellProperty(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "mortgage_property"
+            ) {
+
+                handleMortgageProperty(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "release_mortgage"
+            ) {
+
+                handleReleaseMortgage(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "build_house"
+            ) {
+
+                handleBuildHouse(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "sell_house"
+            ) {
+
+                handleSellHouse(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "build_hotel"
+            ) {
+
+                handleBuildHotel(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "sell_hotel"
+            ) {
+
+                handleSellHotel(
                     client,
                     doc
                 );
