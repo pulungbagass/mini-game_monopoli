@@ -45,6 +45,10 @@ bool hasHotel(
     const String& assetId
 );
 
+bool isDeveloped(
+    const String& assetId
+);
+
 /* ======================================================
    Ownership
 ====================================================== */
@@ -82,7 +86,7 @@ bool setMortgage(
 );
 
 /* ======================================================
-   Building
+   Building State
 ====================================================== */
 
 bool buildHouseState(
@@ -101,6 +105,10 @@ bool sellHotelState(
     const String& assetId
 );
 
+bool resetDevelopment(
+    const String& assetId
+);
+
 /* ======================================================
    Statistics
 ====================================================== */
@@ -111,7 +119,7 @@ int countOwnedProperties(
 
 int countOwnedColorGroup(
     const String& role,
-    const String& color_group
+    const String& colorGroup
 );
 
 int countOwnedRailroad(
@@ -130,11 +138,27 @@ bool canBuyPropertyState(
     const String& assetId
 );
 
+bool canSellPropertyState(
+    const String& assetId
+);
+
+bool canTransferPropertyState(
+    const String& assetId
+);
+
 bool canBuildHouseState(
     const String& assetId
 );
 
+bool canSellHouseState(
+    const String& assetId
+);
+
 bool canBuildHotelState(
+    const String& assetId
+);
+
+bool canSellHotelState(
     const String& assetId
 );
 
@@ -143,5 +167,17 @@ bool canMortgageState(
 );
 
 bool canReleaseMortgageState(
+    const String& assetId
+);
+
+/* ======================================================
+   Rent Validation
+====================================================== */
+
+bool canPayRentState(
+    const String& assetId
+);
+
+bool canReceiveRentState(
     const String& assetId
 );

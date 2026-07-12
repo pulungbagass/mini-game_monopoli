@@ -2,9 +2,8 @@
 
 #include "../data/property_ownership_service.h"
 #include "../data/transaction_session.h"
-#include "../services/property_transaction_service.h"
+#include "../events/game_event.h"
 
-#include "../transaction/property_transaction_executor.h"
 
 #include "property_service.h"
 #include "transaction_service.h"
@@ -27,17 +26,6 @@ int calculateBuildCost(
     return hotel
         ? development["hotel_cost"] | 0
         : development["house_cost"] | 0;
-}
-
-/* ======================================================
-   Can Build House
-====================================================== */
-
-bool canBuildHouse(
-    const String& assetId
-)
-{
-    return canBuildHouseState(assetId);
 }
 
 
@@ -221,6 +209,8 @@ bool buyProperty(
         return false;
     }
 
+    eventPropertyBought(assetId);
+
     /* ==========================================
        Step 6 : Success
     ========================================== */
@@ -238,6 +228,9 @@ bool payRent(
     int diceValue
 )
 {
+    if (!canPayRentState(assetId))
+    return false;
+
     /* ==========================================
        Step 1 : Validate Player
     ========================================== */
@@ -263,12 +256,6 @@ bool payRent(
         getOwnership(assetId);
 
     if (ownership == nullptr)
-        return false;
-
-    if (!ownership->owned)
-        return false;
-
-    if (ownership->mortgaged)
         return false;
 
     String ownerRole =
@@ -379,6 +366,8 @@ bool mortgageProperty(
        Step 6 : Success
     ========================================== */
 
+    eventPropertyMortgaged(assetId);
+
     return true;
 }
 
@@ -449,6 +438,8 @@ bool releaseMortgage(
        Step 6 : Success
     ========================================== */
 
+    eventPropertyReleased(assetId);
+
     return true;
 }
 
@@ -465,7 +456,7 @@ bool buildHouse(
        Step 1 : Validate Property
     ========================================== */
 
-    if (!canBuildHouse(assetId))
+    if (!canBuildHouseState(assetId))
         return false;
 
     /* ==========================================
@@ -518,6 +509,8 @@ bool buildHouse(
        Step 6 : Success
     ========================================== */
 
+    eventHouseBuilt(assetId);
+
     return true;
 }
 
@@ -530,7 +523,14 @@ bool sellHouse(
 )
 {
     /* ==========================================
-       Step 1 : Get Ownership
+       Step 1 : Validate
+    ========================================== */
+
+    if (!canSellHouseState(assetId))
+        return false;
+
+    /* ==========================================
+       Step 2 : Get Ownership
     ========================================== */
 
     PropertyOwnership* ownership =
@@ -540,29 +540,29 @@ bool sellHouse(
         return false;
 
     /* ==========================================
-       Step 2 : Get Sell Value
+       Step 3 : Calculate Refund
     ========================================== */
 
-    int value =
-        calculateBuildCost(assetId) / 2;
+    int refund =
+        calculateSellHouseRefund(assetId);
 
-    if (value <= 0)
+    if (refund <= 0)
         return false;
 
     /* ==========================================
-       Step 3 : Sell House
+       Step 4 : Sell House
     ========================================== */
 
     if (!sellHouseState(assetId))
         return false;
 
     /* ==========================================
-       Step 4 : Give Money
+       Step 5 : Give Money
     ========================================== */
 
     if (!addMoney(
             ownership->ownerRole,
-            value))
+            refund))
     {
         // Rollback
 
@@ -572,21 +572,12 @@ bool sellHouse(
     }
 
     /* ==========================================
-       Step 5 : Success
+       Step 6 : Success
     ========================================== */
 
+    eventHouseSold(assetId);
+
     return true;
-}
-
-/* ======================================================
-   Can Build Hotel
-====================================================== */
-
-bool canBuildHotel(
-    const String& assetId
-)
-{
-    return canBuildHotelState(assetId);
 }
 
 /* ======================================================
@@ -601,7 +592,7 @@ bool buildHotel(
        Step 1 : Validate Property
     ========================================== */
 
-    if (!canBuildHotel(assetId))
+    if (!canBuildHotelState(assetId))
         return false;
 
     /* ==========================================
@@ -615,7 +606,7 @@ bool buildHotel(
         return false;
 
     /* ==========================================
-       Step 3 : Get Build Cost
+       Step 3 : Get Hotel Cost
     ========================================== */
 
     int cost =
@@ -657,6 +648,8 @@ bool buildHotel(
        Step 6 : Success
     ========================================== */
 
+    eventHotelBuilt(assetId);
+
     return true;
 }
 
@@ -668,6 +661,10 @@ bool sellHotel(
     const String& assetId
 )
 {
+
+    if (!canSellHotelState(assetId))
+        return false;
+
     /* ==========================================
        Step 1 : Get Ownership
     ========================================== */
@@ -683,10 +680,7 @@ bool sellHotel(
     ========================================== */
 
     int value =
-        calculateBuildCost(
-            assetId,
-            true
-        ) / 2;
+        calculateSellHotelRefund(assetId);
 
     if (value <= 0)
         return false;
@@ -717,6 +711,8 @@ bool sellHotel(
        Step 5 : Success
     ========================================== */
 
+    eventHotelSold(assetId);
+
     return true;
 }
 
@@ -728,6 +724,10 @@ bool sellProperty(
     const String& assetId,
     const String& ownerRole)
 {
+
+    if (!canSellPropertyState(assetId))
+    return false;
+
     if (!playerExists(ownerRole))
         return false;
 
@@ -740,15 +740,10 @@ bool sellProperty(
 
     PropertyOwnership* ownership =
         getOwnership(assetId);
+
     if (ownership == nullptr)
         return false;
-    if (ownership->mortgaged)
-        return false;
-    if (ownership->houseCount > 0)
-        return false;
 
-    if (ownership->hotel)
-        return false;
     int sellValue =
         getSellValue(assetId);
 
@@ -767,5 +762,102 @@ bool sellProperty(
         return false;
     }
 
+    eventPropertySold(assetId);
+
     return true;
+}
+
+PropertyState getPropertyState(
+    const String& assetId)
+{
+    PropertyState state;
+    PropertyOwnership* property =
+        getOwnership(assetId);
+
+    if(property == nullptr)
+    {
+        state.owned = false;
+        state.mortgaged = false;
+        state.houseCount = 0;
+        state.hotel = false;
+        state.ownerRole = "";
+        return state;
+    }
+
+    state.owned =
+        property->owned;
+    state.mortgaged =
+        property->mortgaged;
+    state.houseCount =
+        property->houseCount;
+    state.hotel =
+        property->hotel;
+    state.ownerRole =
+        property->ownerRole;
+    return state;
+}
+
+
+bool transferProperty(
+    const String& assetId,
+    const String& newOwner)
+{
+    if(!playerExists(newOwner))
+        return false;
+
+    if(!canTransferPropertyState(assetId))
+        return false;
+
+    return transferOwnership(
+        assetId,
+        newOwner
+    );
+
+    eventPropertyTransferred(assetId);
+    return true;
+}
+
+bool clearPropertyOwnership(
+    const String& assetId)
+{
+    return clearOwner(assetId);
+}
+
+bool destroyDevelopment(
+    const String& assetId)
+{
+    return resetDevelopment(assetId);
+}
+
+bool propertyOwned(
+    const String& assetId)
+{
+    return hasOwner(assetId);
+}
+
+int calculateSellValue(
+    const String& assetId)
+{
+    return getSellValue(assetId);
+}
+
+int calculateReleaseCost(
+    const String& assetId)
+{
+    return getReleaseCost(assetId);
+}
+
+int calculateSellHouseRefund(
+    const String& assetId)
+{
+    return calculateBuildCost(assetId) / 2;
+}
+
+int calculateSellHotelRefund(
+    const String& assetId)
+{
+    return calculateBuildCost(
+        assetId,
+        true
+    ) / 2;
 }

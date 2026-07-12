@@ -11,20 +11,15 @@ function renderHomePage() {
     <section
       class="bank-card"
       id="bankButton">
-
       <div class="bank-left">
-
         <div class="bank-icon">
           🏦
         </div>
-
         <div class="bank-info">
           <h2>BANK</h2>
           <p>Total Money : $99999999</p>
         </div>
-
       </div>
-
     </section>
 
     <!-- PLAYER -->
