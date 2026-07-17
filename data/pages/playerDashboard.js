@@ -1,10 +1,5 @@
-/* =========================
-   PLAYER DASHBOARD
-========================= */
-
 function renderPlayerDashboard() {
   const player = getPlayer(window.appState.activeRole);
-
   if (!player) {
     return `
     <div class="page-card">
@@ -12,7 +7,6 @@ function renderPlayerDashboard() {
     </div>
     `;
   }
-
   return `
 
         <button class="back-button">
@@ -97,5 +91,4 @@ function renderPlayerDashboard() {
         </div>
     `;
 }
-
 registerPage("playerDashboard", renderPlayerDashboard);

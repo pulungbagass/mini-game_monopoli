@@ -1,7 +1,3 @@
-/* =========================
-   PRIVATE ROUTER
-========================= */
-
 document.addEventListener("click", (e) => {
     const card = e.target.closest(".system-card");
     if (!card) return;

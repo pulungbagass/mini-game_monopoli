@@ -1,16 +1,6 @@
-/* =========================
-   REGISTER PAGE
-========================= */
-
 registerPage("transferPage", renderTransferPage);
-
-/* =========================
-   RENDER
-========================= */
-
 function renderTransferPage() {
   setTimeout(initTransferPage, 0);
-
   return `
     <button class="back-button">
       ← BACK

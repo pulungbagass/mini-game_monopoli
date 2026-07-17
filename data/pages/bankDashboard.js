@@ -1,7 +1,3 @@
-/* =========================
-   BANK DASHBOARD
-========================= */
-
 function renderBankDashboard() {
     return `
         <button class="back-button">
@@ -85,7 +81,6 @@ function renderBankDashboard() {
         </div>
     `;
 }
-
 registerPage(
     "bankDashboard",
     renderBankDashboard

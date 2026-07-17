@@ -1,787 +1,407 @@
-/* =========================
-   ROOT
-========================= */
-
 :root {
   --bg-board: #cee6d0;
-
   --primary-red: #ef4444;
   --primary-blue: #3b82f6;
   --primary-yellow: #facc15;
   --primary-orange: #f97316;
-
   --ink-black: #1a1a1a;
   --paper-white: #ffffff;
-
   --font-main: "Arial Black", sans-serif;
   --font-body: Arial, sans-serif;
-
   --border-thick: 4px solid var(--ink-black);
   --border-thin: 2px solid var(--ink-black);
-
   --shadow-playful: 6px 6px 0px var(--ink-black);
   --shadow-active: 2px 2px 0px var(--ink-black);
 }
-
-/* =========================
-   RESET
-========================= */
-
 * {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Standard */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-/* =========================
-   BODY
-========================= */
-
 body {
   background: var(--bg-board);
-
   font-family: var(--font-body);
-
   padding: 16px;
 }
-
-/* =========================
-   CONTAINER
-========================= */
-
 .container {
   max-width: 500px;
-
   margin: auto;
 }
-
-/* =========================
-   TOPBAR
-========================= */
-
 .topbar {
   background: var(--primary-red);
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 16px;
-
   margin-bottom: 24px;
-
   text-align: center;
 }
-
 .topbar h1 {
   color: white;
-
   font-family: var(--font-main);
-
   font-size: 24px;
 }
-
 .topbar p {
   margin-top: 8px;
-
   color: white;
-
   font-weight: bold;
 }
-
-/* =========================
-   PAGE
-========================= */
-
 .page {
   display: none;
 }
-
 .page.active {
   display: block;
 }
-
-/* =========================
-   SECTION TITLE
-========================= */
-
 .section-title {
   margin-top: 24px;
   margin-bottom: 12px;
 }
-
 .section-title h3 {
   font-family: var(--font-main);
-
   font-size: 20px;
 }
-
-/* =========================
-   BANK CARD
-========================= */
-
 .bank-card {
   background: var(--primary-orange);
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 16px;
-
   cursor: pointer;
-
   transition: 0.15s ease;
 }
-
 .bank-card:hover {
   transform: translate(-2px, -2px);
 }
-
 .bank-card:active {
   transform: translate(4px, 4px);
-
   box-shadow: var(--shadow-active);
 }
-
 .bank-left {
   display: flex;
-
   align-items: center;
-
   gap: 14px;
 }
-
 .bank-icon {
   width: 60px;
   height: 60px;
-
   background: white;
-
   border: var(--border-thick);
-
   display: flex;
-
   align-items: center;
   justify-content: center;
-
   font-size: 28px;
 }
-
 .bank-info h2 {
   font-family: var(--font-main);
-
   font-size: 22px;
 }
-
 .bank-info p {
   margin-top: 4px;
-
   font-weight: bold;
 }
-
-/* =========================
-   PLAYER CARD
-========================= */
-
 .player-card {
   background: white;
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 16px;
-
   margin-bottom: 10px;
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   cursor: pointer;
-
   transition: 0.15s ease;
 }
-
 .player-card:hover {
   transform: translate(-2px, -2px);
 }
-
 .player-card:active {
   transform: translate(4px, 4px);
-
   box-shadow: var(--shadow-active);
 }
-
-/* =========================
-   PLAYER DASHBOARD CARD
-========================= */
-
 .player-dashboard-card {
   background: white;
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 16px;
 }
-
-/* =========================
-   PLAYER DASHBOARD HEADER
-========================= */
-
 .player-dashboard-header {
   display: flex;
-
   align-items: center;
-
   gap: 14px;
 }
-
-/* =========================
-   PLAYER DASHBOARD STATS
-========================= */
-
 .player-dashboard-stats {
   margin-top: 18px;
-
   display: grid;
-
   grid-template-columns: repeat(3, 1fr);
-
   gap: 12px;
 }
-
-/* =========================
-   PLAYER DASHBOARD STAT
-========================= */
-
 .player-dashboard-stat {
   background: #f3f3f3;
-
   border: var(--border-thin);
-
   padding: 12px;
-
   display: flex;
-
   flex-direction: column;
-
   justify-content: center;
-
   align-items: center;
-
   gap: 6px;
-
   font-weight: bold;
-
   text-align: center;
 }
-
 .player-dashboard-stat strong {
   font-size: 22px;
 }
-
 .player-dashboard-stat small {
   font-size: 11px;
-
   letter-spacing: 0.5px;
 }
-
-/* =========================
-   DASHBOARD COLORS
-========================= */
-
 .player-dashboard-stat.house {
   background: white;
 }
-
 .player-dashboard-stat.hotel {
   background: var(--primary-red);
-
   color: white;
 }
-
 .player-dashboard-stat.property {
   background: var(--primary-yellow);
 }
-
-/* =========================
-   PLAYER LEFT
-========================= */
-
 .player-left {
   display: flex;
-
   align-items: center;
-
   gap: 14px;
 }
-
-/* =========================
-   PLAYER AVATAR
-========================= */
-
 .player-avatar {
   width: 60px;
   height: 60px;
-
   background: var(--primary-blue);
-
   border: var(--border-thick);
-
   display: flex;
-
   justify-content: center;
-
   align-items: center;
-
   font-family: var(--font-main);
-
   font-size: 20px;
-
   color: white;
 }
-
-/* =========================
-   PLAYER INFO
-========================= */
-
 .player-info h2 {
   font-size: 20px;
 }
-
 .player-info p {
   margin-top: 4px;
-
   font-weight: bold;
 }
-
-/* =========================
-   PLAYER UID
-========================= */
-
 .player-uid {
   display: inline-block;
-
   margin-top: 8px;
-
   padding: 4px 8px;
-
   background: #e5e5e5;
-
   border: var(--border-thin);
-
   font-size: 12px;
-
   font-weight: bold;
 }
-
-/* =========================
-   PLAYER RIGHT
-========================= */
-
 .player-right {
   display: flex;
-
   flex-direction: column;
-
   gap: 10px;
 }
-
-/* =========================
-   PROPERTY COUNT
-========================= */
-
 .property-count {
   border: var(--border-thin);
-
   padding: 6px 10px;
-
   font-weight: bold;
 }
-
 .house {
   background: white;
 }
-
 .hotel {
   background: var(--primary-red);
-
   color: white;
 }
-
-/* =========================
-   SYSTEM GRID
-========================= */
-
 .system-grid {
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 16px;
 }
-
-/* =========================
-   SYSTEM CARD
-========================= */
-
 .system-card {
   background: var(--primary-yellow);
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 20px;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 10px;
-
   min-height: 120px;
-
   font-size: 32px;
-
   font-weight: bold;
-
   cursor: pointer;
-
   transition: 0.15s ease;
 }
-
 .system-card span {
   font-size: 14px;
 }
-
 .system-card:hover {
   transform: translate(-2px, -2px);
 }
-
 .system-card:active {
   transform: translate(4px, 4px);
-
   box-shadow: var(--shadow-active);
 }
-
-/* =========================
-   PAGE CARD
-========================= */
-
 .page-card {
   background: white;
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 24px;
 }
-
-/* =========================
-   BACK BUTTON
-========================= */
-
 .back-button {
   width: 100%;
-
   background: var(--primary-blue);
-
   color: white;
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 14px;
-
   margin-bottom: 20px;
-
   font-weight: bold;
-
   cursor: pointer;
 }
-
 .back-button:active {
   transform: translate(4px, 4px);
-
   box-shadow: var(--shadow-active);
 }
-
-/* =========================
-   TRANSFER FORM
-========================= */
-
 .transfer-form {
   display: flex;
   flex-direction: column;
   gap: 14px;
-
   margin-top: 20px;
 }
-
-/* =========================
-   LABEL
-========================= */
-
 .transfer-form label {
   font-family: var(--font-main);
-
   font-size: 14px;
-
   letter-spacing: 1px;
 }
-
-/* =========================
-   INPUT
-========================= */
-
 .transfer-input {
   width: 100%;
-
   padding: 14px;
-
   background: white;
-
   border: var(--border-thick);
-
   font-size: 16px;
-
   font-weight: bold;
-
   outline: none;
-
   font-family: var(--font-body);
 }
-
 .transfer-input:focus {
   background: #fffde8;
 }
-
-/* =========================
-   READ ONLY
-========================= */
-
 .transfer-input[readonly] {
   background: #e8e8e8;
-
   color: #555;
 }
-
-/* =========================
-   SELECT
-========================= */
-
 select.transfer-input {
   cursor: pointer;
 }
-
-/* =========================
-   BUTTON
-========================= */
-
 .transfer-button {
   margin-top: 12px;
-
   background: var(--primary-orange);
-
   color: white;
-
   border: var(--border-thick);
-
   box-shadow: var(--shadow-playful);
-
   padding: 16px;
-
   font-family: var(--font-main);
-
   font-size: 18px;
-
   cursor: pointer;
-
   transition: 0.15s;
 }
-
 .transfer-button:hover {
   transform: translate(-2px, -2px);
 }
-
 .transfer-button:active {
   transform: translate(4px, 4px);
-
   box-shadow: var(--shadow-active);
 }
-
-.transfer-cancel{
-
-    margin-top:12px;
-
-    background:#ff5d5d;
-
-    color:white;
-
+.transfer-cancel {
+  margin-top: 12px;
+  background: #ff5d5d;
+  color: white;
 }
-
-/* =========================
-   PROPERTY LIST
-========================= */
-
 .property-list {
   margin-top: 16px;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 8px;
 }
-
 .property-loading {
   font-weight: bold;
-
   text-align: center;
-
   padding: 20px;
 }
-
-/* =========================
-   PROPERTY GROUP TITLE
-========================= */
-
 .property-group-title {
   background: var(--ink-black);
-
   color: white;
-
   font-family: var(--font-main);
-
   font-size: 12px;
-
   letter-spacing: 1px;
-
   padding: 8px 10px;
-
   margin-top: 10px;
 }
-
 .property-group-title:first-child {
   margin-top: 0;
 }
-
-/* =========================
-   PROPERTY ITEM
-========================= */
-
 .property-item {
   background: white;
-
   border: var(--border-thin);
-
   padding: 10px;
-
   display: flex;
-
   align-items: center;
-
   gap: 10px;
 }
-
 .property-color-chip {
   width: 14px;
   height: 32px;
-
   flex-shrink: 0;
-
   border: var(--border-thin);
 }
-
 .property-info {
   flex: 1;
-
   min-width: 0;
 }
-
 .property-info h4 {
   font-size: 13px;
-
   white-space: nowrap;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
 }
-
 .property-info p {
   margin-top: 2px;
-
   font-size: 12px;
-
   font-weight: bold;
-
   color: #555;
 }
-
 .property-right {
   display: flex;
-
   flex-direction: column;
-
   align-items: flex-end;
-
   gap: 4px;
 }
-
-/* =========================
-   PROPERTY STATUS BADGE
-========================= */
-
 .property-status {
   font-size: 10px;
-
   font-weight: bold;
-
   padding: 3px 6px;
-
   border: var(--border-thin);
-
   white-space: nowrap;
 }
-
 .property-status.available {
   background: #e5e5e5;
-
   color: #555;
 }
-
 .property-status.owned {
   background: var(--primary-blue);
-
   color: white;
 }
-
 .property-status.mortgaged {
   background: var(--primary-red);
-
   color: white;
 }
-
 .property-dev {
   font-size: 12px;
-
   font-weight: bold;
 }

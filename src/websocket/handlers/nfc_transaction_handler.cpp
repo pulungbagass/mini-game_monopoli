@@ -6,6 +6,8 @@
 
 #include "../../transaction/transaction_executor.h"
 
+#include "ws_transaction_broadcast.h"
+
 bool handleTransactionCard(
     const String& role)
 {
@@ -20,8 +22,20 @@ bool handleTransactionCard(
         if (transactionSession.targetVerified &&
             isWaitingReceiver())
         {
+            /* Shortcut: target BANK / property (tidak perlu
+               tap kedua) -> langsung proses. */
+
             nextTransactionState();
             executeTransaction();
+        }
+        else if (isWaitingReceiver())
+        {
+            /* Kasus normal player -> player: sender sudah
+               tap, sekarang giliran receiver tap.
+               Frontend perlu diberi tahu supaya banner
+               ganti dari "Tap Sender" ke "Tap Receiver". */
+
+            sendTransactionState("transaction_wait_receiver");
         }
 
         return true;

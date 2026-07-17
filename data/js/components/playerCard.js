@@ -1,12 +1,6 @@
-/* =========================
-   CREATE PLAYER CARD
-========================= */
-
 function createPlayerCard(player, index) {
   const card = document.createElement("div");
-
   card.className = "player-card";
-
   card.innerHTML = `
     <div class="player-left">
       <div class="player-avatar">
@@ -36,25 +30,15 @@ function createPlayerCard(player, index) {
       </div>
     </div>
   `;
-
   card.addEventListener("click", () => {
     requestAccess(player.role);
   });
-
   return card;
 }
-
-/* =========================
-   RENDER PLAYER LIST
-========================= */
-
 function renderPlayerList() {
   const container = document.getElementById("playerCard");
-
   if (!container) return;
-
   container.innerHTML = "";
-
   window.appState.gameState
     .filter((player) => player.role !== "BANK")
     .forEach((player, index) => {

@@ -1,7 +1,3 @@
-/* =========================
-   OPEN PRIVATE PAGE
-========================= */
-
 function openPrivatePage() {
   if (window.appState.activeRole === "BANK") {
     showPage("bankDashboard");

@@ -1,10 +1,5 @@
-/* =========================
-   HOME PAGE
-========================= */
-
 function renderHomePage() {
   console.log("HOME PAGE RENDERED");
-
   return `
     <!-- BANK -->
 
@@ -72,22 +67,10 @@ function renderHomePage() {
     </section>
   `;
 }
-
 registerPage("home", renderHomePage);
-
-/* =========================
-   HOME READY
-========================= */
-
 document.addEventListener("pageLoaded", () => {
-  /* PLAYER */
-
   renderPlayerList();
-
-  /* BANK */
-
   const bankButton = document.getElementById("bankButton");
-
   if (bankButton) {
     bankButton.addEventListener("click", () => {
       requestAccess("BANK");
