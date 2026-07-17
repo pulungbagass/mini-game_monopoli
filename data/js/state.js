@@ -51,5 +51,19 @@ window.appState = {
 
   properties: {},
 
-  propertyRules: null
+  propertyRules: null,
+
+  /* =========================
+     ACTIVE TRANSACTION TRACKING
+     (shared session di backend dipakai
+     bareng oleh transfer uang & property,
+     jadi frontend perlu tahu sedang
+     menangani yang mana)
+  ========================= */
+
+  activeTransactionKind: null, // "transfer" | "property" | null
+
+  activePropertyStatusContainer: null,
+
+  activePropertyAssetId: null
 };

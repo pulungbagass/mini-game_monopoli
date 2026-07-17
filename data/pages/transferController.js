@@ -155,6 +155,8 @@ function startTransfer() {
 
   console.log("SEND START_TRANSACTION");
 
+  window.appState.activeTransactionKind = "transfer";
+
   window.appState.socket.send(
     JSON.stringify({
       type: "start_transaction",
@@ -207,6 +209,8 @@ function renderTransactionStatus(title, message) {
 ========================= */
 
 function resetTransferForm() {
+  window.appState.activeTransactionKind = null;
+
   const myRole = window.appState.activeRole;
   const me = getPlayer(myRole);
   const fromInput = document.getElementById("transferFrom");

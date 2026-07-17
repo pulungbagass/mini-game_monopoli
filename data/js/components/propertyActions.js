@@ -1,0 +1,274 @@
+/* =========================
+   RENDER ONE PROPERTY ROW WITH ACTIONS
+   mode: "my"      -> dipakai di halaman My Property (player)
+         "manager" -> dipakai di halaman Property Manager (bank)
+========================= */
+
+function renderPropertyActionRow(rule, mode, containerId) {
+  const assetId = rule.assets_id;
+  const ownership = window.appState.properties[assetId];
+
+  const owned = ownership ? ownership.owned : false;
+  const ownerRole = ownership ? ownership.owner : "";
+  const mortgaged = ownership ? ownership.mortgaged : false;
+  const house = ownership ? ownership.house : 0;
+  const hotel = ownership ? ownership.hotel : false;
+
+  const color =
+    PROPERTY_COLORS[rule.color_group] ||
+    PROPERTY_COLORS[rule.type] ||
+    "#cccccc";
+
+  const ownerPlayer =
+    typeof getPlayer === "function" ? getPlayer(ownerRole) : null;
+
+  const ownerName = ownerPlayer ? ownerPlayer.name : ownerRole;
+
+  let buttons = "";
+
+  /* =========================
+     MANAGER MODE, BELUM DIMILIKI -> BUY
+  ========================= */
+
+  if (mode === "manager" && !owned) {
+    const players = (window.appState.gameState || []).filter(
+      (p) => p.role !== "BANK",
+    );
+
+    const options = players
+      .map((p) => `<option value="${p.role}">${p.name}</option>`)
+      .join("");
+
+    buttons = `
+      <select
+        class="transfer-input property-buyer-select"
+        id="buyer-${assetId}"
+        style="padding:6px;font-size:12px;"
+      >
+        ${options}
+      </select>
+      <button
+        class="property-btn buy"
+        data-property-action="buy"
+        data-asset-id="${assetId}"
+        data-container="${containerId}"
+        data-buyer-select="buyer-${assetId}"
+      >BUY</button>
+    `;
+  }
+
+  /* =========================
+     DIMILIKI -> AKSI OWNER
+     (my mode: hanya kalau ownerRole == activeRole,
+      manager mode: bank bisa aksi utk owner manapun)
+  ========================= */
+
+  if (owned && (mode === "manager" || ownerRole === window.appState.activeRole)) {
+    if (mortgaged) {
+      buttons += `
+        <button
+          class="property-btn release"
+          data-property-action="release_mortgage"
+          data-asset-id="${assetId}"
+          data-owner-role="${ownerRole}"
+          data-container="${containerId}"
+        >RELEASE MORTGAGE</button>
+      `;
+    } else {
+      if (house === 0 && !hotel) {
+        buttons += `
+          <button
+            class="property-btn mortgage"
+            data-property-action="mortgage_property"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >MORTGAGE</button>
+
+          <button
+            class="property-btn sell"
+            data-property-action="sell_property"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >SELL</button>
+        `;
+      }
+
+      if (!hotel && house < 4) {
+        buttons += `
+          <button
+            class="property-btn build"
+            data-property-action="build_house"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >BUILD HOUSE</button>
+        `;
+      }
+
+      if (house > 0 && !hotel) {
+        buttons += `
+          <button
+            class="property-btn sell"
+            data-property-action="sell_house"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >SELL HOUSE</button>
+        `;
+      }
+
+      if (house === 4 && !hotel) {
+        buttons += `
+          <button
+            class="property-btn build"
+            data-property-action="build_hotel"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >BUILD HOTEL</button>
+        `;
+      }
+
+      if (hotel) {
+        buttons += `
+          <button
+            class="property-btn sell"
+            data-property-action="sell_hotel"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >SELL HOTEL</button>
+        `;
+      }
+    }
+  }
+
+  let devBadge = "";
+
+  if (hotel) {
+    devBadge = `<span class="property-dev">🏨</span>`;
+  } else if (house > 0) {
+    devBadge = `<span class="property-dev">🏠 x${house}</span>`;
+  }
+
+  const mortgageBadge = mortgaged
+    ? `<span class="property-status mortgaged">MORTGAGED</span>`
+    : "";
+
+  return `
+    <div class="property-item property-item-manage">
+      <div class="property-item-top">
+        <div
+          class="property-color-chip"
+          style="background:${color}"
+        ></div>
+
+        <div class="property-info">
+          <h4>${rule.asset_name}</h4>
+          <p>$${rule.purchase_price}${owned ? " · " + ownerName : ""}</p>
+        </div>
+
+        <div class="property-right">
+          ${mortgageBadge}
+          ${devBadge}
+        </div>
+      </div>
+
+      ${buttons ? `<div class="property-actions">${buttons}</div>` : ""}
+    </div>
+  `;
+}
+
+/* =========================
+   DELEGATED CLICK HANDLER
+========================= */
+
+document.addEventListener("click", (e) => {
+  const button = e.target.closest("[data-property-action]");
+
+  if (!button) return;
+
+  const action = button.dataset.propertyAction;
+  const assetId = button.dataset.assetId;
+  const containerId = button.dataset.container;
+
+  const rule =
+    typeof getPropertyRule === "function" ? getPropertyRule(assetId) : null;
+
+  const label = rule ? rule.asset_name : assetId;
+
+  /* =========================
+     BUY (butuh pilih buyer dulu)
+  ========================= */
+
+  if (action === "buy") {
+    const select = document.getElementById(button.dataset.buyerSelect);
+
+    const buyerRole = select ? select.value : null;
+
+    if (!buyerRole) {
+      alert("Pilih pemain terlebih dahulu.");
+      return;
+    }
+
+    const buyerPlayer =
+      typeof getPlayer === "function" ? getPlayer(buyerRole) : null;
+
+    const confirmMsg = `Beli "${label}" untuk ${
+      buyerPlayer ? buyerPlayer.name : buyerRole
+    } seharga $${rule ? rule.purchase_price : "?"}?`;
+
+    if (!confirm(confirmMsg)) return;
+
+    sendBuyProperty(containerId, buyerRole, assetId);
+    return;
+  }
+
+  const ownerRole = button.dataset.ownerRole;
+
+  const confirmLabels = {
+    sell_property: `Jual "${label}" ke bank?`,
+    mortgage_property: `Gadaikan (mortgage) "${label}"?`,
+    release_mortgage: `Tebus (release mortgage) "${label}"?`,
+    build_house: `Bangun 1 rumah di "${label}"?`,
+    sell_house: `Jual 1 rumah di "${label}"?`,
+    build_hotel: `Bangun hotel di "${label}"?`,
+    sell_hotel: `Jual hotel di "${label}"?`,
+  };
+
+  if (!confirm(confirmLabels[action] || `Lanjutkan aksi pada "${label}"?`)) {
+    return;
+  }
+
+  switch (action) {
+    case "sell_property":
+      sendSellProperty(containerId, ownerRole, assetId);
+      break;
+
+    case "mortgage_property":
+      sendMortgageProperty(containerId, ownerRole, assetId);
+      break;
+
+    case "release_mortgage":
+      sendReleaseMortgage(containerId, ownerRole, assetId);
+      break;
+
+    case "build_house":
+      sendBuildHouse(containerId, ownerRole, assetId);
+      break;
+
+    case "sell_house":
+      sendSellHouse(containerId, ownerRole, assetId);
+      break;
+
+    case "build_hotel":
+      sendBuildHotel(containerId, ownerRole, assetId);
+      break;
+
+    case "sell_hotel":
+      sendSellHotel(containerId, ownerRole, assetId);
+      break;
+  }
+});

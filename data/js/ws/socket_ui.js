@@ -13,24 +13,59 @@ function handleSocketMessage(event) {
 
   /* =========================
      TRANSACTION
+     (session backend dipakai bersama oleh
+     transfer uang & aksi property, jadi
+     kita cek activeTransactionKind utk
+     tahu banner mana yang harus di-update)
   ========================= */
 
   if (data.type === "transaction_busy") {
-    alert("Transaction is already running.");
+    if (window.appState.activeTransactionKind === "property") {
+      renderPropertyStatus(
+        window.appState.activePropertyStatusContainer,
+        "BUSY",
+        "Another transaction is running.",
+      );
+    } else {
+      alert("Transaction is already running.");
+    }
+    return;
+  }
+
+  if (data.type === "property_wait_owner") {
+    renderPropertyStatus(
+      window.appState.activePropertyStatusContainer,
+      "STEP 1 / 1",
+      "Tap owner/buyer NFC card to confirm.",
+    );
     return;
   }
 
   if (data.type === "transaction_wait_sender") {
-    renderTransactionStatus("STEP 1 / 2", "Tap Sender NFC Card");
+    if (window.appState.activeTransactionKind === "property") {
+      renderPropertyStatus(
+        window.appState.activePropertyStatusContainer,
+        "STEP 1 / 1",
+        "Tap owner/buyer NFC card to confirm.",
+      );
+    } else {
+      renderTransactionStatus("STEP 1 / 2", "Tap Sender NFC Card");
+    }
     return;
   }
 
   if (data.type === "transaction_wait_target") {
-    renderTransactionStatus("STEP 2 / 2", "Waiting Receiver...");
+    if (window.appState.activeTransactionKind !== "property") {
+      renderTransactionStatus("STEP 2 / 2", "Waiting Receiver...");
+    }
     return;
   }
 
   if (data.type === "transaction_wait_receiver") {
+    if (window.appState.activeTransactionKind === "property") {
+      return;
+    }
+
     const target = data.toRole;
 
     if (target === "BANK") {
@@ -46,14 +81,32 @@ function handleSocketMessage(event) {
         "Tap Receiver NFC Card",
       );
     }
+
+    return;
   }
 
   if (data.type === "transaction_processing") {
-    renderTransactionStatus("PROCESSING", "Processing transaction...");
+    if (window.appState.activeTransactionKind === "property") {
+      renderPropertyStatus(
+        window.appState.activePropertyStatusContainer,
+        "PROCESSING",
+        "Processing property action...",
+      );
+    } else {
+      renderTransactionStatus("PROCESSING", "Processing transaction...");
+    }
     return;
   }
 
   if (data.type === "transaction_success") {
+    /* Untuk PROPERTY, sukses sudah dideteksi lebih akurat
+       lewat property_update (lihat socket_property.js).
+       Blok ini hanya menangani TRANSFER UANG. */
+
+    if (window.appState.activeTransactionKind === "property") {
+      return;
+    }
+
     renderTransactionStatus("SUCCESS", "Money transferred successfully.");
 
     setTimeout(() => {
@@ -72,6 +125,24 @@ function handleSocketMessage(event) {
   }
 
   if (data.type === "transaction_failed") {
+    if (window.appState.activeTransactionKind === "property") {
+      renderPropertyStatus(
+        window.appState.activePropertyStatusContainer,
+        "FAILED",
+        "Property action failed (cek aturan game / saldo).",
+      );
+
+      const container = window.appState.activePropertyStatusContainer;
+
+      clearPropertyActionState();
+
+      setTimeout(() => {
+        renderPropertyStatus(container, "READY", "Pilih properti untuk aksi berikutnya.");
+      }, 2000);
+
+      return;
+    }
+
     renderTransactionStatus("FAILED", "Transaction failed.");
 
     setTimeout(() => {
@@ -90,6 +161,24 @@ function handleSocketMessage(event) {
   }
 
   if (data.type === "transaction_timeout") {
+    if (window.appState.activeTransactionKind === "property") {
+      renderPropertyStatus(
+        window.appState.activePropertyStatusContainer,
+        "TIMEOUT",
+        "Property action cancelled because timeout.",
+      );
+
+      const container = window.appState.activePropertyStatusContainer;
+
+      clearPropertyActionState();
+
+      setTimeout(() => {
+        renderPropertyStatus(container, "READY", "Pilih properti untuk aksi berikutnya.");
+      }, 3000);
+
+      return;
+    }
+
     renderTransactionStatus(
       "TIMEOUT",
       "Transaction cancelled because timeout.",
@@ -111,6 +200,11 @@ function handleSocketMessage(event) {
   }
 
   if (data.type === "transaction_cancelled") {
+    if (window.appState.activeTransactionKind === "property") {
+      clearPropertyActionState();
+      return;
+    }
+
     renderTransactionStatus(
       "CANCELLED",
 

@@ -52,6 +52,17 @@ bool startTransaction(
 
     resetTransactionVerification();
 
+    /* =========================================
+       TARGET KOSONG -> TIDAK ADA PENERIMA
+       (kasus PROPERTY: cuma owner/buyer yang
+       perlu tap, tidak ada pihak kedua)
+    ========================================= */
+
+    if (targetRole == "")
+    {
+        transactionSession.targetVerified = true;
+    }
+
     setTransactionState(
         TRANSACTION_WAIT_SENDER
     );
