@@ -43,13 +43,5 @@ window.appState = {
 
    amount: 0,
 
-   state: "idle",
-
-  /* =========================
-     PROPERTY
-  ========================= */
-
-  properties: {},
-
-  propertyRules: null
+   state: "idle"
 };

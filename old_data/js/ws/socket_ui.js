@@ -170,27 +170,5 @@ function handleSocketMessage(event) {
     return;
   }
 
-  if (data.type === "claim_timeout") {
-    alert("CLAIM TIMEOUT — please try again.");
-
-    return;
-  }
-
-  /* =========================
-     PROPERTY
-  ========================= */
-
-  if (data.type === "property_state") {
-    handlePropertyState(data);
-
-    return;
-  }
-
-  if (data.type === "property_update") {
-    handlePropertyUpdate(data);
-
-    return;
-  }
-
   console.warn("UNKNOWN MESSAGE :", data);
 }
