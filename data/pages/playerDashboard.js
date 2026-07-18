@@ -73,6 +73,22 @@ function renderPlayerDashboard() {
                 </div>
                 <div
                     class="system-card"
+                    data-draw-card="community_chest">
+                    📦
+                    <span>
+                        COMMUNITY CHEST
+                    </span>
+                </div>
+                <div
+                    class="system-card"
+                    data-draw-card="chance">
+                    ❓
+                    <span>
+                        CHANCE
+                    </span>
+                </div>
+                <div
+                    class="system-card"
                     data-page="history">
                     📜
                     <span>

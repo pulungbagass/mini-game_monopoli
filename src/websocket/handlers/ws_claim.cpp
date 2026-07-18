@@ -1,5 +1,6 @@
 #include "ws_claim.h"
 #include "../../data/claim_session.h"
+#include "../../data/session_data.h"
 
 #include <ArduinoJson.h>
 
@@ -57,4 +58,58 @@ void sendClaimTimeout()
     serializeJson(doc, json);
 
     ws.textAll(json);
+}
+
+/* ======================================================
+   Claim Wrong Card
+   (kartu yang di-tap tidak sesuai role yang diklaim,
+   sesi TETAP terbuka - user boleh tap ulang)
+====================================================== */
+
+void sendClaimWrongCard(const String& deviceId)
+{
+    JsonDocument doc;
+
+    doc["type"] = "claim_wrong_card";
+
+    doc["role"] = claimSession.role;
+
+    String json;
+    serializeJson(doc, json);
+
+    for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (clients[i].deviceId == deviceId)
+        {
+            ws.text(clients[i].clientId, json);
+            break;
+        }
+    }
+}
+
+/* ======================================================
+   Claim Already Owned
+   (role yang mau diklaim ternyata sudah dimiliki
+   device lain, sesi ditutup - user harus pilih role lain)
+====================================================== */
+
+void sendClaimAlreadyOwned(const String& deviceId, const String& role)
+{
+    JsonDocument doc;
+
+    doc["type"] = "claim_already_owned";
+
+    doc["role"] = role;
+
+    String json;
+    serializeJson(doc, json);
+
+    for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (clients[i].deviceId == deviceId)
+        {
+            ws.text(clients[i].clientId, json);
+            break;
+        }
+    }
 }

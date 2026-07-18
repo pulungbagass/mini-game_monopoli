@@ -405,3 +405,112 @@ select.transfer-input {
   font-size: 12px;
   font-weight: bold;
 }
+.property-rent {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #1a7a3c;
+}
+.global-status-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  border-bottom: var(--border-thick);
+  box-shadow: var(--shadow-playful);
+  padding: 12px 16px;
+  background: var(--paper-white);
+}
+.global-status-banner.hidden {
+  display: none;
+}
+.global-status-inner {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.global-status-text h3 {
+  font-family: var(--font-main);
+  font-size: 13px;
+}
+.global-status-text p {
+  font-size: 12px;
+  margin-top: 2px;
+}
+.global-status-close {
+  border: var(--border-thin);
+  background: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.global-status-banner.status-info {
+  background: #eaf2ff;
+}
+.global-status-banner.status-success {
+  background: #e3fbe8;
+  border-bottom: 4px solid #1a7a3c;
+}
+.global-status-banner.status-error {
+  background: #ffe9e9;
+  border-bottom: 4px solid var(--primary-red);
+}
+.global-status-banner.status-warning {
+  background: #fff8e1;
+  border-bottom: 4px solid var(--primary-yellow);
+}
+.card-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.card-popup-overlay.hidden {
+  display: none;
+}
+.card-popup {
+  background: var(--paper-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-playful);
+  padding: 24px;
+  max-width: 340px;
+  text-align: center;
+}
+.card-popup h2 {
+  font-family: var(--font-main);
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.card-popup-overlay.popup-chest .card-popup {
+  border-top: 8px solid var(--primary-blue);
+}
+.card-popup-overlay.popup-chance .card-popup {
+  border-top: 8px solid var(--primary-orange);
+}
+.card-popup-text {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.card-popup-meta {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 16px;
+}
+.card-popup-close-btn {
+  border: var(--border-thin);
+  background: var(--ink-black);
+  color: white;
+  font-weight: bold;
+  padding: 8px 20px;
+  cursor: pointer;
+}

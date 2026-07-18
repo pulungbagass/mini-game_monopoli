@@ -83,6 +83,16 @@ function renderPropertyItem(rule) {
   } else if (house > 0) {
     devBadge = `<span class="property-dev">🏠 x${house}</span>`;
   }
+  const rentValue =
+    owned && !mortgaged && typeof calculateCurrentRent === "function"
+      ? calculateCurrentRent(rule)
+      : null;
+
+  const rentText =
+    rentValue === null
+      ? ""
+      : `<p class="property-rent">💰 Sewa: ${typeof rentValue === "number" ? "$" + rentValue : rentValue}</p>`;
+
   return `
     <div class="property-item">
       <div
@@ -93,6 +103,7 @@ function renderPropertyItem(rule) {
       <div class="property-info">
         <h4>${rule.asset_name}</h4>
         <p>$${rule.purchase_price}</p>
+        ${rentText}
       </div>
 
       <div class="property-right">

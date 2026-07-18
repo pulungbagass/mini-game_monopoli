@@ -105,6 +105,12 @@ void updateNFC()
                 Serial.println("ROLE ALREADY OWNED");
 
                 notifyClaimFailed();
+
+                sendClaimAlreadyOwned(
+                    claimSession.deviceId,
+                    role
+                );
+
                 claimSession.waiting = false;
                 claimSession.role = "";
                 claimSession.deviceId = "";
@@ -136,6 +142,8 @@ void updateNFC()
             Serial.println("CLAIM FAILED");
             Serial.println("WRONG CARD");
             notifyClaimFailed();
+
+            sendClaimWrongCard(claimSession.deviceId);
         }
 
         /* ======================================================

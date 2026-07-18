@@ -12,6 +12,7 @@
 #include "handlers/ws_transaction_cancel.h"
 #include "handlers/ws_property.h"
 #include "handlers/ws_property_broadcast.h"
+#include "handlers/ws_card.h"
 
 #include "../web/web_server.h"
 
@@ -309,6 +310,32 @@ void onWebSocketEvent(
             ) {
 
                 handleSellHotel(
+                    client,
+                    doc
+                );
+            }
+
+            /* =========================
+               CARDS (CC / CHANCE)
+            ========================= */
+
+            if (
+                msgType ==
+                "draw_community_chest"
+            ) {
+
+                handleDrawCommunityChest(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "draw_chance"
+            ) {
+
+                handleDrawChance(
                     client,
                     doc
                 );

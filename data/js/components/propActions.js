@@ -1,3 +1,64 @@
+/* =========================
+   RENT CALCULATOR
+   (meniru persis formula calculateRent() di
+   property_transaction_service.cpp backend)
+========================= */
+
+function ownsFullColorGroup(ownerRole, colorGroup) {
+  if (!colorGroup) return false;
+  const groupAssets = (window.appState.propertyRules || []).filter(
+    (r) => r.color_group === colorGroup,
+  );
+  if (groupAssets.length === 0) return false;
+  return groupAssets.every((r) => {
+    const o = window.appState.properties[r.assets_id];
+    return o && o.owned && o.owner === ownerRole;
+  });
+}
+
+function countOwnedByType(ownerRole, type) {
+  return (window.appState.propertyRules || []).filter((r) => {
+    if (r.type !== type) return false;
+    const o = window.appState.properties[r.assets_id];
+    return o && o.owned && o.owner === ownerRole;
+  }).length;
+}
+
+function calculateCurrentRent(rule) {
+  const ownership = window.appState.properties[rule.assets_id];
+
+  if (!ownership || !ownership.owned) return null;
+  if (ownership.mortgaged) return 0;
+
+  const ownerRole = ownership.owner;
+  const rent = rule.rent || {};
+
+  if (rule.type === "Property") {
+    if (ownership.hotel) return rent.hotel || 0;
+    if (ownership.house === 4) return rent.house4 || 0;
+    if (ownership.house === 3) return rent.house3 || 0;
+    if (ownership.house === 2) return rent.house2 || 0;
+    if (ownership.house === 1) return rent.house1 || 0;
+
+    if (ownsFullColorGroup(ownerRole, rule.color_group)) {
+      return rent.monopoly_set || 0;
+    }
+    return rent.base || 0;
+  }
+
+  if (rule.type === "Railroad") {
+    const owned = countOwnedByType(ownerRole, "Railroad");
+    return rent["owned" + owned] || 0;
+  }
+
+  if (rule.type === "Utility") {
+    const owned = countOwnedByType(ownerRole, "Utility");
+    return owned >= 2 ? "10x dadu" : "4x dadu";
+  }
+
+  return null;
+}
+
 function renderPropertyActionRow(rule, mode, containerId) {
   const assetId = rule.assets_id;
   const ownership = window.appState.properties[assetId];
@@ -124,6 +185,15 @@ function renderPropertyActionRow(rule, mode, containerId) {
   const mortgageBadge = mortgaged
     ? `<span class="property-status mortgaged">MORTGAGED</span>`
     : "";
+  const rentValue = owned && !mortgaged ? calculateCurrentRent(rule) : null;
+
+  const rentText =
+    rentValue === null
+      ? ""
+      : typeof rentValue === "number"
+        ? `<p class="property-rent">💰 Sewa saat ini: $${rentValue}</p>`
+        : `<p class="property-rent">💰 Sewa saat ini: ${rentValue}</p>`;
+
   return `
     <div class="property-item property-item-manage">
       <div class="property-item-top">
@@ -135,6 +205,7 @@ function renderPropertyActionRow(rule, mode, containerId) {
         <div class="property-info">
           <h4>${rule.asset_name}</h4>
           <p>$${rule.purchase_price}${owned ? " · " + ownerName : ""}</p>
+          ${rentText}
         </div>
 
         <div class="property-right">

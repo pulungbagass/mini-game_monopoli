@@ -69,16 +69,12 @@ function refreshOwnedPropertyPagesIfVisible() {
   }
 }
 function renderPropertyStatus(containerId, title, message) {
-  if (!containerId) return;
-  const content = document.getElementById(containerId);
-  if (!content) return;
-  content.innerHTML = `
-    <div class="page-card">
-      <h3>${title}</h3>
-      <br>
-      <p>${message}</p>
-    </div>
-  `;
+  const t = title.toUpperCase();
+  let type = "info";
+  if (t === "SUCCESS") type = "success";
+  else if (t.includes("FAILED") || t.includes("TIMEOUT")) type = "error";
+  else if (t.includes("BUSY")) type = "warning";
+  showGlobalStatus(title, message, type);
 }
 function startPropertyAction(containerId, assetId) {
   window.appState.activeTransactionKind = "property";

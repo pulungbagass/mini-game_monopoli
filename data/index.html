@@ -5,9 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Monopoly Control</title>
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   </head>
   <body>
+    <div
+      id="globalStatusBanner"
+      class="global-status-banner hidden"
+    >
+      <div class="global-status-inner">
+        <div class="global-status-text">
+          <h3 id="globalStatusTitle"></h3>
+          <p id="globalStatusMessage"></p>
+        </div>
+        <button
+          id="globalStatusClose"
+          class="global-status-close"
+        >✕</button>
+      </div>
+    </div>
+
+    <div
+      id="cardPopupOverlay"
+      class="card-popup-overlay hidden"
+    >
+      <div class="card-popup">
+        <h2 id="cardPopupHeader"></h2>
+        <p id="cardPopupText" class="card-popup-text"></p>
+        <p id="cardPopupMeta" class="card-popup-meta"></p>
+        <button
+          id="cardPopupCloseBtn"
+          class="card-popup-close-btn"
+        >TUTUP</button>
+      </div>
+    </div>
+
     <div class="container">
       <header class="topbar">
         <h1>MONOPOLY CONTROL</h1>
@@ -16,6 +46,8 @@
       <main id="pageContainer"></main>
     </div>
     <script src="/js/state.js"></script>
+    <script src="/js/globalStatus.js"></script>
+    <script src="/js/cardPopup.js"></script>
     <script src="/js/pageManager.js"></script>
     <script src="/js/router.js"></script>
     <script src="/js/router/privateRouter.js"></script>

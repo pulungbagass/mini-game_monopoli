@@ -42,14 +42,29 @@ function loadTransferPlayers() {
     }
   };
   toSelect.innerHTML = "";
+
+  // Placeholder
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Pilih Player";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  placeholder.hidden = true;
+
+  toSelect.appendChild(placeholder);
+
+  // Player List
   window.appState.gameState.forEach((player) => {
     if (player.role === myRole) return;
+
     const option = document.createElement("option");
     option.value = player.role;
     option.textContent = player.name;
+
     toSelect.appendChild(option);
   });
-  console.log("Receiver Loaded :", toSelect.options.length);
+
+  console.log("Receiver Loaded :", toSelect.options.length - 1);
 }
 function bindTransferButton() {
   const button = document.getElementById("startTransferButton");
@@ -101,10 +116,7 @@ function startTransfer() {
       "Tap your NFC card to transfer money to BANK.",
     );
   } else {
-    renderTransactionStatus(
-      "WAITING SENDER",
-      "Please tap sender NFC card.",
-    );
+    renderTransactionStatus("WAITING SENDER", "Please tap sender NFC card.");
   }
   const cancelButton = document.getElementById("cancelTransferButton");
   if (cancelButton) {
@@ -112,18 +124,16 @@ function startTransfer() {
   }
 }
 function renderTransactionStatus(title, message) {
-  const content = document.getElementById("transferContent");
-  if (!content) return;
-  content.innerHTML = `
-    <div class="page-card">
-      <h3>${title}</h3>
-      <br>
-      <p>${message}</p>
-    </div>
-  `;
+  const t = title.toUpperCase();
+  let type = "info";
+  if (t.includes("SUCCESS")) type = "success";
+  else if (t.includes("FAILED") || t.includes("TIMEOUT")) type = "error";
+  else if (t.includes("BUSY") || t.includes("CANCEL")) type = "warning";
+  showGlobalStatus(title, message, type);
 }
 function resetTransferForm() {
   window.appState.activeTransactionKind = null;
+  hideGlobalStatus();
   const myRole = window.appState.activeRole;
   const me = getPlayer(myRole);
   const fromInput = document.getElementById("transferFrom");

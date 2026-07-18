@@ -12,6 +12,7 @@
 #include "services/property_transaction_service.h"
 #include "services/ownership_service.h"
 #include "data/property_ownership_service.h"
+#include "data/card_deck.h"
 
 #include "websocket/handlers/ws_broadcast.h"
 
@@ -37,6 +38,8 @@ void setup()
     initWebServer();
     
     initPropertyOwnership();
+
+    initCardDecks();
     
 }
 

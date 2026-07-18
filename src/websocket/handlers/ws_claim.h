@@ -12,4 +12,8 @@ void handleClaim(
 
 void sendClaimTimeout();
 
+void sendClaimWrongCard(const String& deviceId);
+
+void sendClaimAlreadyOwned(const String& deviceId, const String& role);
+
 #endif

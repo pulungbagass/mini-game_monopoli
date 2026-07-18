@@ -12,7 +12,11 @@ function handleSocketMessage(event) {
         "Another transaction is running.",
       );
     } else {
-      alert("Transaction is already running.");
+      showGlobalStatus(
+        "SIBUK",
+        "Ada transaksi lain sedang berjalan, coba lagi sebentar.",
+        "warning",
+      );
     }
     return;
   }
@@ -165,20 +169,49 @@ function handleSocketMessage(event) {
   if (data.type === "access_granted") {
     console.log("ACCESS GRANTED");
     window.appState.activeRole = data.role;
+    hideGlobalStatus();
     openPrivatePage();
     return;
   }
   if (data.type === "access_denied") {
-    alert("ACCESS DENIED");
+    showGlobalStatus(
+      "ACCESS DENIED",
+      "Kartu ini tidak punya akses ke role tersebut.",
+      "error",
+    );
     return;
   }
   if (data.type === "need_claim") {
-    alert("PLEASE TAP NFC CARD");
+    showGlobalStatus(
+      "TAP KARTU NFC",
+      `Tempelkan kartu ${data.role} untuk konfirmasi klaim role.`,
+      "info",
+    );
     claimRole(data.role);
     return;
   }
+  if (data.type === "claim_wrong_card") {
+    showGlobalStatus(
+      "KARTU SALAH",
+      `Kartu tidak sesuai. Coba tempelkan kartu ${data.role} lagi.`,
+      "error",
+    );
+    return;
+  }
+  if (data.type === "claim_already_owned") {
+    showGlobalStatus(
+      "ROLE SUDAH DIMILIKI",
+      `Role ${data.role} sudah diklaim device lain. Pilih role lain.`,
+      "error",
+    );
+    return;
+  }
   if (data.type === "claim_timeout") {
-    alert("CLAIM TIMEOUT — please try again.");
+    showGlobalStatus(
+      "WAKTU HABIS",
+      "Klaim role dibatalkan karena timeout. Silakan coba lagi.",
+      "warning",
+    );
     return;
   }
   if (data.type === "property_state") {
@@ -187,6 +220,19 @@ function handleSocketMessage(event) {
   }
   if (data.type === "property_update") {
     handlePropertyUpdate(data);
+    return;
+  }
+  if (data.type === "community_chest_result") {
+    showCardPopup(
+      "community_chest",
+      data.cardId,
+      data.cardText,
+      data.drawerRole,
+    );
+    return;
+  }
+  if (data.type === "chance_result") {
+    showCardPopup("chance", data.cardId, data.cardText, data.drawerRole);
     return;
   }
   console.warn("UNKNOWN MESSAGE :", data);
