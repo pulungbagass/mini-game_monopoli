@@ -402,6 +402,42 @@ int countOwnedUtility(
     return total;
 }
 
+int countOwnedHouses(
+    const String& role)
+{
+    int total = 0;
+
+    for (int i = 0; i < TOTAL_PROPERTIES; i++)
+    {
+        if (propertyOwnership[i].owned &&
+            propertyOwnership[i].ownerRole == role &&
+            !propertyOwnership[i].hotel)
+        {
+            total += propertyOwnership[i].houseCount;
+        }
+    }
+
+    return total;
+}
+
+int countOwnedHotels(
+    const String& role)
+{
+    int total = 0;
+
+    for (int i = 0; i < TOTAL_PROPERTIES; i++)
+    {
+        if (propertyOwnership[i].owned &&
+            propertyOwnership[i].ownerRole == role &&
+            propertyOwnership[i].hotel)
+        {
+            total++;
+        }
+    }
+
+    return total;
+}
+
 bool canBuyPropertyState(
     const String& assetId)
 {

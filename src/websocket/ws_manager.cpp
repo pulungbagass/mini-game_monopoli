@@ -13,8 +13,14 @@
 #include "handlers/ws_property.h"
 #include "handlers/ws_property_broadcast.h"
 #include "handlers/ws_card.h"
+#include "handlers/ws_auction.h"
+#include "handlers/ws_auction_broadcast.h"
+#include "handlers/ws_log_broadcast.h"
+#include "handlers/ws_broadcast.h"
 
 #include "../web/web_server.h"
+
+#include "../data/session_data.h"
 
 #include <ArduinoJson.h>
 
@@ -68,6 +74,9 @@ void onWebSocketEvent(
 
             broadcastAllProperties();
 
+            sendAuctionSnapshot(client);
+            sendGameLogSnapshot(client);
+
             break;
 
 
@@ -88,6 +97,21 @@ void onWebSocketEvent(
             Serial.println(
                 client->id()
             );
+
+            // FIX (Phase 1 audit): sebelumnya clients[].connected
+            // TIDAK PERNAH di-set false saat disconnect, jadi
+            // Player Manager (online/offline monitor) tidak
+            // akan pernah akurat.
+            for (int i = 0; i < MAX_CLIENTS; i++)
+            {
+                if (clients[i].clientId == client->id())
+                {
+                    clients[i].connected = false;
+                    break;
+                }
+            }
+
+            broadcastGameState();
 
             break;
 
@@ -336,6 +360,43 @@ void onWebSocketEvent(
             ) {
 
                 handleDrawChance(
+                    client,
+                    doc
+                );
+            }
+
+            /* =========================
+               AUCTION (Phase 2)
+            ========================= */
+
+            if (
+                msgType ==
+                "start_auction"
+            ) {
+
+                handleStartAuction(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "place_bid"
+            ) {
+
+                handlePlaceBid(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "end_auction"
+            ) {
+
+                handleEndAuction(
                     client,
                     doc
                 );

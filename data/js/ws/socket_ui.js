@@ -222,6 +222,45 @@ function handleSocketMessage(event) {
     handlePropertyUpdate(data);
     return;
   }
+  if (data.type === "auction_started") {
+    handleAuctionStarted(data);
+    return;
+  }
+  if (data.type === "auction_state") {
+    handleAuctionState(data);
+    return;
+  }
+  if (data.type === "auction_bid") {
+    handleAuctionBid(data);
+    return;
+  }
+  if (data.type === "auction_bid_rejected") {
+    handleAuctionRejected(data);
+    return;
+  }
+  if (data.type === "auction_ended") {
+    handleAuctionEnded(data);
+    if (typeof renderAuctionLauncherList === "function") {
+      renderAuctionLauncherList();
+    }
+    return;
+  }
+  if (data.type === "auction_error") {
+    showGlobalStatus(
+      "LELANG GAGAL",
+      "Aksi lelang ditolak (" + data.reason + ").",
+      "error",
+    );
+    return;
+  }
+  if (data.type === "game_log_state") {
+    handleGameLogState(data);
+    return;
+  }
+  if (data.type === "game_log_entry") {
+    handleGameLogEntry(data);
+    return;
+  }
   if (data.type === "community_chest_result") {
     showCardPopup(
       "community_chest",

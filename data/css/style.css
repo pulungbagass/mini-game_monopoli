@@ -514,3 +514,245 @@ select.transfer-input {
   padding: 8px 20px;
   cursor: pointer;
 }
+
+/* ======================================================
+   AUCTION MODAL (Phase 2 - Hybrid Smart Monopoly)
+====================================================== */
+
+.auction-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3500;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.auction-overlay.hidden {
+  display: none;
+}
+.auction-modal {
+  background: var(--paper-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-playful);
+  padding: 20px;
+  width: 100%;
+  max-width: 380px;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.auction-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.auction-badge {
+  font-family: var(--font-main);
+  font-size: 14px;
+}
+.auction-timer {
+  font-family: var(--font-main);
+  font-size: 22px;
+  background: var(--ink-black);
+  color: white;
+  padding: 4px 12px;
+  border: var(--border-thin);
+}
+.auction-timer-warning {
+  background: var(--primary-red);
+  animation: auctionPulse 1s infinite;
+}
+@keyframes auctionPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.auction-property-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: var(--border-thin);
+  padding: 10px;
+  margin-bottom: 14px;
+}
+.auction-highest {
+  text-align: center;
+  border-top: var(--border-thin);
+  border-bottom: var(--border-thin);
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+.auction-highest span {
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 1px;
+}
+.auction-highest h2 {
+  font-family: var(--font-main);
+  font-size: 30px;
+  margin: 4px 0;
+}
+.auction-highest p {
+  font-size: 12px;
+  font-weight: bold;
+}
+.auction-my-balance {
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 10px;
+  color: #444;
+}
+.auction-bid-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.auction-bid-btn {
+  border: var(--border-thin);
+  box-shadow: var(--shadow-active);
+  background: var(--primary-yellow);
+  font-family: var(--font-main);
+  font-size: 13px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.auction-bid-btn:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+.auction-bank-controls {
+  margin-bottom: 12px;
+}
+.auction-bank-controls.hidden {
+  display: none;
+}
+.auction-force-end-btn {
+  width: 100%;
+  border: var(--border-thin);
+  box-shadow: var(--shadow-active);
+  background: var(--primary-red);
+  color: white;
+  font-family: var(--font-main);
+  font-size: 13px;
+  padding: 10px 0;
+  cursor: pointer;
+}
+.auction-history-title {
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.auction-history {
+  max-height: 140px;
+  overflow-y: auto;
+  border: var(--border-thin);
+  padding: 8px;
+  font-size: 12px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.auction-history-item {
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* ======================================================
+   GAME LOG / TRANSACTION LOG (terminal style)
+====================================================== */
+
+.log-terminal {
+  margin-top: 14px;
+  background: var(--ink-black);
+  border: var(--border-thin);
+  padding: 10px;
+  max-height: 60vh;
+  overflow-y: auto;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+}
+.log-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
+  color: #ddd;
+}
+.log-time {
+  color: #888;
+}
+.log-tag {
+  font-weight: bold;
+  padding: 0 4px;
+}
+.log-money-in .log-tag { color: #4ade80; }
+.log-money-out .log-tag { color: #f87171; }
+.log-property .log-tag { color: #60a5fa; }
+.log-auction .log-tag { color: #facc15; }
+.log-card .log-tag { color: #c084fc; }
+.log-info .log-tag { color: #ccc; }
+
+/* ======================================================
+   PLAYER MANAGER (bank)
+====================================================== */
+
+.player-manager-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.player-manager-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: var(--border-thin);
+  padding: 10px;
+  gap: 10px;
+}
+.player-manager-info h4 {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.player-manager-info p {
+  font-size: 11px;
+  color: #666;
+}
+.player-status-badge {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: var(--border-thin);
+  white-space: nowrap;
+}
+.player-status-online {
+  background: #dcfce7;
+  color: #15803d;
+}
+.player-status-offline {
+  background: #f3f4f6;
+  color: #555;
+}
+.player-status-bankrupt {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ======================================================
+   GAME INFO
+====================================================== */
+
+.info-rules h4 {
+  margin-top: 14px;
+  font-size: 13px;
+}
+.info-rules p {
+  font-size: 12px;
+  color: #444;
+  margin-top: 4px;
+  line-height: 1.5;
+}

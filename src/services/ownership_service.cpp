@@ -1,6 +1,7 @@
 #include "ownership_service.h"
 
 #include "../data/ownership_data.h"
+#include "../data/session_data.h"
 
 // ======================================================
 // Claim Role
@@ -120,6 +121,25 @@ String getRoleByDevice(const String& deviceId)
     }
 
     return "";
+}
+
+bool isRoleOnline(const String& role)
+{
+    String deviceId = getOwner(role);
+
+    if (deviceId == "")
+        return false;
+
+    for (int i = 0; i < MAX_CLIENTS; i++)
+    {
+        if (clients[i].connected &&
+            clients[i].deviceId == deviceId)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 // ======================================================

@@ -52,7 +52,14 @@ enum PropertyAction
    PROPERTY_BUILD_HOTEL,
    PROPERTY_SELL_HOTEL,
 
-   PROPERTY_TRANSFER
+   PROPERTY_TRANSFER,
+
+   // Dipakai untuk serah-terima kepemilikan properti
+   // hasil lelang (AUCTION). Uang SUDAH dipotong otomatis
+   // saat lelang berakhir (lihat auction_service.cpp),
+   // jadi step ini murni memindahkan status ownership
+   // setelah pemenang tap kartu NFC ke device Bank.
+   PROPERTY_AUCTION_CLAIM
 };
 
 /* ======================================================

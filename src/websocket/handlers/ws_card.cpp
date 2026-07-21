@@ -2,6 +2,7 @@
 
 #include "../../data/card_deck.h"
 #include "../../services/card_service.h"
+#include "../../events/game_event.h"
 
 extern AsyncWebSocket ws;
 
@@ -37,6 +38,12 @@ void handleDrawCommunityChest(
     serializeJson(res, json);
 
     ws.textAll(json);
+
+    eventCardDrawn(
+        "COMMUNITY CHEST",
+        drawerRole,
+        card["card_text"].as<String>()
+    );
 
     Serial.println();
     Serial.print("COMMUNITY CHEST DRAWN : ");
@@ -75,6 +82,12 @@ void handleDrawChance(
     serializeJson(res, json);
 
     ws.textAll(json);
+
+    eventCardDrawn(
+        "CHANCE",
+        drawerRole,
+        card["card_text"].as<String>()
+    );
 
     Serial.println();
     Serial.print("CHANCE DRAWN : ");

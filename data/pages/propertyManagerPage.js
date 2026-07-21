@@ -14,8 +14,8 @@ function renderPropertyManagerPage() {
       <h2>PROPERTY MANAGER</h2>
       <p>Kelola pembelian & aksi properti seluruh pemain.</p>
       <p style="font-size:11px;color:#888;margin-top:4px;">
-        ⚠️ Auction belum tersedia di backend — kalau saldo pembeli
-        tidak cukup, aksi BUY akan gagal (bukan otomatis lelang).
+        ℹ️ Properti kosong yang tidak dibeli langsung juga bisa
+        dilelang lewat menu 🔨 AUCTION di dashboard Bank.
       </p>
 
       <div

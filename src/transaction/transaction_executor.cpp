@@ -12,6 +12,9 @@
 #include "../websocket/handlers/ws_transaction.h"
 #include "../websocket/handlers/ws_transaction_broadcast.h"
 
+#include "../events/game_event.h"
+#include "../data/game_log.h"
+
 
 /* ======================================================
    Execute Transaction
@@ -74,6 +77,21 @@ bool executeTransaction()
         sendTransactionSuccess();
 
         broadcastGameState();
+
+        // GLOBAL_LOG (Phase 1 audit): transfer uang murni
+        // (Player<->Player / Player<->Bank) sebelumnya tidak
+        // tercatat sama sekali di log manapun.
+        if (transactionSession.type == TRANSACTION_TRANSFER)
+        {
+            addGameLog(
+                LOG_MONEY_OUT,
+                transactionSession.sourceRole + " mentransfer $" +
+                    String(transactionSession.amount) + " ke " +
+                    transactionSession.targetRole,
+                transactionSession.sourceRole,
+                transactionSession.targetRole
+            );
+        }
     }
     else
     {

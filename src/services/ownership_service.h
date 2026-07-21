@@ -19,6 +19,10 @@ bool isDeviceRegistered(const String& deviceId);
 String getOwner(const String& role);
 String getRoleByDevice(const String& deviceId);
 
+// Dipakai halaman Bank "Player Manager" untuk memantau
+// status koneksi player (Online/Offline/Reconnect).
+bool isRoleOnline(const String& role);
+
 /* DEBUG */
 
 void printOwnership();

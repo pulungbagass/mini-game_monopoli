@@ -3,6 +3,8 @@
 #include "../../data/game_state.h"
 #include "../../data/session_data.h"
 #include "../../data/players_data.h"
+#include "../../data/property_ownership_service.h"
+#include "../../services/ownership_service.h"
 
 #include "../ws_manager.h"
 
@@ -67,15 +69,25 @@ for (int i = 0; i < TOTAL_PLAYERS; i++)
     player["money"] =
         players[i].money;
 
+    /* =========================
+       PLAYER_STATS (real-time)
+       Dihitung langsung dari kepemilikan
+       properti aktual, bukan field statis,
+       supaya counter di dashboard selalu akurat
+       (fix Phase 1 audit).
+    ========================= */
+
     player["house"] =
-        players[i].house;
+        countOwnedHouses(players[i].role);
 
     player["hotel"] =
-        players[i].hotel;
+        countOwnedHotels(players[i].role);
 
     player["property"] =
-        players[i].house +
-        players[i].hotel;
+        countOwnedProperties(players[i].role);
+
+    player["online"] =
+        isRoleOnline(players[i].role);
 }
 
     String response;

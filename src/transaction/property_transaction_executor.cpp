@@ -81,6 +81,18 @@ bool executePropertyTransaction()
             );
             break;
 
+        case PROPERTY_AUCTION_CLAIM:
+
+            // sourceRole = pemenang lelang (yang tap kartu)
+            // Uang sudah dipotong otomatis oleh auction_service
+            // saat lelang berakhir, di sini hanya pindah
+            // kepemilikan properti.
+            success = transferProperty(
+                transactionSession.assetId,
+                transactionSession.sourceRole
+            );
+            break;
+
         default:
             success = false;
             break;

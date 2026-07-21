@@ -296,6 +296,11 @@ bool payRent(
        Step 7 : Success
     ========================================== */
 
+    // FIX (Phase 1 audit): payRent tidak pernah memicu event
+    // sama sekali, jadi pembayaran sewa tidak muncul di
+    // GAME LOG / broadcast game state secara instan.
+    eventRentPaid(assetId, payerRole, ownerRole, rent);
+
     return true;
 }
 
@@ -762,7 +767,7 @@ bool sellProperty(
         return false;
     }
 
-    eventPropertySold(assetId);
+    eventPropertySold(assetId, ownerRole);
 
     return true;
 }
@@ -808,12 +813,19 @@ bool transferProperty(
     if(!canTransferPropertyState(assetId))
         return false;
 
-    return transferOwnership(
+    if (!transferOwnership(
         assetId,
         newOwner
-    );
+    ))
+    {
+        return false;
+    }
 
+    // FIX (Phase 1 audit): dulu ada `return` sebelum baris
+    // ini sehingga event & broadcast property_update tidak
+    // pernah terkirim setelah transfer properti berhasil.
     eventPropertyTransferred(assetId);
+
     return true;
 }
 

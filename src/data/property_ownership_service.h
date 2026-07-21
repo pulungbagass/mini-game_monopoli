@@ -130,6 +130,14 @@ int countOwnedUtility(
     const String& role
 );
 
+int countOwnedHouses(
+    const String& role
+);
+
+int countOwnedHotels(
+    const String& role
+);
+
 /* ======================================================
    Validation
 ====================================================== */

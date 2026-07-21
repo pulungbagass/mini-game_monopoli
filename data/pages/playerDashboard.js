@@ -108,3 +108,96 @@ function renderPlayerDashboard() {
     `;
 }
 registerPage("playerDashboard", renderPlayerDashboard);
+
+/* ======================================================
+   HISTORY (personal log - hanya event yang melibatkan
+   player ini)
+====================================================== */
+
+function renderHistoryPage() {
+  setTimeout(renderHistoryList, 0);
+  return `
+    <button class="back-button">
+      ← BACK
+    </button>
+
+    <div class="page-card">
+      <h2>📜 HISTORY</h2>
+      <p>Transaksi & event yang melibatkan kamu.</p>
+
+      <div id="historyTerminal" class="log-terminal">
+        <p class="property-loading">Loading history...</p>
+      </div>
+    </div>
+  `;
+}
+registerPage("history", renderHistoryPage);
+
+function renderHistoryListIfVisible() {
+  if (document.getElementById("historyTerminal")) {
+    renderHistoryList();
+  }
+}
+
+function renderHistoryList() {
+  const container = document.getElementById("historyTerminal");
+  if (!container) return;
+
+  const myRole = window.appState.activeRole;
+
+  const entries = (window.appState.gameLog || []).filter(
+    (e) => e.roleA === myRole || e.roleB === myRole,
+  );
+
+  if (entries.length === 0) {
+    container.innerHTML = `<p class="property-loading">Belum ada transaksi yang melibatkan kamu.</p>`;
+    return;
+  }
+
+  container.innerHTML = entries
+    .slice()
+    .reverse()
+    .map((entry) => {
+      const meta = gameLogCategoryMeta(entry.category);
+      return `
+        <div class="log-line ${meta.cls}">
+          <span class="log-time">${formatLogTime(entry.timestamp)}</span>
+          <span class="log-tag">${meta.label}</span>
+          <span class="log-message">${entry.message}</span>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+/* ======================================================
+   PROFILE (ringkasan singkat role aktif)
+====================================================== */
+
+function renderProfilePage() {
+  const me =
+    typeof getPlayer === "function"
+      ? getPlayer(window.appState.activeRole)
+      : null;
+
+  return `
+    <button class="back-button">
+      ← BACK
+    </button>
+
+    <div class="page-card">
+      <h2>👤 PROFILE</h2>
+      ${
+        me
+          ? `
+            <p><b>Nama:</b> ${me.name}</p>
+            <p><b>Role:</b> ${me.role}</p>
+            <p><b>Saldo:</b> $${me.money}</p>
+            <p><b>Properti:</b> ${me.property} (${me.house} rumah, ${me.hotel} hotel)</p>
+          `
+          : `<p>Data player belum tersedia.</p>`
+      }
+    </div>
+  `;
+}
+registerPage("profile", renderProfilePage);

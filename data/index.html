@@ -38,6 +38,39 @@
       </div>
     </div>
 
+    <div
+      id="auctionOverlay"
+      class="auction-overlay hidden"
+    >
+      <div class="auction-modal">
+        <div class="auction-modal-header">
+          <span class="auction-badge">🔨 LELANG</span>
+          <span id="auctionTimer" class="auction-timer">30</span>
+        </div>
+
+        <div id="auctionPropertyCard" class="auction-property-card"></div>
+
+        <div class="auction-highest">
+          <span>TERTINGGI SAAT INI</span>
+          <h2 id="auctionHighestBid">$0</h2>
+          <p id="auctionHighestRole">Belum ada penawar</p>
+        </div>
+
+        <p id="auctionMyBalance" class="auction-my-balance"></p>
+
+        <div id="auctionBidButtons" class="auction-bid-buttons"></div>
+
+        <div id="auctionBankControls" class="auction-bank-controls hidden">
+          <button id="auctionForceEndBtn" class="auction-force-end-btn">
+            AKHIRI LELANG
+          </button>
+        </div>
+
+        <div class="auction-history-title">RIWAYAT BID</div>
+        <div id="auctionHistory" class="auction-history"></div>
+      </div>
+    </div>
+
     <div class="container">
       <header class="topbar">
         <h1>MONOPOLY CONTROL</h1>
@@ -61,6 +94,9 @@
     <script src="/pages/playerDashboard.js"></script>
     <script src="/pages/bankDashboard.js"></script>
     <script src="/pages/propertyManagerPage.js"></script>
+    <script src="/pages/playerManagerPage.js"></script>
+    <script src="/pages/transactionLogPage.js"></script>
+    <script src="/pages/auctionPage.js"></script>
     <script src="/pages/transferPage.js"></script>
     <script src="/pages/transferController.js"></script>
     <script src="/js/sc/privateSocket.js"></script>
@@ -68,6 +104,8 @@
     <script src="/js/ws/socket_access.js"></script>
     <script src="/js/ws/socket_game.js"></script>
     <script src="/js/ws/socket_property.js"></script>
+    <script src="/js/ws/socket_auction.js"></script>
+    <script src="/js/ws/socket_log.js"></script>
     <script src="/js/ws/socket_ui.js"></script>
     <script src="/js/main.js"></script>
   </body>
