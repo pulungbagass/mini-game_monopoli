@@ -12,6 +12,7 @@
 #include "handlers/ws_transaction_cancel.h"
 #include "handlers/ws_property.h"
 #include "handlers/ws_property_broadcast.h"
+#include "handlers/ws_property_force.h"
 #include "handlers/ws_card.h"
 #include "handlers/ws_auction.h"
 #include "handlers/ws_auction_broadcast.h"
@@ -279,6 +280,32 @@ void onWebSocketEvent(
             ) {
 
                 handleMortgageProperty(
+                    client,
+                    doc
+                );
+            }
+
+            /* =========================
+               BANK EMERGENCY ACTIONS
+            ========================= */
+
+            if (
+                msgType ==
+                "force_mortgage_property"
+            ) {
+
+                handleForceMortgage(
+                    client,
+                    doc
+                );
+            }
+
+            if (
+                msgType ==
+                "force_sell_property"
+            ) {
+
+                handleForceSell(
                     client,
                     doc
                 );

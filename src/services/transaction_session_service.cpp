@@ -86,13 +86,17 @@ void cancelTransaction()
    Finish
 ====================================================== */
 
-void finishTransaction()
+void finishTransaction(bool success)
 {
     if (!transactionSession.active)
         return;
 
+    // BUG FIX: sebelumnya selalu di-set TRANSACTION_SUCCESS
+    // walau transaksinya sebenarnya gagal. Session langsung
+    // di-clear sesudah ini jadi dampaknya kecil, tapi state
+    // akhir yang dicatat harus mencerminkan hasil asli.
     setTransactionState(
-        TRANSACTION_SUCCESS);
+        success ? TRANSACTION_SUCCESS : TRANSACTION_FAILED);
 
     clearTransactionSession();
 }

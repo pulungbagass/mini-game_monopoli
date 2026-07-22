@@ -87,6 +87,7 @@ function handleAuctionStarted(data) {
     history: [],
   };
 
+  switchToAuctionBiddingMode();
   showAuctionOverlay();
   renderAuctionModal();
   startAuctionCountdown(data.durationMs);
@@ -101,6 +102,7 @@ function handleAuctionState(data) {
     history: (data.history || []).slice().reverse(),
   };
 
+  switchToAuctionBiddingMode();
   showAuctionOverlay();
   renderAuctionModal();
   startAuctionCountdown(data.remainingMs);
@@ -149,23 +151,125 @@ function handleAuctionEnded(data) {
       ? window.appState.auction.property.assetName
       : data.assetId;
 
-  if (data.hasWinner) {
-    const winner =
-      typeof getPlayer === "function" ? getPlayer(data.winnerRole) : null;
+  if (!data.hasWinner) {
+    // tidak ada penawar -> tampilkan sebentar lalu tutup,
+    // tidak ada yang perlu tap kartu
+    showAuctionClaimPanel({
+      icon: "🏦",
+      title: "LELANG BERAKHIR",
+      message: `Tidak ada penawar untuk "${propertyName}". Properti tetap milik Bank.`,
+      showTapHint: false,
+    });
 
-    renderAuctionResult(
-      `🎉 ${winner ? winner.name : data.winnerRole} MENANG`,
-      `Memenangkan "${propertyName}" seharga $${data.winningBid}. Tap kartu NFC pemenang ke device Bank untuk finalisasi kepemilikan.`,
-    );
-  } else {
-    renderAuctionResult(
-      "LELANG BERAKHIR",
-      `Tidak ada penawar untuk "${propertyName}". Properti tetap milik Bank.`,
+    setTimeout(() => {
+      window.appState.auction = null;
+      hideAuctionOverlay();
+    }, 4000);
+    return;
+  }
+
+  // ADA PEMENANG: overlay TIDAK ditutup otomatis. Modal
+  // berpindah ke "claim mode" dan menunggu broadcast
+  // auction_claim_pending (dikirim backend begitu sesi
+  // transaksi klaim berhasil dibuka) untuk instruksi final.
+  window.appState.auctionPendingWinner = data.winnerRole;
+  window.appState.auctionPendingAmount = data.winningBid;
+  window.appState.auctionPendingProperty = propertyName;
+}
+
+/* ======================================================
+   CLAIM PENDING - instruksi tap yang jelas & PERSISTEN
+   (tidak auto-hilang, baru hilang setelah claim_result
+   atau claim_timeout diterima)
+====================================================== */
+
+function handleAuctionClaimPending(data) {
+  const winner =
+    typeof getPlayer === "function" ? getPlayer(data.winnerRole) : null;
+  const winnerName = winner ? winner.name : data.winnerRole;
+  const isMe = data.winnerRole === window.appState.activeRole;
+
+  showAuctionClaimPanel({
+    icon: "🎉",
+    title: `${winnerName} MENANG LELANG!`,
+    message: `"${data.assetName}" dimenangkan seharga $${data.amount} (sudah dibayar otomatis). Silakan TAP kartu ${winnerName} ke mesin Bank untuk menerima properti.`,
+    showTapHint: true,
+  });
+
+  startAuctionCountdown(data.durationMs);
+
+  if (isMe) {
+    showGlobalStatus(
+      "SELAMAT!",
+      `Kamu menang lelang "${data.assetName}". Tap kartu kamu ke mesin Bank sekarang untuk menerima properti.`,
+      "success",
     );
   }
+}
+
+/* ======================================================
+   CLAIM RESULT (tap sudah diproses)
+====================================================== */
+
+function handleAuctionClaimResult(data) {
+  stopAuctionCountdown();
+
+  const winner =
+    typeof getPlayer === "function" ? getPlayer(data.winnerRole) : null;
+  const winnerName = winner ? winner.name : data.winnerRole;
+
+  if (data.success) {
+    showAuctionClaimPanel({
+      icon: "✅",
+      title: "PROPERTI BERPINDAH TANGAN",
+      message: `${winnerName} resmi memiliki "${data.assetName}".`,
+      showTapHint: false,
+    });
+  } else {
+    showAuctionClaimPanel({
+      icon: "⚠️",
+      title: "KLAIM GAGAL",
+      message: `Serah terima "${data.assetName}" gagal diproses. Uang $${data.amount} sudah dikembalikan ke ${winnerName}.`,
+      showTapHint: false,
+    });
+  }
+
+  clearAuctionPendingState();
 
   setTimeout(() => {
     window.appState.auction = null;
     hideAuctionOverlay();
   }, 4000);
+}
+
+/* ======================================================
+   CLAIM TIMEOUT (watchdog 30 detik, tidak tap sama sekali)
+====================================================== */
+
+function handleAuctionClaimTimeout(data) {
+  stopAuctionCountdown();
+
+  const winner =
+    typeof getPlayer === "function" ? getPlayer(data.winnerRole) : null;
+  const winnerName = winner ? winner.name : data.winnerRole;
+
+  showAuctionClaimPanel({
+    icon: "⏱️",
+    title: "WAKTU HABIS",
+    message: `${winnerName} tidak tap kartu dalam 30 detik. Lelang dibatalkan, uang $${data.amount} sudah dikembalikan.`,
+    showTapHint: false,
+  });
+
+  clearAuctionPendingState();
+
+  setTimeout(() => {
+    window.appState.auction = null;
+    hideAuctionOverlay();
+  }, 4000);
+}
+
+function clearAuctionPendingState() {
+  window.appState.auctionPendingWinner = null;
+  window.appState.auctionPendingAmount = null;
+  window.appState.auctionPendingProperty = null;
 }

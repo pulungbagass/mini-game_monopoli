@@ -84,10 +84,11 @@ bool executePropertyTransaction()
         case PROPERTY_AUCTION_CLAIM:
 
             // sourceRole = pemenang lelang (yang tap kartu)
-            // Uang sudah dipotong otomatis oleh auction_service
-            // saat lelang berakhir, di sini hanya pindah
-            // kepemilikan properti.
-            success = transferProperty(
+            // BUG FIX: sebelumnya pakai transferProperty() yang
+            // mensyaratkan properti SUDAH ada owner -> selalu
+            // gagal untuk properti hasil lelang (unowned).
+            // Sekarang pakai claimAuctionProperty() yang benar.
+            success = claimAuctionProperty(
                 transactionSession.assetId,
                 transactionSession.sourceRole
             );

@@ -351,6 +351,11 @@ select.transfer-input {
   border: var(--border-thin);
   padding: 10px;
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.property-item-top {
+  display: flex;
   align-items: center;
   gap: 10px;
 }
@@ -410,6 +415,74 @@ select.transfer-input {
   font-size: 11px;
   font-weight: bold;
   color: #1a7a3c;
+}
+
+/* ======================================================
+   PROPERTY ACTION BUTTONS (Neo-Brutalism)
+   Dulu raw HTML tanpa styling sama sekali -- sekarang
+   diseragamkan dengan tema utama (border tebal, hard
+   shadow, warna kontras per jenis aksi).
+====================================================== */
+
+.property-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: var(--border-thin);
+}
+.property-btn {
+  font-family: var(--font-main);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  padding: 8px 12px;
+  border: var(--border-thin);
+  box-shadow: var(--shadow-active);
+  background: white;
+  color: var(--ink-black);
+  cursor: pointer;
+  transition: transform 0.05s;
+}
+.property-btn:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+.property-btn.buy {
+  background: #4ade80;
+}
+.property-btn.sell {
+  background: var(--primary-red);
+  color: white;
+}
+.property-btn.mortgage {
+  background: var(--primary-orange);
+}
+.property-btn.release {
+  background: var(--primary-blue);
+  color: white;
+}
+.property-btn.build {
+  background: var(--primary-yellow);
+}
+
+/* Bank emergency actions: gaya visual sengaja dibuat beda
+   & lebih "waspada" supaya tidak tertukar tak sengaja
+   dengan aksi normal. */
+.property-btn.force {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ink-black),
+    var(--ink-black) 6px,
+    var(--primary-red) 6px,
+    var(--primary-red) 12px
+  );
+  color: white;
+  border: 2px solid var(--primary-red);
+}
+
+.property-buyer-select {
+  border: var(--border-thin);
+  box-shadow: var(--shadow-active);
 }
 .global-status-banner {
   position: fixed;
@@ -658,6 +731,55 @@ select.transfer-input {
 .auction-history-item {
   padding: 4px 0;
   border-bottom: 1px solid #eee;
+}
+
+/* ======================================================
+   AUCTION CLAIM PANEL (instruksi tap - persisten)
+====================================================== */
+
+.auction-claim-panel {
+  text-align: center;
+  padding: 10px 4px;
+}
+.auction-claim-panel.hidden {
+  display: none;
+}
+.auction-claim-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+.auction-claim-title {
+  font-family: var(--font-main);
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.auction-claim-message {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 16px;
+}
+.auction-claim-tap-hint {
+  border: var(--border-thick);
+  box-shadow: var(--shadow-playful);
+  background: var(--primary-yellow);
+  padding: 16px;
+}
+.auction-claim-tap-hint.hidden {
+  display: none;
+}
+.auction-claim-tap-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  animation: auctionTapPulse 1.2s infinite;
+}
+.auction-claim-tap-hint p {
+  font-family: var(--font-main);
+  font-size: 13px;
+}
+@keyframes auctionTapPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
 }
 
 /* ======================================================

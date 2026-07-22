@@ -19,7 +19,7 @@ bool startTransaction(
 
 void cancelTransaction();
 
-void finishTransaction();
+void finishTransaction(bool success = true);
 
 bool isTransactionActive();
 

@@ -117,25 +117,47 @@ function hideAuctionOverlay() {
   if (overlay) overlay.classList.add("hidden");
 }
 
+function switchToAuctionBiddingMode() {
+  const biddingPanel = document.getElementById("auctionBiddingPanel");
+  const claimPanel = document.getElementById("auctionClaimPanel");
+  if (biddingPanel) biddingPanel.classList.remove("hidden");
+  if (claimPanel) claimPanel.classList.add("hidden");
+
+  const header = document.querySelector(
+    ".auction-modal-header .auction-badge",
+  );
+  if (header) header.textContent = "🔨 LELANG";
+}
+
+function showAuctionClaimPanel({ icon, title, message, showTapHint }) {
+  showAuctionOverlay();
+
+  const biddingPanel = document.getElementById("auctionBiddingPanel");
+  const claimPanel = document.getElementById("auctionClaimPanel");
+  if (biddingPanel) biddingPanel.classList.add("hidden");
+  if (claimPanel) claimPanel.classList.remove("hidden");
+
+  const header = document.querySelector(
+    ".auction-modal-header .auction-badge",
+  );
+  if (header) header.textContent = "🔨 SERAH TERIMA";
+
+  const iconEl = document.getElementById("auctionClaimIcon");
+  const titleEl = document.getElementById("auctionClaimTitle");
+  const messageEl = document.getElementById("auctionClaimMessage");
+  const tapHintEl = document.getElementById("auctionClaimTapHint");
+
+  if (iconEl) iconEl.textContent = icon;
+  if (titleEl) titleEl.textContent = title;
+  if (messageEl) messageEl.textContent = message;
+  if (tapHintEl) tapHintEl.classList.toggle("hidden", !showTapHint);
+}
+
 function renderAuctionCountdown(seconds) {
   const el = document.getElementById("auctionTimer");
   if (!el) return;
   el.textContent = seconds;
   el.classList.toggle("auction-timer-warning", seconds <= 10);
-}
-
-function renderAuctionResult(title, message) {
-  const highestEl = document.getElementById("auctionHighestRole");
-  const bidButtons = document.getElementById("auctionBidButtons");
-  const bankControls = document.getElementById("auctionBankControls");
-
-  if (bidButtons) bidButtons.innerHTML = "";
-  if (bankControls) bankControls.classList.add("hidden");
-
-  const header = document.querySelector(".auction-modal-header .auction-badge");
-  if (header) header.textContent = "🔨 " + title;
-
-  if (highestEl) highestEl.textContent = message;
 }
 
 function renderAuctionModal() {

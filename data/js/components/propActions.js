@@ -175,6 +175,34 @@ function renderPropertyActionRow(rule, mode, containerId) {
         `;
       }
     }
+
+    /* =========================
+       BANK EMERGENCY ACTIONS
+       (force mortgage / force sell tanpa perlu tap kartu
+       NFC owner -- dipakai kalau player membandel)
+    ========================= */
+    if (mode === "manager") {
+      if (!mortgaged && house === 0 && !hotel) {
+        buttons += `
+          <button
+            class="property-btn force"
+            data-property-action="force_mortgage"
+            data-asset-id="${assetId}"
+            data-owner-role="${ownerRole}"
+            data-container="${containerId}"
+          >⚠ FORCE MORTGAGE</button>
+        `;
+      }
+      buttons += `
+        <button
+          class="property-btn force"
+          data-property-action="force_sell"
+          data-asset-id="${assetId}"
+          data-owner-role="${ownerRole}"
+          data-container="${containerId}"
+        >⚠ FORCE SELL</button>
+      `;
+    }
   }
   let devBadge = "";
   if (hotel) {
@@ -253,6 +281,32 @@ document.addEventListener("click", (e) => {
     build_hotel: `Bangun hotel di "${label}"?`,
     sell_hotel: `Jual hotel di "${label}"?`,
   };
+
+  if (action === "force_mortgage" || action === "force_sell") {
+    const ownerPlayer =
+      typeof getPlayer === "function" ? getPlayer(ownerRole) : null;
+    const ownerName = ownerPlayer ? ownerPlayer.name : ownerRole;
+
+    const actionLabel =
+      action === "force_mortgage" ? "MENGGADAIKAN PAKSA" : "MENJUAL PAKSA";
+
+    const warning =
+      `⚠ EKSEKUSI DARURAT BANK ⚠\n\n` +
+      `Bank akan ${actionLabel} "${label}" milik ${ownerName} ` +
+      `TANPA perlu tap kartu ${ownerName}.\n\n` +
+      `Gunakan ini hanya kalau player membandel / tidak bisa ` +
+      `mengonfirmasi sendiri. Lanjutkan?`;
+
+    if (!confirm(warning)) return;
+
+    if (action === "force_mortgage") {
+      sendForceMortgage(containerId, ownerRole, assetId);
+    } else {
+      sendForceSell(containerId, ownerRole, assetId);
+    }
+    return;
+  }
+
   if (!confirm(confirmLabels[action] || `Lanjutkan aksi pada "${label}"?`)) {
     return;
   }

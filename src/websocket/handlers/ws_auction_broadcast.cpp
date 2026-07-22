@@ -28,6 +28,16 @@ static void fillAssetInfo(JsonObject& target, const String& assetId)
     }
 }
 
+static String assetName(const String& assetId)
+{
+    JsonObject asset = getAssetById(assetId);
+
+    if (asset.isNull())
+        return assetId;
+
+    return asset["asset_name"].as<String>();
+}
+
 /* ======================================================
    AUCTION STARTED
 ====================================================== */
@@ -134,8 +144,84 @@ void broadcastAuctionEnded(
 }
 
 /* ======================================================
-   SNAPSHOT (client baru connect di tengah lelang)
+   AUCTION CLAIM PENDING (butuh tap NFC pemenang)
 ====================================================== */
+
+void broadcastAuctionClaimPending(
+    const String& winnerRole,
+    const String& assetId,
+    int amount,
+    unsigned long durationMs
+)
+{
+    JsonDocument doc;
+
+    doc["type"] = "auction_claim_pending";
+
+    doc["winnerRole"] = winnerRole;
+    doc["assetId"] = assetId;
+    doc["assetName"] = assetName(assetId);
+    doc["amount"] = amount;
+    doc["durationMs"] = durationMs;
+
+    String response;
+    serializeJson(doc, response);
+
+    ws.textAll(response);
+}
+
+/* ======================================================
+   AUCTION CLAIM RESULT (setelah tap NFC diproses)
+====================================================== */
+
+void broadcastAuctionClaimResult(
+    bool success,
+    const String& winnerRole,
+    const String& assetId,
+    int amount
+)
+{
+    JsonDocument doc;
+
+    doc["type"] = "auction_claim_result";
+
+    doc["success"] = success;
+    doc["winnerRole"] = winnerRole;
+    doc["assetId"] = assetId;
+    doc["assetName"] = assetName(assetId);
+    doc["amount"] = amount;
+
+    String response;
+    serializeJson(doc, response);
+
+    ws.textAll(response);
+}
+
+/* ======================================================
+   AUCTION CLAIM TIMEOUT (watchdog 30 detik)
+====================================================== */
+
+void broadcastAuctionClaimTimeout(
+    const String& winnerRole,
+    const String& assetId,
+    int amount
+)
+{
+    JsonDocument doc;
+
+    doc["type"] = "auction_claim_timeout";
+
+    doc["winnerRole"] = winnerRole;
+    doc["assetId"] = assetId;
+    doc["assetName"] = assetName(assetId);
+    doc["amount"] = amount;
+    doc["refunded"] = true;
+
+    String response;
+    serializeJson(doc, response);
+
+    ws.textAll(response);
+}
 
 void sendAuctionSnapshot(
     AsyncWebSocketClient* client

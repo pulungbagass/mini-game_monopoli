@@ -67,6 +67,8 @@ void loop() {
 
   updateAuction();
 
+  updateAuctionClaim();
+
   /* =========================
      OLED UPDATE
   ========================= */

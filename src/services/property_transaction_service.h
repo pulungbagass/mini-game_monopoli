@@ -93,6 +93,19 @@ bool transferProperty(
     const String& newOwner
 );
 
+// Dipakai KHUSUS untuk serah-terima properti hasil lelang.
+// BEDA dengan transferProperty(): properti hasil lelang
+// BELUM ada owner-nya (makanya dilelang), jadi tidak boleh
+// lewat canTransferPropertyState() yang mensyaratkan
+// property->owned == true. Uang pemenang SUDAH dipotong
+// otomatis oleh auction_service saat lelang berakhir, jadi
+// di sini murni set kepemilikan (mirip buyProperty tapi
+// tanpa potong saldo lagi).
+bool claimAuctionProperty(
+    const String& assetId,
+    const String& winnerRole
+);
+
 bool clearPropertyOwnership(
     const String& assetId
 );

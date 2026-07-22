@@ -14,6 +14,7 @@
 
 #include "../events/game_event.h"
 #include "../data/game_log.h"
+#include "../websocket/handlers/ws_auction_broadcast.h"
 
 
 /* ======================================================
@@ -92,6 +93,20 @@ bool executeTransaction()
                 transactionSession.targetRole
             );
         }
+
+        // AUCTION CLAIM: kabari FE secara eksplisit bahwa
+        // serah terima properti hasil lelang SUKSES, supaya
+        // banner instruksi tap bisa ditutup dengan jelas.
+        if (transactionSession.propertyAction ==
+            PROPERTY_AUCTION_CLAIM)
+        {
+            broadcastAuctionClaimResult(
+                true,
+                transactionSession.sourceRole,
+                transactionSession.assetId,
+                transactionSession.amount
+            );
+        }
     }
     else
     {
@@ -102,9 +117,32 @@ bool executeTransaction()
             "transaction_failed");
 
         sendTransactionFailed();
+
+        // AUCTION CLAIM: kalau klaim gagal karena alasan tak
+        // terduga (bukan timeout, itu ditangani watchdog di
+        // auction_controller), refund uang pemenang supaya
+        // tidak ada yang dirugikan (sudah bayar tapi tidak
+        // dapat properti).
+        if (transactionSession.propertyAction ==
+            PROPERTY_AUCTION_CLAIM)
+        {
+            addMoney(
+                transactionSession.sourceRole,
+                transactionSession.amount
+            );
+
+            broadcastGameState();
+
+            broadcastAuctionClaimResult(
+                false,
+                transactionSession.sourceRole,
+                transactionSession.assetId,
+                transactionSession.amount
+            );
+        }
     }
 
-    finishTransaction();
+    finishTransaction(success);
 
     return success;
 }

@@ -201,6 +201,19 @@ bool endAuction(bool forced)
             Serial.println(
                 "[AUCTION] TRANSACTION BUSY, MANUAL CLAIM NEEDED");
         }
+        else
+        {
+            // Instruksi eksplisit ke SEMUA layar: siapa yang
+            // harus tap kartu, ke mesin mana, berapa yang
+            // sudah dibayar. Watchdog 30 detik dipantau oleh
+            // updateAuctionClaim() di auction_controller.cpp.
+            broadcastAuctionClaimPending(
+                winnerRole,
+                assetId,
+                winningBid,
+                AUCTION_CLAIM_TIMEOUT_MS
+            );
+        }
     }
 
     broadcastAuctionEnded(

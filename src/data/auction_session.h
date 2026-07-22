@@ -13,6 +13,11 @@
 #define AUCTION_DURATION_MS 30000UL
 #define AUCTION_HISTORY_MAX 40
 
+// Watchdog: batas waktu pemenang lelang harus tap kartu
+// NFC ke device Bank untuk finalisasi kepemilikan, sebelum
+// serah-terima dibatalkan otomatis (uang direfund).
+#define AUCTION_CLAIM_TIMEOUT_MS 30000UL
+
 struct AuctionBidEntry
 {
     String role;

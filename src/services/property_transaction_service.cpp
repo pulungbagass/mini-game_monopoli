@@ -829,6 +829,45 @@ bool transferProperty(
     return true;
 }
 
+/* ======================================================
+   Claim Auction Property
+   (dipanggil dari PROPERTY_AUCTION_CLAIM saat pemenang
+   lelang tap kartu NFC ke Bank)
+====================================================== */
+
+bool claimAuctionProperty(
+    const String& assetId,
+    const String& winnerRole
+)
+{
+    /* ==========================================
+       BUG FIX: dulu case ini memakai transferProperty(),
+       yang mensyaratkan canTransferPropertyState()
+       (property->owned == true). Properti hasil lelang
+       BELUM punya owner, jadi validasi itu SELALU gagal
+       dan transaksi "stuck" tanpa pernah sukses ataupun
+       gagal dengan jelas.
+    ========================================== */
+
+    if (!isBuyable(assetId))
+        return false;
+
+    if (hasOwner(assetId))
+        return false;
+
+    if (!playerExists(winnerRole))
+        return false;
+
+    // Uang SUDAH dipotong otomatis di auction_service saat
+    // lelang berakhir -> di sini TIDAK deductMoney lagi.
+    if (!setOwner(assetId, winnerRole))
+        return false;
+
+    eventPropertyBought(assetId);
+
+    return true;
+}
+
 bool clearPropertyOwnership(
     const String& assetId)
 {

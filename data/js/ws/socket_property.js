@@ -131,6 +131,44 @@ function sendReleaseMortgage(containerId, ownerRole, assetId) {
     }),
   );
 }
+
+/* ======================================================
+   BANK EMERGENCY ACTIONS
+   Beda dengan mortgage/sell biasa: TIDAK menunggu tap NFC
+   owner. Dieksekusi langsung begitu Bank menekan tombol.
+====================================================== */
+
+function sendForceMortgage(containerId, ownerRole, assetId) {
+  startPropertyAction(containerId, assetId);
+  renderPropertyStatus(
+    containerId,
+    "PROCESSING",
+    "Bank sedang mengeksekusi force mortgage...",
+  );
+  window.appState.socket.send(
+    JSON.stringify({
+      type: "force_mortgage_property",
+      role: "BANK",
+      assetId: assetId,
+    }),
+  );
+}
+
+function sendForceSell(containerId, ownerRole, assetId) {
+  startPropertyAction(containerId, assetId);
+  renderPropertyStatus(
+    containerId,
+    "PROCESSING",
+    "Bank sedang mengeksekusi force sell...",
+  );
+  window.appState.socket.send(
+    JSON.stringify({
+      type: "force_sell_property",
+      role: "BANK",
+      assetId: assetId,
+    }),
+  );
+}
 function sendBuildHouse(containerId, ownerRole, assetId) {
   startPropertyAction(containerId, assetId);
   window.appState.socket.send(

@@ -48,26 +48,38 @@
           <span id="auctionTimer" class="auction-timer">30</span>
         </div>
 
-        <div id="auctionPropertyCard" class="auction-property-card"></div>
+        <div id="auctionBiddingPanel">
+          <div id="auctionPropertyCard" class="auction-property-card"></div>
 
-        <div class="auction-highest">
-          <span>TERTINGGI SAAT INI</span>
-          <h2 id="auctionHighestBid">$0</h2>
-          <p id="auctionHighestRole">Belum ada penawar</p>
+          <div class="auction-highest">
+            <span>TERTINGGI SAAT INI</span>
+            <h2 id="auctionHighestBid">$0</h2>
+            <p id="auctionHighestRole">Belum ada penawar</p>
+          </div>
+
+          <p id="auctionMyBalance" class="auction-my-balance"></p>
+
+          <div id="auctionBidButtons" class="auction-bid-buttons"></div>
+
+          <div id="auctionBankControls" class="auction-bank-controls hidden">
+            <button id="auctionForceEndBtn" class="auction-force-end-btn">
+              AKHIRI LELANG
+            </button>
+          </div>
+
+          <div class="auction-history-title">RIWAYAT BID</div>
+          <div id="auctionHistory" class="auction-history"></div>
         </div>
 
-        <p id="auctionMyBalance" class="auction-my-balance"></p>
-
-        <div id="auctionBidButtons" class="auction-bid-buttons"></div>
-
-        <div id="auctionBankControls" class="auction-bank-controls hidden">
-          <button id="auctionForceEndBtn" class="auction-force-end-btn">
-            AKHIRI LELANG
-          </button>
+        <div id="auctionClaimPanel" class="auction-claim-panel hidden">
+          <div id="auctionClaimIcon" class="auction-claim-icon">🎉</div>
+          <h2 id="auctionClaimTitle" class="auction-claim-title"></h2>
+          <p id="auctionClaimMessage" class="auction-claim-message"></p>
+          <div id="auctionClaimTapHint" class="auction-claim-tap-hint hidden">
+            <div class="auction-claim-tap-icon">💳➡️📡</div>
+            <p>Menunggu tap kartu NFC...</p>
+          </div>
         </div>
-
-        <div class="auction-history-title">RIWAYAT BID</div>
-        <div id="auctionHistory" class="auction-history"></div>
       </div>
     </div>
 

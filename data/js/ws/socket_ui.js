@@ -28,6 +28,29 @@ function handleSocketMessage(event) {
     );
     return;
   }
+  if (data.type === "property_error") {
+    const messages = {
+      bank_only: "Aksi ini hanya bisa dilakukan Bank.",
+      invalid_asset: "Properti tidak valid.",
+      transaction_busy: "Ada transaksi lain sedang berjalan, coba lagi sebentar.",
+      not_owned: "Properti ini tidak dimiliki siapapun.",
+      force_mortgage_failed: "Gagal menggadaikan paksa (properti sudah ada rumah/hotel atau sudah digadai).",
+      force_sell_failed: "Gagal menjual paksa properti ini.",
+    };
+    const msg = messages[data.reason] || `Aksi gagal (${data.reason}).`;
+
+    if (window.appState.activeTransactionKind === "property") {
+      renderPropertyStatus(
+        window.appState.activePropertyStatusContainer,
+        "FAILED",
+        msg,
+      );
+      clearPropertyActionState();
+    } else {
+      showGlobalStatus("AKSI GAGAL", msg, "error");
+    }
+    return;
+  }
   if (data.type === "transaction_wait_sender") {
     if (window.appState.activeTransactionKind === "property") {
       renderPropertyStatus(
@@ -240,6 +263,24 @@ function handleSocketMessage(event) {
   }
   if (data.type === "auction_ended") {
     handleAuctionEnded(data);
+    if (typeof renderAuctionLauncherList === "function") {
+      renderAuctionLauncherList();
+    }
+    return;
+  }
+  if (data.type === "auction_claim_pending") {
+    handleAuctionClaimPending(data);
+    return;
+  }
+  if (data.type === "auction_claim_result") {
+    handleAuctionClaimResult(data);
+    if (typeof renderAuctionLauncherList === "function") {
+      renderAuctionLauncherList();
+    }
+    return;
+  }
+  if (data.type === "auction_claim_timeout") {
+    handleAuctionClaimTimeout(data);
     if (typeof renderAuctionLauncherList === "function") {
       renderAuctionLauncherList();
     }
