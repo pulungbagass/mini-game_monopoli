@@ -245,6 +245,14 @@ function handleSocketMessage(event) {
     handlePropertyUpdate(data);
     return;
   }
+  if (data.type === "ping") {
+    handleServerPing();
+    return;
+  }
+  if (data.type === "sync_res") {
+    handleSyncRes(data);
+    return;
+  }
   if (data.type === "auction_started") {
     handleAuctionStarted(data);
     return;

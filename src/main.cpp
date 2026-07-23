@@ -16,6 +16,7 @@
 #include "data/card_deck.h"
 
 #include "websocket/handlers/ws_broadcast.h"
+#include "websocket/handlers/ws_heartbeat.h"
 
 WiFiManager wm;
 
@@ -60,6 +61,13 @@ void loop() {
       broadcastGameState();
       lastBroadcast = millis();
   }
+
+  /* =========================
+     HEARTBEAT PING-PONG
+     (Fase C - Mobile-Proof Recovery)
+  ========================= */
+
+  updateHeartbeat();
 
   updateTransaction();
 

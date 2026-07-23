@@ -34,6 +34,12 @@ void handleRegister(
             clients[i].connected =
                 true;
 
+            // Reset heartbeat baseline: device ini baru saja
+            // reconnect, beri masa tenggang penuh sebelum bisa
+            // dianggap Ghost Socket lagi.
+            clients[i].lastPongMillis =
+                millis();
+
             found = true;
 
             Serial.println(
@@ -68,6 +74,9 @@ void handleRegister(
 
                 clients[i].connected =
                     true;
+
+                clients[i].lastPongMillis =
+                    millis();
 
                 Serial.println(
                     "NEW DEVICE REGISTERED"

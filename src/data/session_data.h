@@ -15,6 +15,12 @@ struct ClientSession {
 
     bool connected;
 
+    // Timestamp (millis()) terakhir kali client ini membalas
+    // heartbeat PONG. Dipakai untuk mendeteksi "Ghost Socket"
+    // (HP layar mati / app dibekukan OS, koneksi menggantung
+    // tanpa sinyal close yang jelas).
+    unsigned long lastPongMillis;
+
 };
 
 

@@ -18,6 +18,8 @@
 #include "handlers/ws_auction_broadcast.h"
 #include "handlers/ws_log_broadcast.h"
 #include "handlers/ws_broadcast.h"
+#include "handlers/ws_sync.h"
+#include "handlers/ws_heartbeat.h"
 
 #include "../web/web_server.h"
 
@@ -424,6 +426,38 @@ void onWebSocketEvent(
             ) {
 
                 handleEndAuction(
+                    client,
+                    doc
+                );
+            }
+
+            /* =========================
+               SILENT RECONNECT SYNC
+               (Fase 3 - Micro-Disconnect)
+            ========================= */
+
+            if (
+                msgType ==
+                "sync_req"
+            ) {
+
+                handleSyncReq(
+                    client,
+                    doc
+                );
+            }
+
+            /* =========================
+               HEARTBEAT PONG
+               (Fase C - Mobile-Proof Recovery)
+            ========================= */
+
+            if (
+                msgType ==
+                "pong"
+            ) {
+
+                handlePong(
                     client,
                     doc
                 );
